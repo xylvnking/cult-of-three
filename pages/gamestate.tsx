@@ -3,6 +3,9 @@ import styles from '../styles/Main.module.css'
 import Environment1 from './Environment1'
 import Environment2 from './Environment2'
 import Environment3 from './Environment3'
+import useSound from 'use-sound';
+// import drone from './audio/drone.wav'
+// import drone from '../public/drone.wav'
 
 type GameStateProps = {
     currentKeyPressed:Array<string>
@@ -42,6 +45,49 @@ export default function Gamestate(props: GameStateProps) {
         }
     }
 
+
+    
+    const [playEnvironmentOneSound, playEnvironmentOneSoundControls] = useSound('/drone.wav', {
+        volume: 0.5,
+        loop: true,
+        // playbackRate: 2
+    })
+    const [playEnvironmentTwoSound, playEnvironmentTwoSoundControls] = useSound('/drone.wav', {
+        volume: 0.5,
+        loop: true,
+        playbackRate: 2
+    })
+    const [playEnvironmentThreeSound, playEnvironmentThreeSoundControls] = useSound('/drone.wav', {
+        volume: 0.5,
+        loop: true,
+        playbackRate: 4
+    })
+    // playEnvironmentOneSound()
+
+    const handleEnvironmentsSound = () => {
+        if (environmentIndex == 0) {
+            console.log('environment1soundshouldwork')
+            playEnvironmentOneSound()
+
+            playEnvironmentTwoSoundControls.stop()
+            playEnvironmentThreeSoundControls.stop()
+            
+        }
+        else if (environmentIndex == 1) {
+            playEnvironmentTwoSound()
+
+            playEnvironmentOneSoundControls.stop()
+            playEnvironmentThreeSoundControls.stop()
+        }
+        else if (environmentIndex == 2) {
+            playEnvironmentThreeSound()
+
+            playEnvironmentOneSoundControls.stop()
+            playEnvironmentTwoSoundControls.stop()
+        }
+    }
+
+
     return (
         <main className={styles.mainContainer}>
             
@@ -60,13 +106,45 @@ export default function Gamestate(props: GameStateProps) {
             
         <p>playerHealthPoints: {playerHealthPoints}</p>
         <p>environmentIndex: {environmentIndex} | environments[environmentIndex]: {environments[environmentIndex]}</p>
+        {/* <button onClick={play}>Boop!</button>; */}
+
         {/* <p>{Props.currentKeyPressed}</p> */}
 
         {
             getEnvironmentIndex()
         }
+        <audio
+            controls
+            src="/drone.wav">
+                Your browser does not support the
+                <code>audio</code> element.
+        </audio>
 
-      </main>
+        <button
+        onClick={() => handleEnvironmentSound()}
+        >
+            check environment
+        </button>
+
+        <button
+            onClick={() => setEnvironmentIndex(0)}
+        >
+            0
+        </button>
+        <button
+            onClick={() => setEnvironmentIndex(1)}
+        >
+            1
+        </button>
+        <button
+            onClick={() => setEnvironmentIndex(2)}
+        >
+            2
+        </button>
+        
+        
+        
+        </main>
   )
 }
 
