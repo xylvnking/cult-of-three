@@ -32,3 +32,40 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+
+# learned
+
+how to listen for keypress globally
+
+```ts
+    import React, { KeyboardEvent} from 'react'
+    
+    useEffect(() => {
+        document.addEventListener('keydown', (e: KeyboardEvent) => console.log(e))
+    }, [])
+```
+
+```js
+// these both work, but require the player to have either clicked on or tabbed to the dom element. could be useful later
+
+export default function Gamestate({}: Props) {
+    // option 1
+    const keyDownHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        console.log(event.code);
+    }
+    // option 2
+    const log = (e: KeyboardEvent): void => {
+        console.log(e.key)
+    }
+    return (
+        // option 1
+        <p 
+            tabIndex={0} 
+            onKeyDown={keyDownHandler} 
+        >playerHealthPoints: {playerHealthPoints}</p>
+        // option 2
+        <input type='text' onKeyUp={log} defaultValue='Hey!' />
+    )
+}
+```
