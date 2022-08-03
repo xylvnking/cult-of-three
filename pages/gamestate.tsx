@@ -1,24 +1,46 @@
 import React, { useEffect, useRef } from 'react'
 import styles from '../styles/Main.module.css'
+import Environment1 from './Environment1'
+import Environment2 from './Environment2'
+import Environment3 from './Environment3'
 
 type GameStateProps = {
-    currentKeyPressed:string
-
+    currentKeyPressed:Array<string>
+    children?: React.ReactNode
 }
 
 let playerHealthPoints:number = 100
+const environments:Array<string> = ['city', 'forest','dreamstate']
 
 
 
 export default function Gamestate(props: GameStateProps) {
     
+    // console.log(`${props.currentKeyPressed}`)
     
 
-    console.log(`${props.currentKeyPressed}`)
+
     
-    // console.log(props.currentKeyPressed)
-    const [environment, setEnvironment] = React.useState()
-    
+    const [environmentIndex, setEnvironmentIndex] = React.useState<number>(0)
+
+    const getEnvironmentIndex = () => {
+        console.log(environmentIndex)
+        switch (environmentIndex) {
+            case 0:
+                return <Environment1 />
+                // return <p>yeah</p>
+                console.log('Environment1')
+                break;
+            case 1:
+                return <Environment2 />
+                // console.log('Environment2')
+                break;
+            case 2:
+                return <Environment3 />
+                // console.log('Environment3')
+                break;
+        }
+    }
 
     return (
         <main className={styles.mainContainer}>
@@ -35,19 +57,14 @@ export default function Gamestate(props: GameStateProps) {
                     <p>3</p>
                 </section>
             </div>
-
-            {/* <div>
-				<p> Are You Smart?</p>
-					<input 
-                        type="hidden" 
-                        // value={answer} 
-                        onKeyPress={(e) => handleAnswerChange(e.target.value)}
-                    />
-				<small> Press Y for Yes or N for No</small>
-            </div> */}
             
         <p>playerHealthPoints: {playerHealthPoints}</p>
+        <p>environmentIndex: {environmentIndex} | environments[environmentIndex]: {environments[environmentIndex]}</p>
         {/* <p>{Props.currentKeyPressed}</p> */}
+
+        {
+            getEnvironmentIndex()
+        }
 
       </main>
   )

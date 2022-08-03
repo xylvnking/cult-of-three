@@ -6,16 +6,16 @@ type Props = {}
 
 
 
-export default function GameInput({}: Props) {
+const GameInput: React.FC<Props> = ({}: Props) => {
 
 
 
-    const [currentKeyPressed, setCurrentKeyPressed] = React.useState([])
+    const [currentKeyPressed, setCurrentKeyPressed] = React.useState<Array<string>>([])
 
-    const handleKeyDown = (val) => {
-        // setCurrentKeyPressed("")
-        setCurrentKeyPressed(current => [...current, val])
-        console.log(typeof currentKeyPressed)
+    const handleKeyDown = (val:string) => {
+        setCurrentKeyPressed([])
+        setCurrentKeyPressed((current: any) => [...current, val])
+        
         // setCurrentKeyPressed(val)
         
     }
@@ -36,3 +36,5 @@ export default function GameInput({}: Props) {
   )
 }
 
+
+export default GameInput
