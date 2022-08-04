@@ -4,6 +4,9 @@ import GameState from './gamestate'
 
 type Props = {}
 
+const delay = ms => new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
 
 
 const GameInput: React.FC<Props> = ({}: Props) => {
@@ -12,15 +15,16 @@ const GameInput: React.FC<Props> = ({}: Props) => {
 
     const [currentKeyPressed, setCurrentKeyPressed] = React.useState<Array<string>>([])
     const [input, setInput] = React.useState<string>("")
-
+    const [keyTrigger, setKeyTrigger] = React.useState(false)
     
     // console.log(currentKeyPressed)
 
-    const handleKeyDown = (val:string) => {
+    const handleKeyDown = async (val:string) => {
         setCurrentKeyPressed([])
         setCurrentKeyPressed((current: any) => [...current, val])
         
-        // setCurrentKeyPressed(val)
+        
+        // console.log('yer')
         
     }
 
@@ -39,6 +43,9 @@ const GameInput: React.FC<Props> = ({}: Props) => {
     }
 
     React.useEffect(() => {
+
+        setKeyTrigger(!keyTrigger)
+        console.log(keyTrigger)
 
         const input:any = currentKeyPressed
     
@@ -102,6 +109,7 @@ const GameInput: React.FC<Props> = ({}: Props) => {
         <GameState 
             // currentKeyPressed={currentKeyPressed}
             input={input}
+            keyTrigger={keyTrigger}
         />
     </div>
   )

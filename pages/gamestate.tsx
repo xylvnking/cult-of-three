@@ -10,15 +10,36 @@ import useSound from 'use-sound';
 type GameStateProps = {
     // currentKeyPressed:Array<string>
     input:string,
+    keyTrigger:boolean,
     children?: React.ReactNode
 }
 
 let playerHealthPoints:number = 100
 const environments:Array<string> = ['forest', 'city','dreamstate']
 
+const delay = ms => new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
+
 export default function Gamestate(props: GameStateProps) {
     
-    const [environmentIndex, setEnvironmentIndex] = React.useState<number>()
+    const [environmentIndex, setEnvironmentIndex] = React.useState<number>(0)
+    const [enemyState, setEnemyState] = React.useState()
+
+    const [playerHealth, setPlayerHealth] = React.useState(100)
+
+    
+
+    const [enemyOne, setEnemyOne] = React.useState({
+        hp: 100,
+        moveSet: ['attack', 'charge', 'buff'],
+        currentMove: ""
+    })
 
     const [environmentOneSoundIsPlaying, setEnvironmentOneSoundIsPlaying] = React.useState(false)
     const [environmentTwoSoundIsPlaying, setEnvironmentTwoSoundIsPlaying] = React.useState(false)
@@ -82,8 +103,6 @@ export default function Gamestate(props: GameStateProps) {
         }
     }
 
-    
-
     const getEnvironmentIndex = () => {
         handleEnvironmentSound()
         switch (environmentIndex) {
@@ -94,6 +113,94 @@ export default function Gamestate(props: GameStateProps) {
             case 2:
                 return <Environment3 />
         }
+    }
+
+
+    useEffect(() => {
+
+
+        // console.log(enemyOne.currentMove)
+        // console.log(props.input)
+        console.log('player attack called')
+
+        if (props.input) {
+
+            const playerAction = async () => {
+                if (props.input == enemyOne.currentMove) {
+                    // setEnemyOne()
+                    setEnemyOne(current => {
+                        return {
+                            ...current,
+                            hp: enemyOne.hp - 10
+                        }
+                    })
+                } else {
+                    setPlayerHealth(playerHealth - 10)
+                }
+                await delay(1000)
+
+                enemyAttack()
+            }
+            playerAction()
+        }
+        
+    // }, [props.input])
+    }, [props.keyTrigger])
+
+    if (enemyOne.hp == 0) {
+        console.log('you win!')
+        // return
+    }
+
+    const enemyAttack = async () => {
+        // check enemy hp
+            // if 0, win
+
+        const enemyMoveNumber = getRandomInt(3)
+        // console.log(enemyMoveNumber)
+
+
+        const enemyAttacksLeft = () => {
+            setEnemyOne(current => {
+                return {
+                    ...current,
+                    currentMove: 'left'
+                }
+            })
+            // console.log('enemy attacks left!')
+        }
+        const enemyAttacksCenter = () => {
+            setEnemyOne(current => {
+                return {
+                    ...current,
+                    currentMove: 'center'
+                }
+            })
+            // console.log('enemy attacks center!')
+        }
+        const enemyAttacksRight = () => {
+            setEnemyOne(current => {
+                return {
+                    ...current,
+                    currentMove: 'right'
+                }
+            })
+            // console.log('enemy attacks right!')
+        }
+
+
+
+
+
+        if (enemyMoveNumber == 0) {
+            enemyAttacksLeft()
+        } else if (enemyMoveNumber == 1) {
+            enemyAttacksCenter()
+        } else {
+            enemyAttacksRight()
+        }
+
+        
     }
 
     return (
@@ -131,7 +238,9 @@ export default function Gamestate(props: GameStateProps) {
                 </button>
             </section>
         
-        <p>playerHealthPoints: {playerHealthPoints}</p>
+        <p>playerHealth: {playerHealth}</p>
+        <p>enemyHealthPoints: {enemyOne.hp}</p>
+        <p>enemyCurrentMove: {enemyOne.currentMove}</p>
 
         
 
@@ -162,6 +271,12 @@ export default function Gamestate(props: GameStateProps) {
             onClick={() => toggleEnvironmentSoundMute()}
         >
             toggle environment sound
+        </button>
+
+        <button
+            onClick={() => enemyAttack()}
+        >
+            enemyAttack
         </button>
         
         
