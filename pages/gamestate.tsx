@@ -8,49 +8,18 @@ import useSound from 'use-sound';
 // import drone from '../public/drone.wav'
 
 type GameStateProps = {
-    currentKeyPressed:Array<string>
+    // currentKeyPressed:Array<string>
+    input:string,
     children?: React.ReactNode
 }
 
 let playerHealthPoints:number = 100
 const environments:Array<string> = ['city', 'forest','dreamstate']
 
-
-
-const keyMap = {
-    // make sure this works if caps lock gets hit on
-    left: 'a',
-    center: 's',
-    right: 'd'
-}
-
 export default function Gamestate(props: GameStateProps) {
     
-    
-    React.useEffect(() => {
-
-        const input:any = props.currentKeyPressed
-
-        
-    
-        if (input == keyMap.left) {
-            console.log('LEFT')
-            return
-        }
-        if (input == keyMap.center) {
-            console.log('CENTER')
-            return
-        }
-        if (input == keyMap.right) {
-            console.log('RIGHT')
-            return
-        }
-        
-    }, [props.currentKeyPressed])
-
-
-    
     const [environmentIndex, setEnvironmentIndex] = React.useState<number>(0)
+
 
     const getEnvironmentIndex = () => {
         // console.log(environmentIndex)
@@ -70,8 +39,6 @@ export default function Gamestate(props: GameStateProps) {
                 break;
         }
     }
-
-
     
     const [playEnvironmentOneSound, playEnvironmentOneSoundControls] = useSound('/drone.wav', {
         volume: 0.5,
@@ -88,49 +55,68 @@ export default function Gamestate(props: GameStateProps) {
         loop: true,
         playbackRate: 4
     })
-    // playEnvironmentOneSound()
 
     const handleEnvironmentSound = () => {
         if (environmentIndex == 0) {
             console.log('environment1soundshouldwork')
             playEnvironmentOneSound()
-
             playEnvironmentTwoSoundControls.stop()
             playEnvironmentThreeSoundControls.stop()
-            
         }
         else if (environmentIndex == 1) {
             playEnvironmentTwoSound()
-
             playEnvironmentOneSoundControls.stop()
             playEnvironmentThreeSoundControls.stop()
         }
         else if (environmentIndex == 2) {
             playEnvironmentThreeSound()
-
             playEnvironmentOneSoundControls.stop()
             playEnvironmentTwoSoundControls.stop()
         }
     }
 
 
+
     return (
         <main className={styles.mainContainer}>
-            
+            {getEnvironmentIndex()}
+
+            {/* {(props.input == 'leftListen') && <p>yeah</p>} */}
 
             <div className={styles.threeContainer}>
-                <section className={`${styles.innerContainer} ${styles.section1}`}>
-                    <p>1</p>
-                </section>
-                <section className={`${styles.innerContainer} ${styles.section2}`}>
-                    <p>2</p>
-                </section>
-                <section className={`${styles.innerContainer} ${styles.section3}`}>
-                    <p>3</p>
-                </section>
+                {/* <section className={`${styles.innerContainer} ${styles.section1}`}> */}
+                <button className={`${styles.innerContainer} ${(props.input == 'leftListen') && `${styles.innerContainerSelect}`}`}>
+                    <label>leftListen</label>
+                </button>
+                <button className={`${styles.innerContainer} ${(props.input == 'centerListen') && `${styles.innerContainerSelect}`}`}>
+                    <label>centerListen</label>
+                </button>
+                <button className={`${styles.innerContainer} ${(props.input == 'rightListen') && `${styles.innerContainerSelect}`}`}>
+                    <label>rightListen</label>
+                </button>
+                <button className={`${styles.innerContainer} ${(props.input == 'rewind') && `${styles.innerContainerSelect}`}`}>
+                    <label>rewind</label>
+                </button>
+
+                <button className={`${styles.innerContainer} ${(props.input == 'left') && `${styles.innerContainerSelect}`}`}>
+                    <label>left</label>
+                </button>
+                <button className={`${styles.innerContainer} ${(props.input == 'center') && `${styles.innerContainerSelect}`}`}>
+                    <label>center</label>
+                </button>
+                <button className={`${styles.innerContainer} ${(props.input == 'right') && `${styles.innerContainerSelect}`}`}>
+                    <label>right</label>
+                </button>
+                <button className={`${styles.innerContainer} ${(props.input == 'fastForward') && `${styles.innerContainerSelect}`}`}>
+                    <label>fast forward</label>
+                </button>
+
+                <button className={`${styles.innerContainer} ${styles.menu} ${(props.input == 'menu') && `${styles.innerContainerSelect}`}`}>
+                    <label>menu</label>
+                </button>
             </div>
             
-        {getEnvironmentIndex()}
+        
         <p>playerHealthPoints: {playerHealthPoints}</p>
         {/* <p>environmentIndex: {environmentIndex} | environments[environmentIndex]: {environments[environmentIndex]}</p> */}
         {/* <button onClick={play}>Boop!</button>; */}
