@@ -70,6 +70,18 @@ export default function Gamestate({}: Props) {
 }
 ```
 
+### how to access howler stuff from useSound hook
+
+```js
+const [playEnvironmentOneSound, playEnvironmentOneSoundControls] = useSound('/forest.mp3', {
+        volume: 0.5,
+        loop: true,
+        mute: true
+        // etc...
+    })
+playEnvironmentOneSoundControls.sound._muted
+```
+
 # about
 
 this project is more of a meditation on audio-ux than audio engineer. the difficulty doesn't come from getting things to sound high quality, but rather in understanding the subjective experience that the audio provides.

@@ -14,11 +14,9 @@ type GameStateProps = {
 }
 
 let playerHealthPoints:number = 100
-const environments:Array<string> = ['city', 'forest','dreamstate']
+const environments:Array<string> = ['forest', 'city','dreamstate']
 
 export default function Gamestate(props: GameStateProps) {
-
-    console.log('reloading')
     
     const [environmentIndex, setEnvironmentIndex] = React.useState<number>()
 
@@ -87,37 +85,16 @@ export default function Gamestate(props: GameStateProps) {
     
 
     const getEnvironmentIndex = () => {
-        // console.log(environmentIndex)
         handleEnvironmentSound()
         switch (environmentIndex) {
             case 0:
-                // return <p>yeah</p>
-                // console.log('Environment1')
-                // console.log('environment1soundshouldwork')
-                // playEnvironmentOneSound()
-                // playEnvironmentTwoSoundControls.stop()
-                // playEnvironmentThreeSoundControls.stop()
-                
                 return <Environment1 />
-                break;
             case 1:
-                // console.log('Environment2')
-                // playEnvironmentTwoSound()
-                // playEnvironmentOneSoundControls.stop()
-                // playEnvironmentThreeSoundControls.stop()
                 return <Environment2 />
-                break;
             case 2:
-                // console.log('Environment3')
-                // playEnvironmentThreeSound()
-                // playEnvironmentOneSoundControls.stop()
-                // playEnvironmentTwoSoundControls.stop()
                 return <Environment3 />
-                break;
         }
     }
-    
-    
 
     return (
         <main className={styles.mainContainer}>
