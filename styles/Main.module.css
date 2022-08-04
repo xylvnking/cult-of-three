@@ -4,14 +4,18 @@
 
 .threeContainer {
     /* background-color: rgb(42, 42, 42); */
-    background-color: rgb(73, 73, 73);
+    /* background-color: rgb(73, 73, 73); */
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr;
-    height:50vh;
+    height:25vh;
 }
 
 .innerContainer {
+    border-style: solid;
+    border-color: rgb(85, 85, 85);
+    border-width: 5px;
+    margin: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -19,15 +23,15 @@
 }
 
 .section1 {
-    background-color: rgb(72, 72, 72);
+    /* background-color: rgb(72, 72, 72); */
 }
 
 .section2 {
-    background-color: rgb(132, 132, 132);
+    /* background-color: rgb(132, 132, 132); */
     
 }
 
 .section3 {
-    background-color: rgb(43, 43, 43);
+    /* background-color: rgb(43, 43, 43); */
     
 }

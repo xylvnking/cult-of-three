@@ -1,0 +1,14 @@
+.environmentLabel {
+    position: absolute;
+    z-index: 999;
+    display: block;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.environmentContainer {
+    width: 100%;
+    height: 100px;
+    position: relative;
+}

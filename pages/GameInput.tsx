@@ -12,6 +12,9 @@ const GameInput: React.FC<Props> = ({}: Props) => {
 
     const [currentKeyPressed, setCurrentKeyPressed] = React.useState<Array<string>>([])
 
+    
+    // console.log(currentKeyPressed)
+
     const handleKeyDown = (val:string) => {
         setCurrentKeyPressed([])
         setCurrentKeyPressed((current: any) => [...current, val])
@@ -24,7 +27,7 @@ const GameInput: React.FC<Props> = ({}: Props) => {
     useEffect(() => {
         // document.addEventListener('keydown', (e: KeyboardEvent) => setCurrentKeyPressed(e.key))
         document.addEventListener('keydown', (e: KeyboardEvent) => handleKeyDown(e.key))
-        console.log('event listener added')
+        // console.log('event listener added')
         
     }, [])
   return (

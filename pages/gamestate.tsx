@@ -17,17 +17,43 @@ const environments:Array<string> = ['city', 'forest','dreamstate']
 
 
 
+const keyMap = {
+    // make sure this works if caps lock gets hit on
+    left: 'a',
+    center: 's',
+    right: 'd'
+}
+
 export default function Gamestate(props: GameStateProps) {
     
-    // console.log(`${props.currentKeyPressed}`)
     
+    React.useEffect(() => {
+
+        const input:any = props.currentKeyPressed
+
+        
+    
+        if (input == keyMap.left) {
+            console.log('LEFT')
+            return
+        }
+        if (input == keyMap.center) {
+            console.log('CENTER')
+            return
+        }
+        if (input == keyMap.right) {
+            console.log('RIGHT')
+            return
+        }
+        
+    }, [props.currentKeyPressed])
 
 
     
     const [environmentIndex, setEnvironmentIndex] = React.useState<number>(0)
 
     const getEnvironmentIndex = () => {
-        console.log(environmentIndex)
+        // console.log(environmentIndex)
         switch (environmentIndex) {
             case 0:
                 return <Environment1 />
@@ -36,11 +62,11 @@ export default function Gamestate(props: GameStateProps) {
                 break;
             case 1:
                 return <Environment2 />
-                // console.log('Environment2')
+                console.log('Environment2')
                 break;
             case 2:
                 return <Environment3 />
-                // console.log('Environment3')
+                console.log('Environment3')
                 break;
         }
     }
@@ -64,7 +90,7 @@ export default function Gamestate(props: GameStateProps) {
     })
     // playEnvironmentOneSound()
 
-    const handleEnvironmentsSound = () => {
+    const handleEnvironmentSound = () => {
         if (environmentIndex == 0) {
             console.log('environment1soundshouldwork')
             playEnvironmentOneSound()
@@ -104,21 +130,13 @@ export default function Gamestate(props: GameStateProps) {
                 </section>
             </div>
             
+        {getEnvironmentIndex()}
         <p>playerHealthPoints: {playerHealthPoints}</p>
-        <p>environmentIndex: {environmentIndex} | environments[environmentIndex]: {environments[environmentIndex]}</p>
+        {/* <p>environmentIndex: {environmentIndex} | environments[environmentIndex]: {environments[environmentIndex]}</p> */}
         {/* <button onClick={play}>Boop!</button>; */}
 
         {/* <p>{Props.currentKeyPressed}</p> */}
 
-        {
-            getEnvironmentIndex()
-        }
-        <audio
-            controls
-            src="/drone.wav">
-                Your browser does not support the
-                <code>audio</code> element.
-        </audio>
 
         <button
         onClick={() => handleEnvironmentSound()}
