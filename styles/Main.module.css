@@ -2,7 +2,7 @@
 
 }
 
-.threeContainer {
+.controlGridContainer {
     /* background-color: rgb(42, 42, 42); */
     /* background-color: rgb(73, 73, 73); */
     display: grid;
@@ -12,13 +12,13 @@
     /* height:25vh; */
 }
 
-.innerContainer {
+.keyMapGridItem {
     background-color: black;
     border-style: solid;
     border-color: rgb(85, 85, 85);
-    border-radius: 10px;
+    border-radius: 4px;
     color: rgb(146, 146, 146);
-    border-width: 5px;
+    border-width: 1.5px;
     font-size: 25px;
     margin: 10px;
 
@@ -32,21 +32,7 @@
     transition: background-color .5s, color .5s, border-color .5s;
 }
 
-.innerContainerSelected {
-    
-    background-color: white;
-    color: black;
-    border-color: rgb(0, 174, 255);
-    border-style: solid;
-    border-width: 5px;
-    margin: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* background-color: aqua; */
-}
-
-.innerContainerSelect {
+.keyMapGridItemSelected {
     background-color: white;
     color: black;
     border-color: rgb(0, 174, 255);

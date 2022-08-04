@@ -69,3 +69,7 @@ export default function Gamestate({}: Props) {
     )
 }
 ```
+
+# about
+
+this project is more of a meditation on audio-ux than audio engineer. the difficulty doesn't come from getting things to sound high quality, but rather in understanding the subjective experience that the audio provides.

@@ -17,135 +17,175 @@ let playerHealthPoints:number = 100
 const environments:Array<string> = ['city', 'forest','dreamstate']
 
 export default function Gamestate(props: GameStateProps) {
-    
-    const [environmentIndex, setEnvironmentIndex] = React.useState<number>(0)
 
-
-    const getEnvironmentIndex = () => {
-        // console.log(environmentIndex)
-        switch (environmentIndex) {
-            case 0:
-                return <Environment1 />
-                // return <p>yeah</p>
-                console.log('Environment1')
-                break;
-            case 1:
-                return <Environment2 />
-                console.log('Environment2')
-                break;
-            case 2:
-                return <Environment3 />
-                console.log('Environment3')
-                break;
-        }
-    }
+    console.log('reloading')
     
-    const [playEnvironmentOneSound, playEnvironmentOneSoundControls] = useSound('/drone.wav', {
+    const [environmentIndex, setEnvironmentIndex] = React.useState<number>()
+
+    const [environmentOneSoundIsPlaying, setEnvironmentOneSoundIsPlaying] = React.useState(false)
+    const [environmentTwoSoundIsPlaying, setEnvironmentTwoSoundIsPlaying] = React.useState(false)
+    const [environmentThreeSoundIsPlaying, setEnvironmentThreeSoundIsPlaying] = React.useState(false)
+
+    const [playEnvironmentOneSound, playEnvironmentOneSoundControls] = useSound('/forest.mp3', {
         volume: 0.5,
         loop: true,
+        mute: true
         // playbackRate: 2
     })
-    const [playEnvironmentTwoSound, playEnvironmentTwoSoundControls] = useSound('/drone.wav', {
+    const [playEnvironmentTwoSound, playEnvironmentTwoSoundControls] = useSound('/rain.mp3', {
         volume: 0.5,
         loop: true,
-        playbackRate: 2
+        playbackRate: 2,
+        mute: true
     })
     const [playEnvironmentThreeSound, playEnvironmentThreeSoundControls] = useSound('/drone.wav', {
         volume: 0.5,
         loop: true,
-        playbackRate: 4
+        playbackRate: .5,
+        mute: true
+        
     })
 
+    const toggleEnvironmentSoundMute = () => {
+        playEnvironmentOneSoundControls.sound.mute(!playEnvironmentOneSoundControls.sound._muted)
+        playEnvironmentTwoSoundControls.sound.mute(!playEnvironmentTwoSoundControls.sound._muted)
+        playEnvironmentThreeSoundControls.sound.mute(!playEnvironmentThreeSoundControls.sound._muted)
+    }
+
     const handleEnvironmentSound = () => {
-        if (environmentIndex == 0) {
-            console.log('environment1soundshouldwork')
+        if (environmentIndex == 0 && (environmentOneSoundIsPlaying == false)) {
+            // console.log('environment1soundshouldwork')s
             playEnvironmentOneSound()
             playEnvironmentTwoSoundControls.stop()
             playEnvironmentThreeSoundControls.stop()
+            setEnvironmentOneSoundIsPlaying(true)
+
+            setEnvironmentTwoSoundIsPlaying(false)
+            setEnvironmentThreeSoundIsPlaying(false)
         }
-        else if (environmentIndex == 1) {
+        else if (environmentIndex == 1 && (environmentTwoSoundIsPlaying == false)) {
             playEnvironmentTwoSound()
             playEnvironmentOneSoundControls.stop()
             playEnvironmentThreeSoundControls.stop()
+            setEnvironmentTwoSoundIsPlaying(true)
+            
+            setEnvironmentOneSoundIsPlaying(false)
+            setEnvironmentThreeSoundIsPlaying(false)
+
         }
-        else if (environmentIndex == 2) {
+        else if (environmentIndex == 2 && (environmentThreeSoundIsPlaying == false)) {
             playEnvironmentThreeSound()
             playEnvironmentOneSoundControls.stop()
             playEnvironmentTwoSoundControls.stop()
+            setEnvironmentThreeSoundIsPlaying(true)
+
+            setEnvironmentOneSoundIsPlaying(false)
+            setEnvironmentTwoSoundIsPlaying(false)
         }
     }
 
+    
 
+    const getEnvironmentIndex = () => {
+        // console.log(environmentIndex)
+        handleEnvironmentSound()
+        switch (environmentIndex) {
+            case 0:
+                // return <p>yeah</p>
+                // console.log('Environment1')
+                // console.log('environment1soundshouldwork')
+                // playEnvironmentOneSound()
+                // playEnvironmentTwoSoundControls.stop()
+                // playEnvironmentThreeSoundControls.stop()
+                
+                return <Environment1 />
+                break;
+            case 1:
+                // console.log('Environment2')
+                // playEnvironmentTwoSound()
+                // playEnvironmentOneSoundControls.stop()
+                // playEnvironmentThreeSoundControls.stop()
+                return <Environment2 />
+                break;
+            case 2:
+                // console.log('Environment3')
+                // playEnvironmentThreeSound()
+                // playEnvironmentOneSoundControls.stop()
+                // playEnvironmentTwoSoundControls.stop()
+                return <Environment3 />
+                break;
+        }
+    }
+    
+    
 
     return (
         <main className={styles.mainContainer}>
+
             {getEnvironmentIndex()}
 
-            {/* {(props.input == 'leftListen') && <p>yeah</p>} */}
-
-            <div className={styles.threeContainer}>
-                {/* <section className={`${styles.innerContainer} ${styles.section1}`}> */}
-                <button className={`${styles.innerContainer} ${(props.input == 'leftListen') && `${styles.innerContainerSelect}`}`}>
+            <section className={styles.controlGridContainer}>
+                <button className={`${styles.keyMapGridItem} ${(props.input == 'leftListen') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>leftListen</label>
                 </button>
-                <button className={`${styles.innerContainer} ${(props.input == 'centerListen') && `${styles.innerContainerSelect}`}`}>
+                <button className={`${styles.keyMapGridItem} ${(props.input == 'centerListen') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>centerListen</label>
                 </button>
-                <button className={`${styles.innerContainer} ${(props.input == 'rightListen') && `${styles.innerContainerSelect}`}`}>
+                <button className={`${styles.keyMapGridItem} ${(props.input == 'rightListen') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>rightListen</label>
                 </button>
-                <button className={`${styles.innerContainer} ${(props.input == 'rewind') && `${styles.innerContainerSelect}`}`}>
+                <button className={`${styles.keyMapGridItem} ${(props.input == 'rewind') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>rewind</label>
                 </button>
-
-                <button className={`${styles.innerContainer} ${(props.input == 'left') && `${styles.innerContainerSelect}`}`}>
+                <button className={`${styles.keyMapGridItem} ${(props.input == 'left') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>left</label>
                 </button>
-                <button className={`${styles.innerContainer} ${(props.input == 'center') && `${styles.innerContainerSelect}`}`}>
+                <button className={`${styles.keyMapGridItem} ${(props.input == 'center') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>center</label>
                 </button>
-                <button className={`${styles.innerContainer} ${(props.input == 'right') && `${styles.innerContainerSelect}`}`}>
+                <button className={`${styles.keyMapGridItem} ${(props.input == 'right') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>right</label>
                 </button>
-                <button className={`${styles.innerContainer} ${(props.input == 'fastForward') && `${styles.innerContainerSelect}`}`}>
+                <button className={`${styles.keyMapGridItem} ${(props.input == 'fastForward') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>fast forward</label>
                 </button>
-
-                <button className={`${styles.innerContainer} ${styles.menu} ${(props.input == 'menu') && `${styles.innerContainerSelect}`}`}>
+                <button className={`${styles.keyMapGridItem} ${styles.menu} ${(props.input == 'menu') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>menu</label>
                 </button>
-            </div>
-            
+            </section>
         
         <p>playerHealthPoints: {playerHealthPoints}</p>
-        {/* <p>environmentIndex: {environmentIndex} | environments[environmentIndex]: {environments[environmentIndex]}</p> */}
-        {/* <button onClick={play}>Boop!</button>; */}
 
-        {/* <p>{Props.currentKeyPressed}</p> */}
+        
 
 
-        <button
-        onClick={() => handleEnvironmentSound()}
-        >
-            check environment
-        </button>
 
+        <br />
+        debug:
+        <br />
         <button
             onClick={() => setEnvironmentIndex(0)}
         >
-            0
+            set environment: 0
         </button>
         <button
             onClick={() => setEnvironmentIndex(1)}
         >
-            1
+            set environment: 1
         </button>
         <button
             onClick={() => setEnvironmentIndex(2)}
         >
-            2
+            set environment: 2
         </button>
+
+        <br />
         
+        <button
+            onClick={() => toggleEnvironmentSoundMute()}
+        >
+            toggle environment sound
+        </button>
         
         
         </main>
