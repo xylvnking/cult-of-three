@@ -3,6 +3,7 @@ import styles from '../styles/Main.module.css'
 import Environment1 from './Environment1'
 import Environment2 from './Environment2'
 import Environment3 from './Environment3'
+import Environment4 from './Environment4'
 import useSound from 'use-sound';
 // import drone from './audio/drone.wav'
 // import drone from '../public/drone.wav'
@@ -25,27 +26,34 @@ function getRandomInt(max:number) {
     return Math.floor(Math.random() * max);
 }
 
+const gameStates = ['safezone', 'battle', 'paused']
+
 
 export default function Gamestate(props: GameStateProps) {
+
+
+    /*
+
+    ok so i need a solution for the controls - whether in battle or in safezone or in menu they do different things
+
+
+    */
     
-    const [environmentIndex, setEnvironmentIndex] = React.useState<number>(0)
+    const [environmentIndex, setEnvironmentIndex] = React.useState<number>(3)
     const [enemyState, setEnemyState] = React.useState()
-
     const [playerHealth, setPlayerHealth] = React.useState(100)
-
-    
-
     const [enemy, setEnemy] = React.useState({
-        hp: 100,
+        hp: 20,
         moveSet: ['attack', 'charge', 'buff'],
         currentMove: ""
     })
-
     const [environmentOneSoundIsPlaying, setEnvironmentOneSoundIsPlaying] = React.useState(false)
     const [environmentTwoSoundIsPlaying, setEnvironmentTwoSoundIsPlaying] = React.useState(false)
     const [environmentThreeSoundIsPlaying, setEnvironmentThreeSoundIsPlaying] = React.useState(false)
-
     const [gamePaused, setGamePaused] = React.useState(false)
+    const [gameState, setGameState] = React.useState(gameStates[0])
+
+
 
     const openPauseMenu = () => {
         console.log('GAME IS PAUSED')
@@ -109,7 +117,7 @@ export default function Gamestate(props: GameStateProps) {
         }
     }
 
-    const getEnvironmentIndex = () => {
+    const environment = () => {
         handleEnvironmentSound()
         switch (environmentIndex) {
             case 0:
@@ -118,6 +126,8 @@ export default function Gamestate(props: GameStateProps) {
                 return <Environment2 />
             case 2:
                 return <Environment3 />
+            case 3:
+                return <Environment4 />
         }
     }
 
@@ -126,40 +136,41 @@ export default function Gamestate(props: GameStateProps) {
         setEnemy(current => {
             return {
                 ...current,
-                hp: 100,
+                hp: 20,
                 currentMove: ""
             }
         })
-
         setPlayerHealth(100)
+    }
+
+    const goToSafeZone = () => {
+        setEnvironmentIndex(3)
     }
 
     const playerDeath = () => {
         console.log('YOU HAVE DIED')
-
         resetEverything()
-        
     }
 
+    const enemyDeath = () => {
+        resetEverything()
+        goToSafeZone()
+    }
 
+    // TRIGGERED ON USER INPUT
     useEffect(() => {
-
-
-        // console.log(enemy.currentMove)
-        // console.log(props.input)
-        console.log('player attack called')
-
         if (props.input) {
-
             // checking if game paused
             if (props.input == 'menu') {
                 setGamePaused(!gamePaused)
                 openPauseMenu()
                 
-            } else if (!gamePaused) {
+
+
+            // battle mode
+            } else if (!gamePaused && (gameState == 'battle')) {
                 const playerAction = async () => {
                     if (props.input == enemy.currentMove) {
-                        // setEnemy()
                         setEnemy(current => {
                             return {
                                 ...current,
@@ -179,9 +190,7 @@ export default function Gamestate(props: GameStateProps) {
                         }
                     })
                     if (enemy.hp == 0) {
-                        console.log('You have won!')
                         // put enemy death function here if you need it
-                        resetEverything()
                     } else {
     
                         await delay(100)
@@ -190,28 +199,17 @@ export default function Gamestate(props: GameStateProps) {
                     }
                 }
                 playerAction()
-            }
-
-            
+            }   
         }
-        
-    // }, [props.input])
     }, [props.keyTrigger])
 
     if (enemy.hp == 0) {
         console.log('you win!')
-        // return
+        enemyDeath()
     }
 
     const enemyAttack = async () => {
-        // check enemy hp
-            // if 0, win
-        
-
         const enemyMoveNumber = getRandomInt(3)
-        // console.log(enemyMoveNumber)
-
-
         const enemyAttacksLeft = () => {
             setEnemy(current => {
                 return {
@@ -219,7 +217,6 @@ export default function Gamestate(props: GameStateProps) {
                     currentMove: 'left'
                 }
             })
-            // console.log('enemy attacks left!')
         }
         const enemyAttacksCenter = () => {
             setEnemy(current => {
@@ -228,7 +225,6 @@ export default function Gamestate(props: GameStateProps) {
                     currentMove: 'center'
                 }
             })
-            // console.log('enemy attacks center!')
         }
         const enemyAttacksRight = () => {
             setEnemy(current => {
@@ -237,12 +233,7 @@ export default function Gamestate(props: GameStateProps) {
                     currentMove: 'right'
                 }
             })
-            // console.log('enemy attacks right!')
         }
-
-
-
-
 
         if (enemyMoveNumber == 0) {
             enemyAttacksLeft()
@@ -251,14 +242,12 @@ export default function Gamestate(props: GameStateProps) {
         } else {
             enemyAttacksRight()
         }
-
-        
     }
 
     return (
         <main className={styles.mainContainer}>
 
-            {getEnvironmentIndex()}
+            {environment()}
 
             <section className={styles.controlGridContainer}>
                 <button className={`${styles.keyMapGridItem} ${(props.input == 'leftListen') && `${styles.keyMapGridItemSelected}`}`}>
@@ -293,11 +282,9 @@ export default function Gamestate(props: GameStateProps) {
         <p>playerHealth: {playerHealth}</p>
         <p>enemyHealthPoints: {enemy.hp}</p>
         <p>enemyCurrentMove: {enemy.currentMove}</p>
+        <p>gameState: {gameState}</p>
 
         <h1>{ gamePaused ? 'PAUSED' : ""}</h1>
-        {/* <p>Game is paused: {gamePaused}</p> */}
-        
-
 
 
         <br />
@@ -318,6 +305,11 @@ export default function Gamestate(props: GameStateProps) {
         >
             set environment: 2
         </button>
+        <button
+            onClick={() => setEnvironmentIndex(3)}
+        >
+            set environment: 3
+        </button>
 
         <br />
         
@@ -333,6 +325,21 @@ export default function Gamestate(props: GameStateProps) {
             enemyAttack
         </button>
         
+        <button
+            onClick={() => setGameState(gameStates[0])}
+        >
+            setGameState: safezone 
+        </button>
+        <button
+            onClick={() => setGameState(gameStates[1])}
+        >
+            setGameState: battle 
+        </button>
+        <button
+            onClick={() => setGameState(gameStates[2])}
+        >
+            setGameState: paused 
+        </button>
         
         </main>
   )

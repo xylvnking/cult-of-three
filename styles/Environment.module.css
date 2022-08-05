@@ -6,6 +6,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 2px;
+
+    background-color: rgba(0, 0, 0, 0.562);
 }
 .environmentContainer {
     width: 100%;
