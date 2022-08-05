@@ -21,7 +21,7 @@ const delay = ms => new Promise(
     resolve => setTimeout(resolve, ms)
   );
 
-function getRandomInt(max) {
+function getRandomInt(max:number) {
     return Math.floor(Math.random() * max);
 }
 
@@ -285,7 +285,7 @@ export default function Gamestate(props: GameStateProps) {
                 <button className={`${styles.keyMapGridItem} ${(props.input == 'fastForward') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>fast forward</label>
                 </button>
-                <button className={`${styles.keyMapGridItem} ${styles.menu} ${(props.input == 'menu') && `${styles.keyMapGridItemSelected}`}`}>
+                <button className={`${styles.keyMapGridItem} ${styles.menu} ${(gamePaused) && `${styles.keyMapGridItemSelected}`}`}>
                     <label>menu</label>
                 </button>
             </section>
