@@ -17,6 +17,8 @@ import styles from '../styles/Environment.module.css'
 
 export default function EnvironmentForest(props:any) {
 
+  const [isEnvironmentIsLoaded, setIsEnvironmentIsLoaded] = React.useState(false)
+  
   /*
 
     need to figure out how to pass the input/attacks/health data down to these components
@@ -29,28 +31,55 @@ export default function EnvironmentForest(props:any) {
 
   */
 
-  const [enemyOne, setEnemyOne] = React.useState({
+  const [enemy, setEnemy] = React.useState({
     hp: 50,
+    attackDamage: 10,
+    abilityPower: 10,
     moveSet: ['attack', 'charge', 'buff'],
     currentMove: "",
     isAlive: true
   })
 
-  if (enemyOne.hp == 0) {
-    props.resetEverything()
-  }
 
-
-
-
-
+  
+  
   useEffect(() => {
+    console.log('enemy damaged!')
 
-    // you need to take some of the battle use effect if else shit and put it here
+    // i think i can use useRef here but ill do it with my current tools
 
 
-    props.damageEnemy(enemyOne, 10)
-  }, [props.input])
+    if (isEnvironmentIsLoaded) {
+
+      setEnemy(current => {
+        return {
+            ...current,
+            hp: enemy.hp - props.playerStats.attackDamage
+        }
+      })
+    }
+
+
+    if (enemy.hp == 0) {
+      props.resetEverything()
+      
+    // THIS FIRES ON LOAD
+    } else {
+      console.log(enemy.hp)
+      setIsEnvironmentIsLoaded(true)
+      props.enemyAttack()
+      
+    }
+  }, [props.triggerDamageToEnemy]) 
+  
+  
+  useEffect(() => {
+    if (isEnvironmentIsLoaded) {
+      props.damagePlayer(enemy.attackDamage)
+      props.enemyAttack()
+    }
+  }, [props.triggerDamageToPlayer])
+
   
   useEffect(() => {
       console.log('entering forest...')
@@ -59,10 +88,11 @@ export default function EnvironmentForest(props:any) {
       props.playEnvironmentOneSound()
       props.setIsInCombat(true)
       props.setGameState(props.gameStates[1])
-      props.enemyAttack()
+      
 
       return () => {
           console.log('leaving forest...')
+          setIsEnvironmentIsLoaded(false)
           props.setIsInCombat(false)
           props.playEnvironmentOneSoundControls.stop()
       }
@@ -71,7 +101,7 @@ export default function EnvironmentForest(props:any) {
   return (
     <div>
     <h1 className={styles.environmentLabel}>
-        [0] forest : cultists
+        [0] forest : cultist : health: {enemy.hp}
     </h1>
     <div className={styles.environmentContainer}>
 

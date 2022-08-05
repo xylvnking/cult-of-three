@@ -36,7 +36,9 @@ export default function Gamestate(props: GameStateProps) {
 
     /*
 
-    i think i need functions for each transition to set all the appropriate states and also play sfx
+    calculate total time taken for player to make move
+    divide it by their hp
+    equals score
 
 
     */
@@ -46,6 +48,8 @@ export default function Gamestate(props: GameStateProps) {
     const [playerHealth, setPlayerHealth] = React.useState(100)
     const [enemy, setEnemy] = React.useState({
         hp: 20,
+        attackDamage: 10,
+        abilityPower: 10,
         moveSet: ['attack', 'charge', 'buff'],
         currentMove: ""
     })
@@ -55,6 +59,12 @@ export default function Gamestate(props: GameStateProps) {
     const [gamePaused, setGamePaused] = React.useState(false) // i think gamePaused might be redundant now but ill remove it later 
     const [gameState, setGameState] = React.useState(gameStates[0])
     const [isInCombat, setIsInCombat] = React.useState(false)
+    const [triggerDamageToEnemy, setTriggerDamageToEnemy] = React.useState(true)
+    const [triggerDamageToPlayer, setTriggerDamageToPlayer] = React.useState(true)
+    const [playerStats, setPlayerStats] = React.useState({
+        health: 100,
+        attackDamage: 10
+    })
 
     const [playEnvironmentOneSound, playEnvironmentOneSoundControls] = useSound('/forest.mp3', {
         volume: 0.5,
@@ -84,18 +94,23 @@ export default function Gamestate(props: GameStateProps) {
         switch (environmentIndex) {
             case 0:
                 return  <EnvironmentForest 
+                            // make sure these are all in use 
                             input={props.input} 
                             keyTrigger={props.keyTrigger} 
                             gameStates={gameStates}
                             gameState={gameState}
                             setGameState={setGameState}
+                            gamePaused={gamePaused}
                             setIsInCombat={setIsInCombat}
                             playEnvironmentOneSound={playEnvironmentOneSound}
                             playEnvironmentOneSoundControls={playEnvironmentOneSoundControls}
                             resetEverything={resetEverything}
                             enemyCurrentMove={enemy.currentMove}
                             enemyAttack={enemyAttack}
-                            damageEnemy={damageEnemy}
+                            triggerDamageToEnemy={triggerDamageToEnemy}
+                            triggerDamageToPlayer={triggerDamageToPlayer}
+                            damagePlayer={damagePlayer}
+                            playerStats={playerStats}
                         />
                 
             case 1:
@@ -113,7 +128,7 @@ export default function Gamestate(props: GameStateProps) {
             return {
                 ...current,
                 hp: 20,
-                currentMove: ""
+                currentMove: " "
             }
         })
         setPlayerHealth(100)
@@ -131,8 +146,11 @@ export default function Gamestate(props: GameStateProps) {
         resetEverything()
     }
 
-    const damageEnemy = (enemyHealth:number, damageNumber:number) => {
-        return enemyHealth - damageNumber
+    const damagePlayer = (enemyAttackDamage:number) => {
+        setPlayerHealth(playerHealth - enemyAttackDamage)
+        if (playerHealth == 0) {
+            playerDeath()
+        }
     }
 
     // TRIGGERED ON USER INPUT
@@ -155,30 +173,18 @@ export default function Gamestate(props: GameStateProps) {
                 }
 
             } 
-            // BATTLE
+            // COMBAT !!
             else if (!gamePaused && (gameState == 'combat')) { // i think gamepaused might be redundant now but ill remove it later 
                 const playerAction = async () => {
+
                     if (props.input == enemy.currentMove) {
 
-                        // function: do damage to enemy
-                        // should it be a trigger?
-                        // 
+                        setTriggerDamageToEnemy(!triggerDamageToEnemy) // state, not a function
 
-                        setEnemy(current => {
-                            return {
-                                ...current,
-                                hp: enemy.hp - 10
-                            }
-                        })
                     } else {
 
-                        // function: do damage to player
-                        // according to enemy hit points
-
-                        setPlayerHealth(playerHealth - 10)
-                        if (playerHealth == 0) {
-                            playerDeath()
-                        }
+                        setTriggerDamageToPlayer(!triggerDamageToPlayer)
+                        
                     }
                     setEnemy(current => {
                         return {
@@ -186,14 +192,6 @@ export default function Gamestate(props: GameStateProps) {
                             currentMove: ""
                         }
                     })
-                    if (enemy.hp == 0) {
-                        // put enemy death function here if you need it
-                    } else {
-    
-                        await delay(100)
-        
-                        enemyAttack()
-                    }
                 }
                 playerAction()
             }   
@@ -219,6 +217,8 @@ export default function Gamestate(props: GameStateProps) {
     // }
 
     const enemyAttack = async () => {
+        await delay(100)
+        console.log('enemy attacks!')
         const enemyMoveNumber = getRandomInt(3)
         const enemyAttacksLeft = () => {
             setEnemy(current => {
