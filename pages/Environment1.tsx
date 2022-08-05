@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import useSound from 'use-sound';
 import Image from 'next/image'
 
@@ -9,22 +9,15 @@ import styles from '../styles/Environment.module.css'
 
 
 export default function Environment1(props:any) {
-    // console.log('render')
-    // const [play] = useSound('/drone.wav', {
-    //     onload: () => {
-    //         console.log('soundLoaded')
-    //     },
-    //     onend: () => {
-    //         console.log('soundDone')
-            
-    //     }
-    //     ,
-    //     volume: 0.5,
-    //     loop: true,
-    //     autoplay: true
-    // })
-    // play()
-    // const audio = new AudioContext()
+
+    useEffect(() => {
+      console.log('entering forest...')
+
+      return () => {
+          console.log('leaving forest...')
+      }
+  },[])
+
   return (
     <div>
     <h1 className={styles.environmentLabel}>

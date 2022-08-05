@@ -50,7 +50,6 @@ const GameInput: React.FC<Props> = ({}: Props) => {
     React.useEffect(() => {
 
         setKeyTrigger(!keyTrigger)
-        console.log(keyTrigger)
 
         const input:any = currentKeyPressed
     

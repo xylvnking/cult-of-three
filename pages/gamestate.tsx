@@ -26,7 +26,7 @@ function getRandomInt(max:number) {
     return Math.floor(Math.random() * max);
 }
 
-const gameStates = ['safezone', 'battle', 'paused']
+const gameStates = ['safezone', 'combat', 'paused']
 
 
 export default function Gamestate(props: GameStateProps) {
@@ -34,7 +34,7 @@ export default function Gamestate(props: GameStateProps) {
 
     /*
 
-    ok so i need a solution for the controls - whether in battle or in safezone or in menu they do different things
+    i think i need functions for each transition to set all the appropriate states and also play sfx
 
 
     */
@@ -50,14 +50,9 @@ export default function Gamestate(props: GameStateProps) {
     const [environmentOneSoundIsPlaying, setEnvironmentOneSoundIsPlaying] = React.useState(false)
     const [environmentTwoSoundIsPlaying, setEnvironmentTwoSoundIsPlaying] = React.useState(false)
     const [environmentThreeSoundIsPlaying, setEnvironmentThreeSoundIsPlaying] = React.useState(false)
-    const [gamePaused, setGamePaused] = React.useState(false)
+    const [gamePaused, setGamePaused] = React.useState(false) // i think gamePaused might be redundant now but ill remove it later 
     const [gameState, setGameState] = React.useState(gameStates[0])
-
-
-
-    const openPauseMenu = () => {
-        console.log('GAME IS PAUSED')
-    }
+    const [isInCombat, setIsInCombat] = React.useState(false)
 
     const [playEnvironmentOneSound, playEnvironmentOneSoundControls] = useSound('/forest.mp3', {
         volume: 0.5,
@@ -160,15 +155,25 @@ export default function Gamestate(props: GameStateProps) {
     // TRIGGERED ON USER INPUT
     useEffect(() => {
         if (props.input) {
-            // checking if game paused
+
+
+            // PAUSED
             if (props.input == 'menu') {
                 setGamePaused(!gamePaused)
-                openPauseMenu()
-                
+                // if the game is not paused, set the game state to paused
+                if (!gamePaused) {
+                    setGameState(gameStates[2])
+                // if the game is paused and we are in combat, set the game state back to combat
+                } else if (gamePaused && isInCombat) {
+                    setGameState(gameStates[1])
+                // if the game is paused and we are not in combat, set the game state back to safezone
+                } else if (gamePaused && !isInCombat) {
+                    setGameState(gameStates[0])
+                }
 
-
-            // battle mode
-            } else if (!gamePaused && (gameState == 'battle')) {
+            } 
+            // BATTLE
+            else if (!gamePaused && (gameState == 'combat')) { // i think gamepaused might be redundant now but ill remove it later 
                 const playerAction = async () => {
                     if (props.input == enemy.currentMove) {
                         setEnemy(current => {
@@ -200,6 +205,17 @@ export default function Gamestate(props: GameStateProps) {
                 }
                 playerAction()
             }   
+
+            // SAFEZONE
+            else if (!gamePaused && (gameState == 'safezone')){
+                
+            }
+
+
+
+
+
+
         }
     }, [props.keyTrigger])
 
@@ -283,63 +299,71 @@ export default function Gamestate(props: GameStateProps) {
         <p>enemyHealthPoints: {enemy.hp}</p>
         <p>enemyCurrentMove: {enemy.currentMove}</p>
         <p>gameState: {gameState}</p>
+        <p>{isInCombat ? 'isInCombat: true' : 'isInCombat: false'}</p>
 
         <h1>{ gamePaused ? 'PAUSED' : ""}</h1>
 
+        <section className={styles.debugContainer}>
 
-        <br />
-        debug:
-        <br />
-        <button
-            onClick={() => setEnvironmentIndex(0)}
-        >
-            set environment: 0
-        </button>
-        <button
-            onClick={() => setEnvironmentIndex(1)}
-        >
-            set environment: 1
-        </button>
-        <button
-            onClick={() => setEnvironmentIndex(2)}
-        >
-            set environment: 2
-        </button>
-        <button
-            onClick={() => setEnvironmentIndex(3)}
-        >
-            set environment: 3
-        </button>
+            <button
+                onClick={() => setEnvironmentIndex(0)}
+            >
+                set environment: 0
+            </button>
+            <button
+                onClick={() => setEnvironmentIndex(1)}
+            >
+                set environment: 1
+            </button>
+            <button
+                onClick={() => setEnvironmentIndex(2)}
+            >
+                set environment: 2
+            </button>
+            <button
+                onClick={() => setEnvironmentIndex(3)}
+            >
+                set environment: 3
+            </button>
+            
+            <button
+                onClick={() => toggleEnvironmentSoundMute()}
+            >
+                toggle environment sound
+            </button>
 
-        <br />
-        
-        <button
-            onClick={() => toggleEnvironmentSoundMute()}
-        >
-            toggle environment sound
-        </button>
-
-        <button
-            onClick={() => enemyAttack()}
-        >
-            enemyAttack
-        </button>
-        
-        <button
-            onClick={() => setGameState(gameStates[0])}
-        >
-            setGameState: safezone 
-        </button>
-        <button
-            onClick={() => setGameState(gameStates[1])}
-        >
-            setGameState: battle 
-        </button>
-        <button
-            onClick={() => setGameState(gameStates[2])}
-        >
-            setGameState: paused 
-        </button>
+            <button
+                onClick={() => enemyAttack()}
+            >
+                enemyAttack
+            </button>
+            
+            <button
+                onClick={() => setGameState(gameStates[0])}
+            >
+                setGameState: safezone 
+            </button>
+            <button
+                onClick={() => setGameState(gameStates[1])}
+            >
+                setGameState: combat 
+            </button>
+            <button
+                onClick={() => setGameState(gameStates[2])}
+            >
+                setGameState: paused 
+            </button>
+            <button
+                onClick={() => setIsInCombat(true)}
+            >
+                setIsInCombat: true
+            </button>
+            <button
+                onClick={() => setIsInCombat(false)}
+            >
+                setIsInCombat: false
+            </button>
+        </section>
         
         </main>
   )

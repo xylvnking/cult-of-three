@@ -1,5 +1,5 @@
 .mainContainer {
-
+    
 }
 
 .controlGridContainer {
@@ -40,4 +40,11 @@
 
 .menu {
     grid-column: span 4
+}
+
+.debugContainer {
+    /* max-width: 100vw; */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 1px;
 }

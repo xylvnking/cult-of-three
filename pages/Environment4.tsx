@@ -1,10 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import styles from '../styles/Environment.module.css'
 
 type Props = {}
 
 export default function Environment4({}: Props) {
+
+
+    useEffect(() => {
+        console.log('entering safe zone...')
+
+        return () => {
+            console.log('leaving safe zone...')
+        }
+    },[])
+
+
   return (
     <div>
     <h1 className={styles.environmentLabel}>

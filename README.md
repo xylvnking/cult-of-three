@@ -85,3 +85,16 @@ playEnvironmentOneSoundControls.sound._muted
 # about
 
 this project is more of a meditation on audio-ux than audio engineer. the difficulty doesn't come from getting things to sound high quality, but rather in understanding the subjective experience that the audio provides.
+
+# learned
+
+handling user input based on context without relying on visual UI elements
+depending on whether the player is in battle, safezone, or pause menu, the same keys perform different actions
+
+# learned
+
+since i don't really need to worry as much about layout (especially during development) I've been rendering every piece of data and state on screen while I work, which is making it much easier to visualize. since there is complex state interactions here (with the need for same buttons to do different things) it'sbeen really helpful
+
+# learned
+
+returning from a useEffect with an empty dependency array acts as componentWillUnmount
