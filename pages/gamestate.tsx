@@ -45,6 +45,12 @@ export default function Gamestate(props: GameStateProps) {
     const [environmentTwoSoundIsPlaying, setEnvironmentTwoSoundIsPlaying] = React.useState(false)
     const [environmentThreeSoundIsPlaying, setEnvironmentThreeSoundIsPlaying] = React.useState(false)
 
+    const [gamePaused, setGamePaused] = React.useState(false)
+
+    const openPauseMenu = () => {
+        console.log('GAME IS PAUSED')
+    }
+
     const [playEnvironmentOneSound, playEnvironmentOneSoundControls] = useSound('/forest.mp3', {
         volume: 0.5,
         loop: true,
@@ -115,6 +121,26 @@ export default function Gamestate(props: GameStateProps) {
         }
     }
 
+    const resetEverything = () => {
+        // reset everything
+        setEnemyOne(current => {
+            return {
+                ...current,
+                hp: 100,
+                currentMove: ""
+            }
+        })
+
+        setPlayerHealth(100)
+    }
+
+    const playerDeath = () => {
+        console.log('YOU HAVE DIED')
+
+        resetEverything()
+        
+    }
+
 
     useEffect(() => {
 
@@ -125,23 +151,48 @@ export default function Gamestate(props: GameStateProps) {
 
         if (props.input) {
 
-            const playerAction = async () => {
-                if (props.input == enemyOne.currentMove) {
-                    // setEnemyOne()
+            // checking if game paused
+            if (props.input == 'menu') {
+                setGamePaused(!gamePaused)
+                openPauseMenu()
+                
+            } else if (!gamePaused) {
+                const playerAction = async () => {
+                    if (props.input == enemyOne.currentMove) {
+                        // setEnemyOne()
+                        setEnemyOne(current => {
+                            return {
+                                ...current,
+                                hp: enemyOne.hp - 10
+                            }
+                        })
+                    } else {
+                        setPlayerHealth(playerHealth - 10)
+                        if (playerHealth == 0) {
+                            playerDeath()
+                        }
+                    }
                     setEnemyOne(current => {
                         return {
                             ...current,
-                            hp: enemyOne.hp - 10
+                            currentMove: ""
                         }
                     })
-                } else {
-                    setPlayerHealth(playerHealth - 10)
+                    if (enemyOne.hp == 0) {
+                        console.log('You have won!')
+                        // put enemy death function here if you need it
+                        resetEverything()
+                    } else {
+    
+                        await delay(100)
+        
+                        enemyAttack()
+                    }
                 }
-                await delay(1000)
-
-                enemyAttack()
+                playerAction()
             }
-            playerAction()
+
+            
         }
         
     // }, [props.input])
@@ -155,6 +206,7 @@ export default function Gamestate(props: GameStateProps) {
     const enemyAttack = async () => {
         // check enemy hp
             // if 0, win
+        
 
         const enemyMoveNumber = getRandomInt(3)
         // console.log(enemyMoveNumber)
@@ -242,6 +294,8 @@ export default function Gamestate(props: GameStateProps) {
         <p>enemyHealthPoints: {enemyOne.hp}</p>
         <p>enemyCurrentMove: {enemyOne.currentMove}</p>
 
+        <h1>{ gamePaused ? 'PAUSED' : ""}</h1>
+        {/* <p>Game is paused: {gamePaused}</p> */}
         
 
 

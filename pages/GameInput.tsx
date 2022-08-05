@@ -15,6 +15,11 @@ const GameInput: React.FC<Props> = ({}: Props) => {
 
     const [currentKeyPressed, setCurrentKeyPressed] = React.useState<Array<string>>([])
     const [input, setInput] = React.useState<string>("")
+
+    // key trigger is used within gameState to trigger the input check 
+    // because otherwise when it was using input, the useEffect 
+    // wouldn't retrigger if the same input was required 
+    // twice in a row since the value hadn't actually changed
     const [keyTrigger, setKeyTrigger] = React.useState(false)
     
     // console.log(currentKeyPressed)
