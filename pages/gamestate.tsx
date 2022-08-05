@@ -29,6 +29,8 @@ function getRandomInt(max:number) {
 const gameStates = ['safezone', 'combat', 'paused']
 
 
+
+
 export default function Gamestate(props: GameStateProps) {
 
 
@@ -57,13 +59,11 @@ export default function Gamestate(props: GameStateProps) {
     const [playEnvironmentOneSound, playEnvironmentOneSoundControls] = useSound('/forest.mp3', {
         volume: 0.5,
         loop: true,
-        mute: true
-        // playbackRate: 2
+        mute: true // change this obviously when not developing
     })
     const [playEnvironmentTwoSound, playEnvironmentTwoSoundControls] = useSound('/rain.mp3', {
         volume: 0.5,
         loop: true,
-        playbackRate: 2,
         mute: true
     })
     const [playEnvironmentThreeSound, playEnvironmentThreeSoundControls] = useSound('/drone.wav', {
@@ -80,46 +80,23 @@ export default function Gamestate(props: GameStateProps) {
         playEnvironmentThreeSoundControls.sound.mute(!playEnvironmentThreeSoundControls.sound._muted)
     }
 
-    const handleEnvironmentSound = () => {
-        if (environmentIndex == 0 && (environmentOneSoundIsPlaying == false)) {
-            // console.log('environment1soundshouldwork')s
-            playEnvironmentOneSound()
-            playEnvironmentTwoSoundControls.stop()
-            playEnvironmentThreeSoundControls.stop()
-            setEnvironmentOneSoundIsPlaying(true)
-
-            setEnvironmentTwoSoundIsPlaying(false)
-            setEnvironmentThreeSoundIsPlaying(false)
-        }
-        else if (environmentIndex == 1 && (environmentTwoSoundIsPlaying == false)) {
-            playEnvironmentTwoSound()
-            playEnvironmentOneSoundControls.stop()
-            playEnvironmentThreeSoundControls.stop()
-            setEnvironmentTwoSoundIsPlaying(true)
-            
-            setEnvironmentOneSoundIsPlaying(false)
-            setEnvironmentThreeSoundIsPlaying(false)
-
-        }
-        else if (environmentIndex == 2 && (environmentThreeSoundIsPlaying == false)) {
-            playEnvironmentThreeSound()
-            playEnvironmentOneSoundControls.stop()
-            playEnvironmentTwoSoundControls.stop()
-            setEnvironmentThreeSoundIsPlaying(true)
-
-            setEnvironmentOneSoundIsPlaying(false)
-            setEnvironmentTwoSoundIsPlaying(false)
-        }
-    }
-
     const environment = () => {
-        handleEnvironmentSound()
         switch (environmentIndex) {
             case 0:
                 return  <EnvironmentForest 
                             input={props.input} 
                             keyTrigger={props.keyTrigger} 
-                            />
+                            gameStates={gameStates}
+                            gameState={gameState}
+                            setGameState={setGameState}
+                            setIsInCombat={setIsInCombat}
+                            playEnvironmentOneSound={playEnvironmentOneSound}
+                            playEnvironmentOneSoundControls={playEnvironmentOneSoundControls}
+                            resetEverything={resetEverything}
+                            enemyCurrentMove={enemy.currentMove}
+                            enemyAttack={enemyAttack}
+                            damageEnemy={damageEnemy}
+                        />
                 
             case 1:
                 return <EnvironmentTower />
@@ -140,10 +117,13 @@ export default function Gamestate(props: GameStateProps) {
             }
         })
         setPlayerHealth(100)
+        setIsInCombat(false)
+        goToSafeZone()
     }
-
+    
     const goToSafeZone = () => {
         setEnvironmentIndex(3)
+        setGameState(gameStates[0])
     }
 
     const playerDeath = () => {
@@ -151,9 +131,8 @@ export default function Gamestate(props: GameStateProps) {
         resetEverything()
     }
 
-    const enemyDeath = () => {
-        resetEverything()
-        goToSafeZone()
+    const damageEnemy = (enemyHealth:number, damageNumber:number) => {
+        return enemyHealth - damageNumber
     }
 
     // TRIGGERED ON USER INPUT
@@ -180,6 +159,11 @@ export default function Gamestate(props: GameStateProps) {
             else if (!gamePaused && (gameState == 'combat')) { // i think gamepaused might be redundant now but ill remove it later 
                 const playerAction = async () => {
                     if (props.input == enemy.currentMove) {
+
+                        // function: do damage to enemy
+                        // should it be a trigger?
+                        // 
+
                         setEnemy(current => {
                             return {
                                 ...current,
@@ -187,6 +171,10 @@ export default function Gamestate(props: GameStateProps) {
                             }
                         })
                     } else {
+
+                        // function: do damage to player
+                        // according to enemy hit points
+
                         setPlayerHealth(playerHealth - 10)
                         if (playerHealth == 0) {
                             playerDeath()
@@ -212,7 +200,9 @@ export default function Gamestate(props: GameStateProps) {
 
             // SAFEZONE
             else if (!gamePaused && (gameState == 'safezone')){
-                
+                // if enemy 1 alive, 's' enters forest
+                // if enemy 2 alive, 's' enters tower
+                // if enemy 3 alive, 's' enters overworld
             }
 
 
@@ -223,10 +213,10 @@ export default function Gamestate(props: GameStateProps) {
         }
     }, [props.keyTrigger])
 
-    if (enemy.hp == 0) {
-        console.log('you win!')
-        enemyDeath()
-    }
+    // if (enemy.hp == 0) {
+    //     console.log('you win!')
+    //     enemyDeath()
+    // }
 
     const enemyAttack = async () => {
         const enemyMoveNumber = getRandomInt(3)

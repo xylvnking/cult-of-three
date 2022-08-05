@@ -5,14 +5,29 @@ import Image from 'next/image'
 import styles from '../styles/Environment.module.css'
 
 
-type EnvironmentProps = {
-  input:string,
-  keyTrigger:boolean,
-  children?: React.ReactNode
-}
+
+// type EnvironmentProps = {
+//   input:string,
+//   keyTrigger:boolean,
+//   gameState:string
+//   setIsInCombat:void
+//   children?: React.ReactNode
+// }
 
 
-export default function EnvironmentForest(props: EnvironmentProps) {
+export default function EnvironmentForest(props:any) {
+
+  /*
+
+    need to figure out how to pass the input/attacks/health data down to these components
+
+    like right now enemyOne is not actually being affected by the players attacks
+    so the hp can't be checked and everything reset like it's currently doing
+
+    i dont think i want to have the enemy data sit up top, because it's not relevant outside of this environment
+    so i can figure this out i think to keep things appropriately separate
+
+  */
 
   const [enemyOne, setEnemyOne] = React.useState({
     hp: 50,
@@ -21,11 +36,35 @@ export default function EnvironmentForest(props: EnvironmentProps) {
     isAlive: true
   })
 
-    useEffect(() => {
+  if (enemyOne.hp == 0) {
+    props.resetEverything()
+  }
+
+
+
+
+
+  useEffect(() => {
+
+    // you need to take some of the battle use effect if else shit and put it here
+
+
+    props.damageEnemy(enemyOne, 10)
+  }, [props.input])
+  
+  useEffect(() => {
       console.log('entering forest...')
+      console.log('entering combat!')
+    
+      props.playEnvironmentOneSound()
+      props.setIsInCombat(true)
+      props.setGameState(props.gameStates[1])
+      props.enemyAttack()
 
       return () => {
           console.log('leaving forest...')
+          props.setIsInCombat(false)
+          props.playEnvironmentOneSoundControls.stop()
       }
     },[])
 
@@ -34,7 +73,6 @@ export default function EnvironmentForest(props: EnvironmentProps) {
     <h1 className={styles.environmentLabel}>
         [0] forest : cultists
     </h1>
-    {/* <div style={{width:'100%', height: '100px', position: 'relative'}}> */}
     <div className={styles.environmentContainer}>
 
         <Image 

@@ -119,3 +119,18 @@ two ambitious '3d' audio games:
 https://killscreen.com/themeta/visually-impaired-players-staying-game/
 
 I just don't think 3D binaural audio is needed to create a fun audio-game. Regular 2D audio hasn't even begun to be explored yet, so needing to go above and beyond is excessive at this point imo. find me a fun 2d audio game. i'll wait. why go further? what limitations do you need to surpass? free yourself from the shackles of the third dimension.
+
+# gameplay
+
+when you break down most competetive games - what is the actual skill? reflexes? accuracy? gamesense? do these *require* 3 dimensions?
+
+# learned
+
+when passing a state set function as prop:
+
+```js
+<EnvironmentForest 
+    gameState={gameState} // passing state
+    setIsInCombat={setIsInCombat} // passing state set function
+    />
+```
