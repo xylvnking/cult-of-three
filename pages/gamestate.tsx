@@ -4,6 +4,7 @@ import EnvironmentForest from './EnvironmentForest'
 import EnvironmentTower from './EnvironmentTower'
 import EnvironmentOverworld from './EnvironmentOverworld'
 import EnvironmentSafeZone from './EnvironmentSafeZone'
+import Timer from './Timer'
 import useSound from 'use-sound';
 // import drone from './audio/drone.wav'
 // import drone from '../public/drone.wav'
@@ -29,7 +30,9 @@ function getRandomInt(max:number) {
 const gameStates = ['safezone', 'combat', 'paused']
 
 
+let scoreTimer
 
+console.log(new Date().getTime())
 
 export default function Gamestate(props: GameStateProps) {
 
@@ -42,6 +45,19 @@ export default function Gamestate(props: GameStateProps) {
 
 
     */
+   
+   // do i need multiple pieces of state 
+   // to hold the initial new Date().getTime() which sets the base timer value
+   // then another to get the time when it ends which then has the inital one subtracted from it
+   // to get the total time between actions which is then stored and accumulated in 
+   // another piece of state to be used in score calculation?
+   
+   const [timerTotal, setTimerTotal] = React.useState(0)
+    const [timerInitial, setTimerInitial] = React.useState(0)
+    const [timerFinal, setTimerFinal] = React.useState(0)
+
+    const [score, setScore] = React.useState(0)
+
     
     const [environmentIndex, setEnvironmentIndex] = React.useState<number>(3)
     const [enemyState, setEnemyState] = React.useState()
@@ -89,6 +105,15 @@ export default function Gamestate(props: GameStateProps) {
         playEnvironmentTwoSoundControls.sound.mute(!playEnvironmentTwoSoundControls.sound._muted)
         playEnvironmentThreeSoundControls.sound.mute(!playEnvironmentThreeSoundControls.sound._muted)
     }
+
+
+
+    const calculateTime = () => {
+        // new Date().getTime()
+    }
+
+
+
 
     const environment = () => {
         switch (environmentIndex) {
@@ -153,10 +178,18 @@ export default function Gamestate(props: GameStateProps) {
         }
     }
 
+    const calculateScore = () => {
+        // <p>score: {(timerTotal * playerHealth) / 100}</p>
+        setScore((timerTotal * playerHealth) / 100)
+    }
+    // calculateScore()
+
     // TRIGGERED ON USER INPUT
     useEffect(() => {
         if (props.input) {
 
+            
+            
 
             // PAUSED
             if (props.input == 'menu') {
@@ -175,6 +208,16 @@ export default function Gamestate(props: GameStateProps) {
             } 
             // COMBAT !!
             else if (!gamePaused && (gameState == 'combat')) { // i think gamepaused might be redundant now but ill remove it later 
+
+                let x = new Date().getTime()
+                setTimerFinal(x)
+                let y = x - timerInitial
+                
+                setTimerTotal(timerTotal + y)
+
+                calculateScore()
+                
+
                 const playerAction = async () => {
 
                     if (props.input == enemy.currentMove) {
@@ -192,8 +235,10 @@ export default function Gamestate(props: GameStateProps) {
                             currentMove: ""
                         }
                     })
+                    console.log('calculate')
                 }
                 playerAction()
+                
             }   
 
             // SAFEZONE
@@ -211,13 +256,12 @@ export default function Gamestate(props: GameStateProps) {
         }
     }, [props.keyTrigger])
 
-    // if (enemy.hp == 0) {
-    //     console.log('you win!')
-    //     enemyDeath()
-    // }
-
     const enemyAttack = async () => {
+        let x = new Date().getTime()
+        setTimerInitial(x)
+
         await delay(100)
+
         console.log('enemy attacks!')
         const enemyMoveNumber = getRandomInt(3)
         const enemyAttacksLeft = () => {
@@ -293,7 +337,18 @@ export default function Gamestate(props: GameStateProps) {
         <p>enemyHealthPoints: {enemy.hp}</p>
         <p>enemyCurrentMove: {enemy.currentMove}</p>
         <p>gameState: {gameState}</p>
+        <p>timerTotal: {timerTotal}ms</p>
+
+
+        {/* CALCULATE SCORE FORMULA:  */}
+        {/* <p>score: {(timerTotal * playerHealth) / 100}</p> */}
+        <p>{score}</p>
+
+
+
         <p>{isInCombat ? 'isInCombat: true' : 'isInCombat: false'}</p>
+        
+        {/* <Timer /> */}
 
         <h1>{ gamePaused ? 'PAUSED' : ""}</h1>
 
