@@ -1,14 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import styles from '../styles/Environment.module.css'
 
 type Props = {}
 
-export default function Environment2({}: Props) {
+export default function EnvironmentTower({}: Props) {
+  useEffect(() => {
+    console.log('entering tower...')
+
+    return () => {
+        console.log('leaving tower...')
+    }
+  },[])
   return (
     <div>
         <h1 className={styles.environmentLabel}>
-            [1] cyberpunk city : brutes
+            [1] cyberpunk tower : brutes
         </h1>
         <div className={styles.environmentContainer}>
             <Image 

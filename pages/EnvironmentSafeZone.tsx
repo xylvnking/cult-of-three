@@ -4,7 +4,7 @@ import styles from '../styles/Environment.module.css'
 
 type Props = {}
 
-export default function Environment4({}: Props) {
+export default function EnvironmentSafeZone({}: Props) {
 
 
     useEffect(() => {

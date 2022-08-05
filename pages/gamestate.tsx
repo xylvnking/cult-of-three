@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react'
 import styles from '../styles/Main.module.css'
-import Environment1 from './Environment1'
-import Environment2 from './Environment2'
-import Environment3 from './Environment3'
-import Environment4 from './Environment4'
+import EnvironmentForest from './EnvironmentForest'
+import EnvironmentTower from './EnvironmentTower'
+import EnvironmentOverworld from './EnvironmentOverworld'
+import EnvironmentSafeZone from './EnvironmentSafeZone'
 import useSound from 'use-sound';
 // import drone from './audio/drone.wav'
 // import drone from '../public/drone.wav'
@@ -116,13 +116,17 @@ export default function Gamestate(props: GameStateProps) {
         handleEnvironmentSound()
         switch (environmentIndex) {
             case 0:
-                return <Environment1 />
+                return  <EnvironmentForest 
+                            input={props.input} 
+                            keyTrigger={props.keyTrigger} 
+                            />
+                
             case 1:
-                return <Environment2 />
+                return <EnvironmentTower />
             case 2:
-                return <Environment3 />
+                return <EnvironmentOverworld />
             case 3:
-                return <Environment4 />
+                return <EnvironmentSafeZone />
         }
     }
 
@@ -308,22 +312,22 @@ export default function Gamestate(props: GameStateProps) {
             <button
                 onClick={() => setEnvironmentIndex(0)}
             >
-                set environment: 0
+                EnvironmentForest [0]
             </button>
             <button
                 onClick={() => setEnvironmentIndex(1)}
             >
-                set environment: 1
+                EnvironmentTower [1]
             </button>
             <button
                 onClick={() => setEnvironmentIndex(2)}
             >
-                set environment: 2
+                EnvironmentOverworld [2]
             </button>
             <button
                 onClick={() => setEnvironmentIndex(3)}
             >
-                set environment: 3
+                EnvironmentSafeZone [3]
             </button>
             
             <button

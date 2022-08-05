@@ -5,10 +5,21 @@ import Image from 'next/image'
 import styles from '../styles/Environment.module.css'
 
 
+type EnvironmentProps = {
+  input:string,
+  keyTrigger:boolean,
+  children?: React.ReactNode
+}
 
 
+export default function EnvironmentForest(props: EnvironmentProps) {
 
-export default function Environment1(props:any) {
+  const [enemyOne, setEnemyOne] = React.useState({
+    hp: 50,
+    moveSet: ['attack', 'charge', 'buff'],
+    currentMove: "",
+    isAlive: true
+  })
 
     useEffect(() => {
       console.log('entering forest...')
@@ -16,7 +27,7 @@ export default function Environment1(props:any) {
       return () => {
           console.log('leaving forest...')
       }
-  },[])
+    },[])
 
   return (
     <div>

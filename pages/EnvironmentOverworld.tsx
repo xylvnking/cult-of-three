@@ -1,14 +1,22 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Image from 'next/image'
 import styles from '../styles/Environment.module.css'
 
+
 type Props = {}
 
-export default function Environment3({}: Props) {
+export default function EnvironmentOverworld({}: Props) {
+  useEffect(() => {
+    console.log('entering overworld...')
+
+    return () => {
+        console.log('leaving overworld...')
+    }
+  },[])
   return (
     <div>
     <h1 className={styles.environmentLabel}>
-        [2] dreamstate : elders
+        [2] overworld : elders
     </h1>
     <div className={styles.environmentContainer}>
     <Image 

@@ -98,3 +98,24 @@ since i don't really need to worry as much about layout (especially during devel
 # learned
 
 returning from a useEffect with an empty dependency array acts as componentWillUnmount
+
+# notes
+
+on making games for the listeners
+
+- they dont want to (only be left with the option of) playing games based on fear
+
+- i think a lot of audio games in the past have still focused on being sighted experiences, just with audio cues instead of visual. navigating a 3d space without vision sucks. at least for me. maybe some like it the way players like me still want to die in dark souls. but generally they've all tried to do too much. 
+
+two ambitious '3d' audio games:
+- three monkeys : too ambitious, too corporate, asked for way too much money
+- Pitch black : kickstarted, watching closely.
+
+- cult of three is more of a blind esport. there is a narrative, but it's not required to play. i don't personally play many long story driven narrative games, even though i appreciate them existing, so i wanted to provide listeners with that option as well. me personally i would get annoyed being forced to walk through this giant immersive world cutscene. when does it end? where am i? where are we going? does this matter? can i skip it? can i come back to it?
+
+[Sven The Blind Warrior](https://youtu.be/X6IjmmFcoWw)
+[True Blind Gaming q&a](https://youtu.be/Q811409RCNQ)
+
+https://killscreen.com/themeta/visually-impaired-players-staying-game/
+
+I just don't think 3D binaural audio is needed to create a fun audio-game. Regular 2D audio hasn't even begun to be explored yet, so needing to go above and beyond is excessive at this point imo. find me a fun 2d audio game. i'll wait. why go further? what limitations do you need to surpass? free yourself from the shackles of the third dimension.
