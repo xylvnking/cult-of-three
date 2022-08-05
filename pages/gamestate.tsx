@@ -35,7 +35,7 @@ export default function Gamestate(props: GameStateProps) {
 
     
 
-    const [enemyOne, setEnemyOne] = React.useState({
+    const [enemy, setEnemy] = React.useState({
         hp: 100,
         moveSet: ['attack', 'charge', 'buff'],
         currentMove: ""
@@ -123,7 +123,7 @@ export default function Gamestate(props: GameStateProps) {
 
     const resetEverything = () => {
         // reset everything
-        setEnemyOne(current => {
+        setEnemy(current => {
             return {
                 ...current,
                 hp: 100,
@@ -145,7 +145,7 @@ export default function Gamestate(props: GameStateProps) {
     useEffect(() => {
 
 
-        // console.log(enemyOne.currentMove)
+        // console.log(enemy.currentMove)
         // console.log(props.input)
         console.log('player attack called')
 
@@ -158,12 +158,12 @@ export default function Gamestate(props: GameStateProps) {
                 
             } else if (!gamePaused) {
                 const playerAction = async () => {
-                    if (props.input == enemyOne.currentMove) {
-                        // setEnemyOne()
-                        setEnemyOne(current => {
+                    if (props.input == enemy.currentMove) {
+                        // setEnemy()
+                        setEnemy(current => {
                             return {
                                 ...current,
-                                hp: enemyOne.hp - 10
+                                hp: enemy.hp - 10
                             }
                         })
                     } else {
@@ -172,13 +172,13 @@ export default function Gamestate(props: GameStateProps) {
                             playerDeath()
                         }
                     }
-                    setEnemyOne(current => {
+                    setEnemy(current => {
                         return {
                             ...current,
                             currentMove: ""
                         }
                     })
-                    if (enemyOne.hp == 0) {
+                    if (enemy.hp == 0) {
                         console.log('You have won!')
                         // put enemy death function here if you need it
                         resetEverything()
@@ -198,7 +198,7 @@ export default function Gamestate(props: GameStateProps) {
     // }, [props.input])
     }, [props.keyTrigger])
 
-    if (enemyOne.hp == 0) {
+    if (enemy.hp == 0) {
         console.log('you win!')
         // return
     }
@@ -213,7 +213,7 @@ export default function Gamestate(props: GameStateProps) {
 
 
         const enemyAttacksLeft = () => {
-            setEnemyOne(current => {
+            setEnemy(current => {
                 return {
                     ...current,
                     currentMove: 'left'
@@ -222,7 +222,7 @@ export default function Gamestate(props: GameStateProps) {
             // console.log('enemy attacks left!')
         }
         const enemyAttacksCenter = () => {
-            setEnemyOne(current => {
+            setEnemy(current => {
                 return {
                     ...current,
                     currentMove: 'center'
@@ -231,7 +231,7 @@ export default function Gamestate(props: GameStateProps) {
             // console.log('enemy attacks center!')
         }
         const enemyAttacksRight = () => {
-            setEnemyOne(current => {
+            setEnemy(current => {
                 return {
                     ...current,
                     currentMove: 'right'
@@ -291,8 +291,8 @@ export default function Gamestate(props: GameStateProps) {
             </section>
         
         <p>playerHealth: {playerHealth}</p>
-        <p>enemyHealthPoints: {enemyOne.hp}</p>
-        <p>enemyCurrentMove: {enemyOne.currentMove}</p>
+        <p>enemyHealthPoints: {enemy.hp}</p>
+        <p>enemyCurrentMove: {enemy.currentMove}</p>
 
         <h1>{ gamePaused ? 'PAUSED' : ""}</h1>
         {/* <p>Game is paused: {gamePaused}</p> */}
