@@ -56,6 +56,12 @@ export default function EnvironmentForest(props:any) {
 
 
     if (enemy.hp == 0) {
+      props.setEnvironmentProgress(current => {
+        return {
+            ...current,
+            environmentOneComplete: true
+        }
+      })
       props.resetEverything()
 
     // THIS FIRES ON LOAD

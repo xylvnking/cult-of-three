@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react'
 import styles from '../styles/Main.module.css'
+// import styles from '../styles/PauseMenu.module.css'
 import EnvironmentForest from './EnvironmentForest'
 import EnvironmentTower from './EnvironmentTower'
 import EnvironmentOverworld from './EnvironmentOverworld'
 import EnvironmentSafeZone from './EnvironmentSafeZone'
+import PauseMenu from './PauseMenu'
 import Timer from './Timer'
 import useSound from 'use-sound';
 // import drone from './audio/drone.wav'
@@ -81,6 +83,11 @@ export default function Gamestate(props: GameStateProps) {
         health: 100,
         attackDamage: 10
     })
+    const [environmentProgress, setEnvironmentProgress] = React.useState({
+        environmentOneComplete: false,
+        environmentTwoComplete: false,
+        environmentThreeComplete: false,
+    })
 
     const [playEnvironmentOneSound, playEnvironmentOneSoundControls] = useSound('/forest.mp3', {
         volume: 0.5,
@@ -107,6 +114,9 @@ export default function Gamestate(props: GameStateProps) {
     }
 
 
+
+
+    
 
     const calculateTime = () => {
         // new Date().getTime()
@@ -137,6 +147,7 @@ export default function Gamestate(props: GameStateProps) {
                             damagePlayer={damagePlayer}
                             playerStats={playerStats}
                             calculateScore={calculateScore}
+                            setEnvironmentProgress={setEnvironmentProgress}
                         />
                 
             case 1:
@@ -315,9 +326,9 @@ export default function Gamestate(props: GameStateProps) {
                 <button className={`${styles.keyMapGridItem} ${(props.input == 'rightListen') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>rightListen</label>
                 </button>
-                <button className={`${styles.keyMapGridItem} ${(props.input == 'rewind') && `${styles.keyMapGridItemSelected}`}`}>
+                {/* <button className={`${styles.keyMapGridItem} ${(props.input == 'rewind') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>rewind</label>
-                </button>
+                </button> */}
                 <button className={`${styles.keyMapGridItem} ${(props.input == 'left') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>left</label>
                 </button>
@@ -327,19 +338,27 @@ export default function Gamestate(props: GameStateProps) {
                 <button className={`${styles.keyMapGridItem} ${(props.input == 'right') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>right</label>
                 </button>
-                <button className={`${styles.keyMapGridItem} ${(props.input == 'fastForward') && `${styles.keyMapGridItemSelected}`}`}>
+                {/* <button className={`${styles.keyMapGridItem} ${(props.input == 'fastForward') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>fast forward</label>
-                </button>
+                </button> */}
                 <button className={`${styles.keyMapGridItem} ${styles.menu} ${(gamePaused) && `${styles.keyMapGridItemSelected}`}`}>
                     <label>menu</label>
                 </button>
             </section>
+
+            <PauseMenu 
+
+            />
         
         <p>playerHealth: {playerHealth}</p>
         <p>enemyHealthPoints: {enemy.hp}</p>
         <p>enemyCurrentMove: {enemy.currentMove}</p>
         <p>gameState: {gameState}</p>
         <p>timerTotal: {timerTotal}ms</p>
+        <p>Forest Enemy: {environmentProgress.environmentOneComplete ? "Dead" : "Alive"}</p>
+        <p>Tower Enemy: {environmentProgress.environmentTwoComplete ? "Dead" : "Alive"}</p>
+        <p>Dream Enemy: {environmentProgress.environmentThreeComplete ? "Dead" : "Alive"}</p>
+        {/* <p>environmentProgress: {environmentProgress.environmentOneComplete}</p> */}
 
 
         {/* CALCULATE SCORE FORMULA:  */}
