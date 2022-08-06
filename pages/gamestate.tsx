@@ -11,13 +11,13 @@ import useSound from 'use-sound';
 // import drone from './audio/drone.wav'
 // import drone from '../public/drone.wav'
 
-type GameStateProps = {
-    // currentKeyPressed:Array<string>
-    input:string,
-    // setInput:object,
-    keyTrigger:boolean,
-    children?: React.ReactNode
-}
+// type GameStateProps = {
+//     // currentKeyPressed:Array<string>
+//     input:string,
+//     // setInput:object,
+//     keyTrigger:boolean,
+//     children?: React.ReactNode
+// }
 
 const delay = ms => new Promise(
     resolve => setTimeout(resolve, ms)
@@ -32,7 +32,7 @@ const gameStates = ['safezone', 'combat', 'paused']
 const defaultPlayerHealth:number = 100
 
 
-export default function Gamestate(props: GameStateProps) {
+export default function Gamestate(props:any) {
    
     const [timerTotal, setTimerTotal] = React.useState(0)
     const [timerInitial, setTimerInitial] = React.useState(0)
@@ -251,14 +251,17 @@ export default function Gamestate(props: GameStateProps) {
                 // if enemy 1 alive, 's' enters forest
                 if (!environmentProgress.environmentOneComplete) {
                     setEnvironmentIndex(0)
-                    // props.setInput(" ")
+                    props.setInput("") // clears the input state to make sure the environment's controls aren't highlighted
                 } else if (!environmentProgress.environmentTwoComplete) {
                     setEnvironmentIndex(1)
+                    props.setInput("") // clears the input state to make sure the environment's controls aren't highlighted
                 } else if (!environmentProgress.environmentThreeComplete) {
                     setEnvironmentIndex(2)
+                    props.setInput("") // clears the input state to make sure the environment's controls aren't highlighted
+                } else {
+                    console.log('YOU WON EVERYTHING')
                 }
-                // if enemy 2 alive, 's' enters tower
-                // if enemy 3 alive, 's' enters overworld
+
             }
 
 
