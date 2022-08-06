@@ -21,13 +21,7 @@ export default function EnvironmentForest(props:any) {
   
   /*
 
-    need to figure out how to pass the input/attacks/health data down to these components
-
-    like right now enemyOne is not actually being affected by the players attacks
-    so the hp can't be checked and everything reset like it's currently doing
-
-    i dont think i want to have the enemy data sit up top, because it's not relevant outside of this environment
-    so i can figure this out i think to keep things appropriately separate
+  timer for score
 
   */
 
@@ -49,8 +43,9 @@ export default function EnvironmentForest(props:any) {
     // i think i can use useRef here but ill do it with my current tools
 
 
+    // this if statement is needed because otherwise the attack damage would happen on load
     if (isEnvironmentIsLoaded) {
-
+      props.calculateScore()
       setEnemy(current => {
         return {
             ...current,
@@ -62,7 +57,7 @@ export default function EnvironmentForest(props:any) {
 
     if (enemy.hp == 0) {
       props.resetEverything()
-      
+
     // THIS FIRES ON LOAD
     } else {
       console.log(enemy.hp)
@@ -75,6 +70,7 @@ export default function EnvironmentForest(props:any) {
   
   useEffect(() => {
     if (isEnvironmentIsLoaded) {
+      props.calculateScore()
       props.damagePlayer(enemy.attackDamage)
       props.enemyAttack()
     }

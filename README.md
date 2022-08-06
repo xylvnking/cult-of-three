@@ -115,6 +115,8 @@ two ambitious '3d' audio games:
 
 [Sven The Blind Warrior](https://youtu.be/X6IjmmFcoWw)
 [True Blind Gaming q&a](https://youtu.be/Q811409RCNQ)
+[I'm Blind - But I'll Destroy Anyone On Mortal Kombat | TOTALLY GAME](https://youtu.be/cKsyk55pLCc)
+[vice: This Is How To Play Video Games If You're Totally Blind (HBO)](https://youtu.be/aX0oPwQPo9A)
 
 https://killscreen.com/themeta/visually-impaired-players-staying-game/
 
@@ -134,3 +136,7 @@ when passing a state set function as prop:
     setIsInCombat={setIsInCombat} // passing state set function
     />
 ```
+
+# unrelated to game but relevant to blind gaming:
+
+[using a '2 person controller' where the sighted person controls movement and blind person controls everything else](https://youtu.be/cKsyk55pLCc?t=223)

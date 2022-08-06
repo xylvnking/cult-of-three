@@ -136,6 +136,7 @@ export default function Gamestate(props: GameStateProps) {
                             triggerDamageToPlayer={triggerDamageToPlayer}
                             damagePlayer={damagePlayer}
                             playerStats={playerStats}
+                            calculateScore={calculateScore}
                         />
                 
             case 1:
@@ -180,7 +181,7 @@ export default function Gamestate(props: GameStateProps) {
 
     const calculateScore = () => {
         // <p>score: {(timerTotal * playerHealth) / 100}</p>
-        setScore((timerTotal * playerHealth) / 100)
+        setScore((timerTotal / playerHealth))
     }
     // calculateScore()
 
@@ -215,13 +216,14 @@ export default function Gamestate(props: GameStateProps) {
                 
                 setTimerTotal(timerTotal + y)
 
-                calculateScore()
+                // calculateScore()
                 
 
                 const playerAction = async () => {
 
                     if (props.input == enemy.currentMove) {
 
+                        // toggles a change in state data which is passed as a prop in environment, triggering a useEffect which then applies damage to that environment's enemy object
                         setTriggerDamageToEnemy(!triggerDamageToEnemy) // state, not a function
 
                     } else {
