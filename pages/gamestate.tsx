@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import styles from '../styles/Main.module.css'
-// import styles from '../styles/PauseMenu.module.css'
+
 import EnvironmentForest from './EnvironmentForest'
 import EnvironmentTower from './EnvironmentTower'
 import EnvironmentOverworld from './EnvironmentOverworld'
@@ -18,9 +18,6 @@ type GameStateProps = {
     children?: React.ReactNode
 }
 
-let playerHealthPoints:number = 100
-const environments:Array<string> = ['forest', 'city','dreamstate']
-
 const delay = ms => new Promise(
     resolve => setTimeout(resolve, ms)
   );
@@ -31,36 +28,15 @@ function getRandomInt(max:number) {
 
 const gameStates = ['safezone', 'combat', 'paused']
 
+const defaultPlayerHealth:number = 100
 
-let scoreTimer
-
-console.log(new Date().getTime())
 
 export default function Gamestate(props: GameStateProps) {
-
-
-    /*
-
-    calculate total time taken for player to make move
-    divide it by their hp
-    equals score
-
-
-    */
    
-   // do i need multiple pieces of state 
-   // to hold the initial new Date().getTime() which sets the base timer value
-   // then another to get the time when it ends which then has the inital one subtracted from it
-   // to get the total time between actions which is then stored and accumulated in 
-   // another piece of state to be used in score calculation?
-   
-   const [timerTotal, setTimerTotal] = React.useState(0)
+    const [timerTotal, setTimerTotal] = React.useState(0)
     const [timerInitial, setTimerInitial] = React.useState(0)
     const [timerFinal, setTimerFinal] = React.useState(0)
-
     const [score, setScore] = React.useState(0)
-
-    
     const [environmentIndex, setEnvironmentIndex] = React.useState<number>(3)
     const [enemyState, setEnemyState] = React.useState()
     const [playerHealth, setPlayerHealth] = React.useState(100)
@@ -80,7 +56,7 @@ export default function Gamestate(props: GameStateProps) {
     const [triggerDamageToEnemy, setTriggerDamageToEnemy] = React.useState(true)
     const [triggerDamageToPlayer, setTriggerDamageToPlayer] = React.useState(true)
     const [playerStats, setPlayerStats] = React.useState({
-        health: 100,
+        health: defaultPlayerHealth,
         attackDamage: 10
     })
     const [environmentProgress, setEnvironmentProgress] = React.useState({
@@ -113,18 +89,6 @@ export default function Gamestate(props: GameStateProps) {
         playEnvironmentThreeSoundControls.sound.mute(!playEnvironmentThreeSoundControls.sound._muted)
     }
 
-
-
-
-    
-
-    const calculateTime = () => {
-        // new Date().getTime()
-    }
-
-
-
-
     const environment = () => {
         switch (environmentIndex) {
             case 0:
@@ -148,8 +112,8 @@ export default function Gamestate(props: GameStateProps) {
                             playerStats={playerStats}
                             calculateScore={calculateScore}
                             setEnvironmentProgress={setEnvironmentProgress}
+                            calculateCurrentPlayerHealth={calculateCurrentPlayerHealth}
                         />
-                
             case 1:
                 return <EnvironmentTower />
             case 2:
@@ -168,7 +132,14 @@ export default function Gamestate(props: GameStateProps) {
                 currentMove: " "
             }
         })
-        setPlayerHealth(100)
+        setPlayerStats(current => {
+            return {
+                ...current,
+                health: defaultPlayerHealth,
+            }
+        })
+        
+        // setPlayerHealth(100)
         setIsInCombat(false)
         goToSafeZone()
     }
@@ -178,21 +149,39 @@ export default function Gamestate(props: GameStateProps) {
         setGameState(gameStates[0])
     }
 
-    const playerDeath = () => {
-        console.log('YOU HAVE DIED')
-        resetEverything()
+
+    const calculateCurrentPlayerHealth = (enemyAttackDamage:number) => {
+        return playerStats.health - enemyAttackDamage
     }
 
     const damagePlayer = (enemyAttackDamage:number) => {
-        setPlayerHealth(playerHealth - enemyAttackDamage)
-        if (playerHealth == 0) {
-            playerDeath()
+        
+        
+        // const calculateCurrentPlayerHealth = () => {
+        //     return playerStats.health - enemyAttackDamage
+        // }
+        calculateCurrentPlayerHealth(enemyAttackDamage)
+        
+        // let currentPlayerHealth = playerStats.health - enemyAttackDamage
+        
+        setPlayerStats(current => {
+            return {
+                ...current,
+                health: calculateCurrentPlayerHealth(enemyAttackDamage),
+            }
+        })
+        
+        // setPlayerHealth(playerHealth - enemyAttackDamage)
+        // if ((playerStats.health - enemyAttackDamage) == 0) {
+        if (calculateCurrentPlayerHealth(enemyAttackDamage) == 0) {
+            resetEverything()
         }
     }
 
     const calculateScore = () => {
         // <p>score: {(timerTotal * playerHealth) / 100}</p>
-        setScore((timerTotal / playerHealth))
+        // setScore((timerTotal / playerHealth))
+        setScore((timerTotal / playerStats.health))
     }
     // calculateScore()
 
@@ -238,7 +227,7 @@ export default function Gamestate(props: GameStateProps) {
                         setTriggerDamageToEnemy(!triggerDamageToEnemy) // state, not a function
 
                     } else {
-
+                        
                         setTriggerDamageToPlayer(!triggerDamageToPlayer)
                         
                     }
@@ -346,11 +335,11 @@ export default function Gamestate(props: GameStateProps) {
                 </button>
             </section>
 
-            <PauseMenu 
-
-            />
+            
+            <h1>{ gamePaused ? <PauseMenu /> : ""}</h1>
+            {/* <h1>{ gamePaused ? 'PAUSED' : ""}</h1> */}
         
-        <p>playerHealth: {playerHealth}</p>
+        <p>playerHealth: {playerStats.health}</p>
         <p>enemyHealthPoints: {enemy.hp}</p>
         <p>enemyCurrentMove: {enemy.currentMove}</p>
         <p>gameState: {gameState}</p>
@@ -362,7 +351,7 @@ export default function Gamestate(props: GameStateProps) {
 
 
         {/* CALCULATE SCORE FORMULA:  */}
-        {/* <p>score: {(timerTotal * playerHealth) / 100}</p> */}
+        
         <p>{score}</p>
 
 
@@ -371,7 +360,7 @@ export default function Gamestate(props: GameStateProps) {
         
         {/* <Timer /> */}
 
-        <h1>{ gamePaused ? 'PAUSED' : ""}</h1>
+        
 
         <section className={styles.debugContainer}>
 

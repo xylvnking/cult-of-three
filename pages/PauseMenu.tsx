@@ -7,8 +7,7 @@ export default function PauseMenu({}: Props) {
   return (
     <div>
         <main className={styles.pauseMenu}>
-
-            PauseMenu
+            <h1 className={styles.pauseTitle}>PAUSE</h1>
         </main>
     </div>
   )

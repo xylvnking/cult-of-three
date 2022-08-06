@@ -4,26 +4,9 @@ import Image from 'next/image'
 
 import styles from '../styles/Environment.module.css'
 
-
-
-// type EnvironmentProps = {
-//   input:string,
-//   keyTrigger:boolean,
-//   gameState:string
-//   setIsInCombat:void
-//   children?: React.ReactNode
-// }
-
-
 export default function EnvironmentForest(props:any) {
 
   const [isEnvironmentIsLoaded, setIsEnvironmentIsLoaded] = React.useState(false)
-  
-  /*
-
-  timer for score
-
-  */
 
   const [enemy, setEnemy] = React.useState({
     hp: 50,
@@ -39,9 +22,6 @@ export default function EnvironmentForest(props:any) {
   
   useEffect(() => {
     console.log('enemy damaged!')
-
-    // i think i can use useRef here but ill do it with my current tools
-
 
     // this if statement is needed because otherwise the attack damage would happen on load
     if (isEnvironmentIsLoaded) {
@@ -78,7 +58,12 @@ export default function EnvironmentForest(props:any) {
     if (isEnvironmentIsLoaded) {
       props.calculateScore()
       props.damagePlayer(enemy.attackDamage)
-      props.enemyAttack()
+      if (props.calculateCurrentPlayerHealth(enemy.attackDamage) !== 0){
+
+        props.enemyAttack()
+      }
+      // console.log(` PLAYER HEALTH IS :::: ${props.calculateCurrentPlayerHealth(enemy.attackDamage)}`)
+      
     }
   }, [props.triggerDamageToPlayer])
 
@@ -89,14 +74,14 @@ export default function EnvironmentForest(props:any) {
     
       props.playEnvironmentOneSound()
       props.setIsInCombat(true)
-      props.setGameState(props.gameStates[1])
+      props.setGameState(props.gameStates[1]) 
       
 
       return () => {
-          console.log('leaving forest...')
+          console.log('leaving forest...') // ENVIRONMENT SPECIFIC
           setIsEnvironmentIsLoaded(false)
           props.setIsInCombat(false)
-          props.playEnvironmentOneSoundControls.stop()
+          props.playEnvironmentOneSoundControls.stop() // ENVIRONMENT SPECIFIC
       }
     },[])
 
@@ -108,10 +93,10 @@ export default function EnvironmentForest(props:any) {
     <div className={styles.environmentContainer}>
 
         <Image 
-            src="https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644"
+            src="https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644" // ENVIRONMENT SPECIFIC
             // src="https://cdnb.artstation.com/p/assets/images/images/012/956/573/large/brandon-gobey-border-wall-sketch-38.jpg?1537363390"
 
-            alt='photo of a forest'
+            alt='photo of a forest' // ENVIRONMENT SPECIFIC
             layout="fill"
             objectFit='cover'
 
