@@ -2,14 +2,12 @@
     
 }
 
-.controlGridContainer {
-    /* background-color: rgb(42, 42, 42); */
-    /* background-color: rgb(73, 73, 73); */
+/* .controlGridContainer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    /* gap: 10px; */
+    
     grid-template-rows: 1fr 1fr 1fr;
-    /* height:25vh; */
+    
 }
 
 .keyMapGridItem {
@@ -28,7 +26,6 @@
 
     
 
-    /* background-color: aqua; */
     transition: background-color .5s, color .5s, border-color .5s;
 }
 
@@ -36,7 +33,7 @@
     background-color: white;
     color: black;
     border-color: rgb(0, 174, 255);
-}
+} */
 
 .menu {
     grid-column-start: 1;
@@ -77,4 +74,62 @@
 
 .pauseTitle {
     font-size: 5rem;
+}
+
+
+
+
+
+
+.environmentLabel {
+    position: absolute;
+    z-index: 999;
+    display: block;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+
+    background-color: rgba(0, 0, 0, 0.562);
+}
+.environmentContainer {
+    width: 100%;
+    height: 100px;
+    position: relative;
+}
+
+
+
+
+
+
+.keyMapGridContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* gap: 5px; */
+    /* height: 25vh; */
+    /* gap: 10px; */
+    /* margin: 10px; */
+    /* font-size: 3rem; */
+    background-color: rgb(91, 91, 91);
+
+}
+
+.keyMap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    font-size: 3rem;
+    padding: 1rem;
+    margin: .25rem;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    border-radius: 4px;
+    border-width: 10px;
+}
+
+.keyMapSelected {
+    border-color: rgb(255, 255, 255);
 }

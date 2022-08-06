@@ -104,6 +104,9 @@ const GameInput: React.FC<Props> = ({}: Props) => {
         // console.log('event listener added')
         
     }, [])
+
+
+    // console.log(typeof setInput)
   return (
     <div>
         <main>
@@ -111,6 +114,7 @@ const GameInput: React.FC<Props> = ({}: Props) => {
             <GameState 
                 // currentKeyPressed={currentKeyPressed}
                 input={input}
+                setInput={setInput}
                 keyTrigger={keyTrigger}
             />
         </main>

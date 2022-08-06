@@ -2,7 +2,9 @@ import React, { useEffect } from 'react'
 import useSound from 'use-sound';
 import Image from 'next/image'
 
-import styles from '../styles/Environment.module.css'
+// import styles from '../styles/Environment.module.css'
+import styles from '../styles/Main.module.css'
+
 
 export default function EnvironmentForest(props:any) {
 
@@ -103,8 +105,17 @@ export default function EnvironmentForest(props:any) {
             // style={{width: '200px'}}
         />
     </div>
-    {/* <img alt="forest photo" src="https://cdna.artstation.com/p/assets/images/images/047/497/996/large/richard-lay-lumiere-3-smaller.jpg?1647729584" /> */}
-
+    <section className={styles.keyMapGridContainer}>
+      <p className={`${styles.keyMap} ${(props.input == 'left') && `${styles.keyMapSelected}`}`}>
+      🗡️
+      </p>
+      <p className={`${styles.keyMap} ${(props.input == 'center') && `${styles.keyMapSelected}`}`}>
+      🔫
+      </p>
+      <p className={`${styles.keyMap} ${(props.input == 'right') && `${styles.keyMapSelected}`}`}>
+      ✨
+      </p>
+    </section>
 </div>
   )
 }

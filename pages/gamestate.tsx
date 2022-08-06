@@ -14,6 +14,7 @@ import useSound from 'use-sound';
 type GameStateProps = {
     // currentKeyPressed:Array<string>
     input:string,
+    // setInput:object,
     keyTrigger:boolean,
     children?: React.ReactNode
 }
@@ -119,7 +120,9 @@ export default function Gamestate(props: GameStateProps) {
             case 2:
                 return <EnvironmentOverworld />
             case 3:
-                return <EnvironmentSafeZone />
+                return <EnvironmentSafeZone 
+
+                />
         }
     }
 
@@ -246,6 +249,14 @@ export default function Gamestate(props: GameStateProps) {
             // SAFEZONE
             else if (!gamePaused && (gameState == 'safezone')){
                 // if enemy 1 alive, 's' enters forest
+                if (!environmentProgress.environmentOneComplete) {
+                    setEnvironmentIndex(0)
+                    // props.setInput(" ")
+                } else if (!environmentProgress.environmentTwoComplete) {
+                    setEnvironmentIndex(1)
+                } else if (!environmentProgress.environmentThreeComplete) {
+                    setEnvironmentIndex(2)
+                }
                 // if enemy 2 alive, 's' enters tower
                 // if enemy 3 alive, 's' enters overworld
             }
@@ -305,7 +316,7 @@ export default function Gamestate(props: GameStateProps) {
 
             {environment()}
 
-            <section className={styles.controlGridContainer}>
+            {/* <section className={styles.controlGridContainer}>
                 <button className={`${styles.keyMapGridItem} ${(props.input == 'leftListen') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>leftListen</label>
                 </button>
@@ -315,11 +326,10 @@ export default function Gamestate(props: GameStateProps) {
                 <button className={`${styles.keyMapGridItem} ${(props.input == 'rightListen') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>rightListen</label>
                 </button>
-                {/* <button className={`${styles.keyMapGridItem} ${(props.input == 'rewind') && `${styles.keyMapGridItemSelected}`}`}>
-                    <label>rewind</label>
-                </button> */}
                 <button className={`${styles.keyMapGridItem} ${(props.input == 'left') && `${styles.keyMapGridItemSelected}`}`}>
-                    <label>left</label>
+                    <label>
+                        left
+                    </label>
                 </button>
                 <button className={`${styles.keyMapGridItem} ${(props.input == 'center') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>center</label>
@@ -327,13 +337,10 @@ export default function Gamestate(props: GameStateProps) {
                 <button className={`${styles.keyMapGridItem} ${(props.input == 'right') && `${styles.keyMapGridItemSelected}`}`}>
                     <label>right</label>
                 </button>
-                {/* <button className={`${styles.keyMapGridItem} ${(props.input == 'fastForward') && `${styles.keyMapGridItemSelected}`}`}>
-                    <label>fast forward</label>
-                </button> */}
                 <button className={`${styles.keyMapGridItem} ${styles.menu} ${(gamePaused) && `${styles.keyMapGridItemSelected}`}`}>
                     <label>menu</label>
                 </button>
-            </section>
+            </section> */}
 
             
             <h1>{ gamePaused ? <PauseMenu /> : ""}</h1>
