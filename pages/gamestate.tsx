@@ -11,13 +11,14 @@ import useSound from 'use-sound';
 // import drone from './audio/drone.wav'
 // import drone from '../public/drone.wav'
 
-// type GameStateProps = {
-//     // currentKeyPressed:Array<string>
-//     input:string,
-//     // setInput:object,
-//     keyTrigger:boolean,
-//     children?: React.ReactNode
-// }
+type GameStateProps = {
+    // currentKeyPressed:Array<string>
+    input:string,
+    // setInput:object,
+    keyTrigger:boolean,
+    
+    children?: React.ReactNode
+}
 
 const delay = ms => new Promise(
     resolve => setTimeout(resolve, ms)

@@ -116,6 +116,7 @@ const GameInput: React.FC<Props> = ({}: Props) => {
                 input={input}
                 setInput={setInput}
                 keyTrigger={keyTrigger}
+                
             />
         </main>
     </div>

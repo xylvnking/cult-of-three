@@ -126,6 +126,8 @@ I just don't think 3D binaural audio is needed to create a fun audio-game. Regul
 
 when you break down most competetive games - what is the actual skill? reflexes? accuracy? gamesense? do these *require* 3 dimensions?
 
+- this game doesn't have traditional frames per second - and every possible scenario could be accounted for, if not a bit complex. Every action triggers the next action, nothing happens without player input.
+
 # learned
 
 when passing a state set function as prop:
@@ -140,3 +142,11 @@ when passing a state set function as prop:
 # unrelated to game but relevant to blind gaming:
 
 [using a '2 person controller' where the sighted person controls movement and blind person controls everything else](https://youtu.be/cKsyk55pLCc?t=223)
+
+# next for this project
+
+I'm going to remake it from scratch now that I have a better idea of how to go about it. My mistake was that I didn't consider the 'step by step' nature of the game, and could keep track of that better. I should also use more objects and put functions as properties of those, such like when the player takes damage, that should be a function on the player object, not a standalone declaration. This would also allow me to create less rigid and hard-coded code, getting me closer to my idea of making an engine instead of just a game.
+
+using constructors would allow me to create more enemies easier, because if i wanted more enemies i could just 'new ConstructorFunction' them and they'd already posess all the functionality they need through prototypal inheritance too. For example this could allow me to create smaller easier but more numerous enemies, more akin to a dungeon crawler.
+
+I also think more depth in terms of equipment/player stats ould be cool, but outside of the scope of this proof of concept project. 
