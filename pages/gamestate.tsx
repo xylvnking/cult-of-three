@@ -92,60 +92,8 @@ export default function Gamestate(props:any) {
     }
 
     const environment = () => {
-        switch (environmentIndex) {
-            case 0:
-                return  <EnvironmentForest 
-                            // make sure these are all in use 
-                            input={props.input} 
-                            keyTrigger={props.keyTrigger} 
-                            gameStates={gameStates}
-                            gameState={gameState}
-                            setGameState={setGameState}
-                            gamePaused={gamePaused}
-                            setIsInCombat={setIsInCombat}
-                            environmentIndex={environmentIndex}
-                            playEnvironmentOneSound={playEnvironmentOneSound}
-                            playEnvironmentTwoSound={playEnvironmentTwoSound}
-                            playEnvironmentThreeSound={playEnvironmentThreeSound}
-                            playEnvironmentOneSoundControls={playEnvironmentOneSoundControls}
-                            playEnvironmentTwoSoundControls={playEnvironmentTwoSoundControls}
-                            playEnvironmentThreeSoundControls={playEnvironmentThreeSoundControls}
-                            resetEverything={resetEverything}
-                            enemyCurrentMove={enemy.currentMove}
-                            enemyAttack={enemyAttack}
-                            triggerDamageToEnemy={triggerDamageToEnemy}
-                            triggerDamageToPlayer={triggerDamageToPlayer}
-                            damagePlayer={damagePlayer}
-                            playerStats={playerStats}
-                            calculateScore={calculateScore}
-                            setEnvironmentProgress={setEnvironmentProgress}
-                            calculateCurrentPlayerHealth={calculateCurrentPlayerHealth}
-                        />
-            case 1:
-                return <EnvironmentTower 
-                            input={props.input} 
-                            keyTrigger={props.keyTrigger} 
-                            gameStates={gameStates}
-                            gameState={gameState}
-                            setGameState={setGameState}
-                            gamePaused={gamePaused}
-                            setIsInCombat={setIsInCombat}
-                            playEnvironmentTwoSound={playEnvironmentTwoSound}
-                            playEnvironmentTwoSoundControls={playEnvironmentTwoSoundControls}
-                            resetEverything={resetEverything}
-                            enemyCurrentMove={enemy.currentMove}
-                            enemyAttack={enemyAttack}
-                            triggerDamageToEnemy={triggerDamageToEnemy}
-                            triggerDamageToPlayer={triggerDamageToPlayer}
-                            damagePlayer={damagePlayer}
-                            playerStats={playerStats}
-                            calculateScore={calculateScore}
-                            setEnvironmentProgress={setEnvironmentProgress}
-                            calculateCurrentPlayerHealth={calculateCurrentPlayerHealth}
-                        />
-            case 2:
-                return <EnvironmentForest 
-                        // make sure these are all in use 
+        if (environmentIndex < 3) {
+            return <EnvironmentForest 
                         input={props.input} 
                         keyTrigger={props.keyTrigger} 
                         gameStates={gameStates}
@@ -170,17 +118,14 @@ export default function Gamestate(props:any) {
                         calculateScore={calculateScore}
                         setEnvironmentProgress={setEnvironmentProgress}
                         calculateCurrentPlayerHealth={calculateCurrentPlayerHealth}
-                        />
-                
-            case 3:
-                return <EnvironmentSafeZone 
-
-                />
+                    />
+        } else {
+            return <EnvironmentSafeZone />
         }
+
     }
 
     const resetEverything = () => {
-        // reset everything
         setEnemy(current => {
             return {
                 ...current,
@@ -194,8 +139,6 @@ export default function Gamestate(props:any) {
                 health: defaultPlayerHealth,
             }
         })
-        
-        // setPlayerHealth(100)
         setIsInCombat(false)
         goToSafeZone()
     }
@@ -330,8 +273,7 @@ export default function Gamestate(props:any) {
         setTimerInitial(x)
 
         await delay(100)
-
-        console.log('enemy attacks!')
+        
         const enemyMoveNumber = getRandomInt(3)
         const enemyAttacksLeft = () => {
             setEnemy(current => {
@@ -372,35 +314,7 @@ export default function Gamestate(props:any) {
 
             {environment()}
 
-            {/* <section className={styles.controlGridContainer}>
-                <button className={`${styles.keyMapGridItem} ${(props.input == 'leftListen') && `${styles.keyMapGridItemSelected}`}`}>
-                    <label>leftListen</label>
-                </button>
-                <button className={`${styles.keyMapGridItem} ${(props.input == 'centerListen') && `${styles.keyMapGridItemSelected}`}`}>
-                    <label>centerListen</label>
-                </button>
-                <button className={`${styles.keyMapGridItem} ${(props.input == 'rightListen') && `${styles.keyMapGridItemSelected}`}`}>
-                    <label>rightListen</label>
-                </button>
-                <button className={`${styles.keyMapGridItem} ${(props.input == 'left') && `${styles.keyMapGridItemSelected}`}`}>
-                    <label>
-                        left
-                    </label>
-                </button>
-                <button className={`${styles.keyMapGridItem} ${(props.input == 'center') && `${styles.keyMapGridItemSelected}`}`}>
-                    <label>center</label>
-                </button>
-                <button className={`${styles.keyMapGridItem} ${(props.input == 'right') && `${styles.keyMapGridItemSelected}`}`}>
-                    <label>right</label>
-                </button>
-                <button className={`${styles.keyMapGridItem} ${styles.menu} ${(gamePaused) && `${styles.keyMapGridItemSelected}`}`}>
-                    <label>menu</label>
-                </button>
-            </section> */}
-
-            
             <h1>{ gamePaused ? <PauseMenu /> : ""}</h1>
-            {/* <h1>{ gamePaused ? 'PAUSED' : ""}</h1> */}
         
         <p>playerHealth: {playerStats.health}</p>
         <p>enemyHealthPoints: {enemy.hp}</p>
@@ -426,67 +340,7 @@ export default function Gamestate(props:any) {
 
         
 
-        <section className={styles.debugContainer}>
-
-            <button
-                onClick={() => setEnvironmentIndex(0)}
-            >
-                EnvironmentForest [0]
-            </button>
-            <button
-                onClick={() => setEnvironmentIndex(1)}
-            >
-                EnvironmentTower [1]
-            </button>
-            <button
-                onClick={() => setEnvironmentIndex(2)}
-            >
-                EnvironmentOverworld [2]
-            </button>
-            <button
-                onClick={() => setEnvironmentIndex(3)}
-            >
-                EnvironmentSafeZone [3]
-            </button>
-            
-            <button
-                onClick={() => toggleEnvironmentSoundMute()}
-            >
-                toggle environment sound
-            </button>
-
-            <button
-                onClick={() => enemyAttack()}
-            >
-                enemyAttack
-            </button>
-            
-            <button
-                onClick={() => setGameState(gameStates[0])}
-            >
-                setGameState: safezone 
-            </button>
-            <button
-                onClick={() => setGameState(gameStates[1])}
-            >
-                setGameState: combat 
-            </button>
-            <button
-                onClick={() => setGameState(gameStates[2])}
-            >
-                setGameState: paused 
-            </button>
-            <button
-                onClick={() => setIsInCombat(true)}
-            >
-                setIsInCombat: true
-            </button>
-            <button
-                onClick={() => setIsInCombat(false)}
-            >
-                setIsInCombat: false
-            </button>
-        </section>
+        
         
         </main>
   )
