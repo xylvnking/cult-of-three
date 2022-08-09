@@ -7,7 +7,7 @@ export default function PauseMenu({}: Props) {
   return (
     <div>
         <main className={styles.pauseMenu}>
-            <h1 className={styles.pauseTitle}>PAUSE</h1>
+            <h1 className={styles.pauseTitle}>GAME PAUSED</h1>
         </main>
     </div>
   )

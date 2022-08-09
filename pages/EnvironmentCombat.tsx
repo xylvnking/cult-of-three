@@ -1,12 +1,7 @@
 import React, { useEffect } from 'react'
 import useSound from 'use-sound';
 import Image from 'next/image'
-
-// import styles from '../styles/Environment.module.css'
 import styles from '../styles/Main.module.css'
-
-const environmentName = 'forest'
-const environmentNumber = 'environmentOneComplete'
 
 const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644'
 const towerPhotoUrl = 'https://cdna.artstation.com/p/assets/images/images/042/043/192/large/max-schiller-evilemperor-outside-v01-01-v03.jpg?1633500155'
@@ -16,8 +11,10 @@ export default function EnvironmentCombat(props:any) {
 
   const [isEnvironmentIsLoaded, setIsEnvironmentIsLoaded] = React.useState(false)
 
+  
+
   const [enemy, setEnemy] = React.useState({
-    hp: 50,
+    hp: setEnemyHpAccordingToEnvironmentCompleted(),
     attackDamage: 10,
     abilityPower: 10,
     moveSet: ['attack', 'charge', 'buff'],
@@ -55,24 +52,37 @@ export default function EnvironmentCombat(props:any) {
       return dreamstatePhotoUrl
     }
   }
+
+  function setEnemyHpAccordingToEnvironmentCompleted () {
+    if (props.environmentProgress.environmentOneComplete == false) {
+      return 3
+    } else if (props.environmentProgress.environmentTwoComplete == false) {
+      return 6
+    } else if (props.environmentProgress.environmentThreeComplete == false) {
+      return 9
+    }
+  }
   
   
   useEffect(() => {
     console.log('enemy damaged!')
 
+    let currentEnemyHp = enemy.hp // have to calculate this here since setState is async we can't check for enemy death off 
+    
     // this if statement is needed because otherwise the attack damage would happen on load
     if (isEnvironmentIsLoaded) {
-      props.calculateScore()
+    currentEnemyHp = enemy.hp - props.playerStats.attackDamage
+    props.calculateScore()
       setEnemy(current => {
         return {
             ...current,
-            hp: enemy.hp - props.playerStats.attackDamage
+            hp: currentEnemyHp
         }
       })
     }
 
-
-    if (enemy.hp == 0) {
+    // ENEMY KILLED
+    if (currentEnemyHp <= 0) {
       // if forest :
       if (props.environmentIndex == 0) {
         props.setEnvironmentProgress(current => {
@@ -96,15 +106,11 @@ export default function EnvironmentCombat(props:any) {
           }
         })
       }
-      // if tower:
-      // if dreamstate:
       props.resetEverything()
 
-    // THIS FIRES ON LOAD
     } else {
-      
+      // THIS FIRES ON LOAD
       props.enemyAttack()
-      
     }
   }, [props.triggerDamageToEnemy]) 
   
@@ -144,7 +150,7 @@ export default function EnvironmentCombat(props:any) {
         <Image 
             // src="https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644" // ENVIRONMENT SPECIFIC
             src={getEnvironmentPhotoUrl()}
-            alt='photo of a forest' // ENVIRONMENT SPECIFIC
+            alt=''
             layout="fill"
             objectFit='cover'
         />

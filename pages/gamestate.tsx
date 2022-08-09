@@ -57,7 +57,7 @@ export default function Gamestate(props:any) {
     const [triggerDamageToPlayer, setTriggerDamageToPlayer] = React.useState(true)
     const [playerStats, setPlayerStats] = React.useState({
         health: defaultPlayerHealth,
-        attackDamage: 10
+        attackDamage: 1
     })
     const [environmentProgress, setEnvironmentProgress] = React.useState({
         environmentOneComplete: false,
@@ -114,6 +114,7 @@ export default function Gamestate(props:any) {
                         damagePlayer={damagePlayer}
                         playerStats={playerStats}
                         calculateScore={calculateScore}
+                        environmentProgress={environmentProgress}
                         setEnvironmentProgress={setEnvironmentProgress}
                         calculateCurrentPlayerHealth={calculateCurrentPlayerHealth}
                     />
@@ -186,9 +187,6 @@ export default function Gamestate(props:any) {
     useEffect(() => {
         if (props.input) {
 
-            
-            
-
             // PAUSED
             if (props.input == 'menu') {
                 setGamePaused(!gamePaused)
@@ -202,31 +200,22 @@ export default function Gamestate(props:any) {
                 } else if (gamePaused && !isInCombat) {
                     setGameState(gameStates[0])
                 }
-
             } 
+
             // COMBAT !!
             else if (!gamePaused && (gameState == 'combat')) { // i think gamepaused might be redundant now but ill remove it later 
 
                 let x = new Date().getTime()
                 setTimerFinal(x)
                 let y = x - timerInitial
-                
                 setTimerTotal(timerTotal + y)
 
-                // calculateScore()
-                
-
                 const playerAction = async () => {
-
                     if (props.input == enemy.currentMove) {
-
                         // toggles a change in state data which is passed as a prop in environment, triggering a useEffect which then applies damage to that environment's enemy object
-                        setTriggerDamageToEnemy(!triggerDamageToEnemy) // state, not a function
-
+                        setTriggerDamageToEnemy(!triggerDamageToEnemy)
                     } else {
-                        
                         setTriggerDamageToPlayer(!triggerDamageToPlayer)
-                        
                     }
                     setEnemy(current => {
                         return {
@@ -237,7 +226,6 @@ export default function Gamestate(props:any) {
                     console.log('calculate')
                 }
                 playerAction()
-                
             }   
 
             // SAFEZONE
@@ -270,7 +258,7 @@ export default function Gamestate(props:any) {
         let x = new Date().getTime()
         setTimerInitial(x)
 
-        await delay(100)
+        await delay(500)
 
         const enemyMoveNumber = getRandomInt(3)
         const enemyAttacksLeft = () => {
