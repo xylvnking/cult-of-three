@@ -1,9 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import styles from '../styles/Main.module.css'
 
-import EnvironmentForest from './EnvironmentForest'
-import EnvironmentTower from './EnvironmentTower'
-import EnvironmentOverworld from './EnvironmentOverworld'
+import EnvironmentCombat from './EnvironmentCombat'
 import EnvironmentSafeZone from './EnvironmentSafeZone'
 import PauseMenu from './PauseMenu'
 import Timer from './Timer'
@@ -93,7 +91,7 @@ export default function Gamestate(props:any) {
 
     const environment = () => {
         if (environmentIndex < 3) {
-            return <EnvironmentForest 
+            return <EnvironmentCombat 
                         input={props.input} 
                         keyTrigger={props.keyTrigger} 
                         gameStates={gameStates}
@@ -273,7 +271,7 @@ export default function Gamestate(props:any) {
         setTimerInitial(x)
 
         await delay(100)
-        
+
         const enemyMoveNumber = getRandomInt(3)
         const enemyAttacksLeft = () => {
             setEnemy(current => {

@@ -12,7 +12,7 @@ const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/029/2
 const towerPhotoUrl = 'https://cdna.artstation.com/p/assets/images/images/042/043/192/large/max-schiller-evilemperor-outside-v01-01-v03.jpg?1633500155'
 const dreamstatePhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/033/313/719/large/huleeb-367-28-dec-2020-final-c.jpg?1609171255'
 
-export default function EnvironmentForest(props:any) {
+export default function EnvironmentCombat(props:any) {
 
   const [isEnvironmentIsLoaded, setIsEnvironmentIsLoaded] = React.useState(false)
 
