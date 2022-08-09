@@ -103,6 +103,7 @@ export default function Gamestate(props:any) {
                             setGameState={setGameState}
                             gamePaused={gamePaused}
                             setIsInCombat={setIsInCombat}
+                            environmentIndex={environmentIndex}
                             playEnvironmentOneSound={playEnvironmentOneSound}
                             playEnvironmentTwoSound={playEnvironmentTwoSound}
                             playEnvironmentThreeSound={playEnvironmentThreeSound}
@@ -143,27 +144,34 @@ export default function Gamestate(props:any) {
                             calculateCurrentPlayerHealth={calculateCurrentPlayerHealth}
                         />
             case 2:
-                return <EnvironmentOverworld 
-                            input={props.input} 
-                            keyTrigger={props.keyTrigger} 
-                            gameStates={gameStates}
-                            gameState={gameState}
-                            setGameState={setGameState}
-                            gamePaused={gamePaused}
-                            setIsInCombat={setIsInCombat}
-                            playEnvironmentThreeSound={playEnvironmentThreeSound}
-                            playEnvironmentThreeSoundControls={playEnvironmentThreeSoundControls}
-                            resetEverything={resetEverything}
-                            enemyCurrentMove={enemy.currentMove}
-                            enemyAttack={enemyAttack}
-                            triggerDamageToEnemy={triggerDamageToEnemy}
-                            triggerDamageToPlayer={triggerDamageToPlayer}
-                            damagePlayer={damagePlayer}
-                            playerStats={playerStats}
-                            calculateScore={calculateScore}
-                            setEnvironmentProgress={setEnvironmentProgress}
-                            calculateCurrentPlayerHealth={calculateCurrentPlayerHealth}
-                />
+                return <EnvironmentForest 
+                        // make sure these are all in use 
+                        input={props.input} 
+                        keyTrigger={props.keyTrigger} 
+                        gameStates={gameStates}
+                        gameState={gameState}
+                        setGameState={setGameState}
+                        gamePaused={gamePaused}
+                        setIsInCombat={setIsInCombat}
+                        environmentIndex={environmentIndex}
+                        playEnvironmentOneSound={playEnvironmentOneSound}
+                        playEnvironmentTwoSound={playEnvironmentTwoSound}
+                        playEnvironmentThreeSound={playEnvironmentThreeSound}
+                        playEnvironmentOneSoundControls={playEnvironmentOneSoundControls}
+                        playEnvironmentTwoSoundControls={playEnvironmentTwoSoundControls}
+                        playEnvironmentThreeSoundControls={playEnvironmentThreeSoundControls}
+                        resetEverything={resetEverything}
+                        enemyCurrentMove={enemy.currentMove}
+                        enemyAttack={enemyAttack}
+                        triggerDamageToEnemy={triggerDamageToEnemy}
+                        triggerDamageToPlayer={triggerDamageToPlayer}
+                        damagePlayer={damagePlayer}
+                        playerStats={playerStats}
+                        calculateScore={calculateScore}
+                        setEnvironmentProgress={setEnvironmentProgress}
+                        calculateCurrentPlayerHealth={calculateCurrentPlayerHealth}
+                        />
+                
             case 3:
                 return <EnvironmentSafeZone 
 
@@ -402,6 +410,7 @@ export default function Gamestate(props:any) {
         <p>Forest Enemy: {environmentProgress.environmentOneComplete ? "Dead" : "Alive"}</p>
         <p>Tower Enemy: {environmentProgress.environmentTwoComplete ? "Dead" : "Alive"}</p>
         <p>Dream Enemy: {environmentProgress.environmentThreeComplete ? "Dead" : "Alive"}</p>
+        <h1>ENVIRONMENT INDEX {environmentIndex}</h1>
         {/* <p>environmentProgress: {environmentProgress.environmentOneComplete}</p> */}
 
 

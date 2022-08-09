@@ -5,6 +5,13 @@ import Image from 'next/image'
 // import styles from '../styles/Environment.module.css'
 import styles from '../styles/Main.module.css'
 
+const environmentName = 'forest'
+const environmentNumber = 'environmentOneComplete'
+
+const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644'
+const towerPhotoUrl = 'https://cdna.artstation.com/p/assets/images/images/042/043/192/large/max-schiller-evilemperor-outside-v01-01-v03.jpg?1633500155'
+const dreamstatePhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/033/313/719/large/huleeb-367-28-dec-2020-final-c.jpg?1609171255'
+
 
 export default function EnvironmentForest(props:any) {
 
@@ -19,7 +26,36 @@ export default function EnvironmentForest(props:any) {
     isAlive: true
   })
 
+  function playEnvironmentSound() {
+    if (props.environmentIndex == 0) {
+      props.playEnvironmentOneSound()
+    } else if (props.environmentIndex == 1) {
+      props.playEnvironmentTwoSound()
+    } else if (props.environmentIndex == 2) {
+      props.playEnvironmentThreeSound()
+    }
+  }
+  
+  function stopEnvironmentSound() {
+    if (props.environmentIndex == 0) {
+      props.playEnvironmentOneSoundControls.stop()
+    } else if (props.environmentIndex == 1) {
+      props.playEnvironmentTwoSoundControls.stop()
+    } else if (props.environmentIndex == 2) {
+      props.playEnvironmentThreeSoundControls.stop()
+    }
 
+  }
+
+  function getEnvironmentPhotoUrl () {
+    if (props.environmentIndex == 0) {
+      return forestPhotoUrl
+    } else if (props.environmentIndex == 1) {
+      return towerPhotoUrl
+    } else if (props.environmentIndex == 2) {
+      return dreamstatePhotoUrl
+    }
+  }
   
   
   useEffect(() => {
@@ -38,12 +74,31 @@ export default function EnvironmentForest(props:any) {
 
 
     if (enemy.hp == 0) {
-      props.setEnvironmentProgress(current => {
-        return {
-            ...current,
-            environmentOneComplete: true
-        }
-      })
+      // if forest :
+      if (props.environmentIndex == 0) {
+        props.setEnvironmentProgress(current => {
+          return {
+              ...current,
+              environmentOneComplete: true
+          }
+        })
+      } else if (props.environmentIndex == 1) {
+        props.setEnvironmentProgress(current => {
+          return {
+              ...current,
+              environmentTwoComplete: true
+          }
+        })
+      } else if (props.environmentIndex == 2) {
+        props.setEnvironmentProgress(current => {
+          return {
+              ...current,
+              environmentThreeComplete: true
+          }
+        })
+      }
+      // if tower:
+      // if dreamstate:
       props.resetEverything()
 
     // THIS FIRES ON LOAD
@@ -71,19 +126,14 @@ export default function EnvironmentForest(props:any) {
 
   
   useEffect(() => {
-      console.log('entering forest...')
-      console.log('entering combat!')
-    
-      props.playEnvironmentOneSound()
+    console.log('forest module loaded')
+      playEnvironmentSound()
       props.setIsInCombat(true)
       props.setGameState(props.gameStates[1]) 
-      
-
       return () => {
-          console.log('leaving forest...') // ENVIRONMENT SPECIFIC
           setIsEnvironmentIsLoaded(false)
           props.setIsInCombat(false)
-          props.playEnvironmentOneSoundControls.stop() // ENVIRONMENT SPECIFIC
+          stopEnvironmentSound()
       }
     },[])
 
@@ -95,14 +145,11 @@ export default function EnvironmentForest(props:any) {
     <div className={styles.environmentContainer}>
 
         <Image 
-            src="https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644" // ENVIRONMENT SPECIFIC
-            // src="https://cdnb.artstation.com/p/assets/images/images/012/956/573/large/brandon-gobey-border-wall-sketch-38.jpg?1537363390"
-
+            // src="https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644" // ENVIRONMENT SPECIFIC
+            src={getEnvironmentPhotoUrl()}
             alt='photo of a forest' // ENVIRONMENT SPECIFIC
             layout="fill"
             objectFit='cover'
-
-            // style={{width: '200px'}}
         />
     </div>
     <section className={styles.keyMapGridContainer}>
