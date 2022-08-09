@@ -104,7 +104,11 @@ export default function Gamestate(props:any) {
                             gamePaused={gamePaused}
                             setIsInCombat={setIsInCombat}
                             playEnvironmentOneSound={playEnvironmentOneSound}
+                            playEnvironmentTwoSound={playEnvironmentTwoSound}
+                            playEnvironmentThreeSound={playEnvironmentThreeSound}
                             playEnvironmentOneSoundControls={playEnvironmentOneSoundControls}
+                            playEnvironmentTwoSoundControls={playEnvironmentTwoSoundControls}
+                            playEnvironmentThreeSoundControls={playEnvironmentThreeSoundControls}
                             resetEverything={resetEverything}
                             enemyCurrentMove={enemy.currentMove}
                             enemyAttack={enemyAttack}
@@ -117,9 +121,49 @@ export default function Gamestate(props:any) {
                             calculateCurrentPlayerHealth={calculateCurrentPlayerHealth}
                         />
             case 1:
-                return <EnvironmentTower />
+                return <EnvironmentTower 
+                            input={props.input} 
+                            keyTrigger={props.keyTrigger} 
+                            gameStates={gameStates}
+                            gameState={gameState}
+                            setGameState={setGameState}
+                            gamePaused={gamePaused}
+                            setIsInCombat={setIsInCombat}
+                            playEnvironmentTwoSound={playEnvironmentTwoSound}
+                            playEnvironmentTwoSoundControls={playEnvironmentTwoSoundControls}
+                            resetEverything={resetEverything}
+                            enemyCurrentMove={enemy.currentMove}
+                            enemyAttack={enemyAttack}
+                            triggerDamageToEnemy={triggerDamageToEnemy}
+                            triggerDamageToPlayer={triggerDamageToPlayer}
+                            damagePlayer={damagePlayer}
+                            playerStats={playerStats}
+                            calculateScore={calculateScore}
+                            setEnvironmentProgress={setEnvironmentProgress}
+                            calculateCurrentPlayerHealth={calculateCurrentPlayerHealth}
+                        />
             case 2:
-                return <EnvironmentOverworld />
+                return <EnvironmentOverworld 
+                            input={props.input} 
+                            keyTrigger={props.keyTrigger} 
+                            gameStates={gameStates}
+                            gameState={gameState}
+                            setGameState={setGameState}
+                            gamePaused={gamePaused}
+                            setIsInCombat={setIsInCombat}
+                            playEnvironmentThreeSound={playEnvironmentThreeSound}
+                            playEnvironmentThreeSoundControls={playEnvironmentThreeSoundControls}
+                            resetEverything={resetEverything}
+                            enemyCurrentMove={enemy.currentMove}
+                            enemyAttack={enemyAttack}
+                            triggerDamageToEnemy={triggerDamageToEnemy}
+                            triggerDamageToPlayer={triggerDamageToPlayer}
+                            damagePlayer={damagePlayer}
+                            playerStats={playerStats}
+                            calculateScore={calculateScore}
+                            setEnvironmentProgress={setEnvironmentProgress}
+                            calculateCurrentPlayerHealth={calculateCurrentPlayerHealth}
+                />
             case 3:
                 return <EnvironmentSafeZone 
 
