@@ -1,22 +1,15 @@
 import React from 'react'
 
-type Props = {}
+// type Props = {}
 
 
-let x = new Date().getTime()
-export default function Timer({}: Props) {
-
-    const [timer, setTimer] = React.useState()
-
-    React.useEffect(() => {
-        x = new Date().getTime()
-        setTimer(x)
-    },[])
+export default function Timer(props:any) {
 
 
   return (
     <div>
-        <h1>{timer}</h1>
+        <h1>SCORE: {props.timerTotal}</h1>
+        
 
     </div>
   )

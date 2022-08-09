@@ -3,19 +3,21 @@ import useSound from 'use-sound';
 import Image from 'next/image'
 import styles from '../styles/Main.module.css'
 
-const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644'
-const towerPhotoUrl = 'https://cdna.artstation.com/p/assets/images/images/042/043/192/large/max-schiller-evilemperor-outside-v01-01-v03.jpg?1633500155'
-const dreamstatePhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/033/313/719/large/huleeb-367-28-dec-2020-final-c.jpg?1609171255'
+// const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644'
+// const towerPhotoUrl = 'https://cdna.artstation.com/p/assets/images/images/042/043/192/large/max-schiller-evilemperor-outside-v01-01-v03.jpg?1633500155'
+// const dreamstatePhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/033/313/719/large/huleeb-367-28-dec-2020-final-c.jpg?1609171255'
+
+const enemyDefaultHpValuesToCompareCurrentHealthToForUi = [3, 6, 9]
+const enemyDamageValuesToCompareCurrentHealthToForUi = [10, 10, 10]
 
 export default function EnvironmentCombat(props:any) {
 
   const [isEnvironmentIsLoaded, setIsEnvironmentIsLoaded] = React.useState(false)
 
-  
-
   const [enemy, setEnemy] = React.useState({
-    hp: setEnemyHpAccordingToEnvironmentCompleted(),
-    attackDamage: 10,
+    hp: setEnemyDefaultHpAccordingToEnvironmentCompleted(),
+    defaultHp: setEnemyDefaultHpAccordingToEnvironmentCompleted(),
+    attackDamage: setEnemyDamageAccordingToEnvironmentCompleted(),
     abilityPower: 10,
     moveSet: ['attack', 'charge', 'buff'],
     currentMove: "",
@@ -45,32 +47,49 @@ export default function EnvironmentCombat(props:any) {
 
   function getEnvironmentPhotoUrl () {
     if (props.environmentIndex == 0) {
-      return forestPhotoUrl
+      return props.forestPhotoUrl
     } else if (props.environmentIndex == 1) {
-      return towerPhotoUrl
+      return props.towerPhotoUrl
     } else if (props.environmentIndex == 2) {
-      return dreamstatePhotoUrl
+      return props.dreamStatePhotoUrl
     }
   }
 
-  function setEnemyHpAccordingToEnvironmentCompleted () {
+  function setEnemyDefaultHpAccordingToEnvironmentCompleted () {
     if (props.environmentProgress.environmentOneComplete == false) {
-      return 3
+      return enemyDefaultHpValuesToCompareCurrentHealthToForUi[0]
     } else if (props.environmentProgress.environmentTwoComplete == false) {
-      return 6
+      return enemyDefaultHpValuesToCompareCurrentHealthToForUi[1]
     } else if (props.environmentProgress.environmentThreeComplete == false) {
-      return 9
+      return enemyDefaultHpValuesToCompareCurrentHealthToForUi[2]
+    }
+  }
+  function setEnemyDamageAccordingToEnvironmentCompleted () {
+    if (props.environmentProgress.environmentOneComplete == false) {
+      return enemyDamageValuesToCompareCurrentHealthToForUi[0]
+    } else if (props.environmentProgress.environmentTwoComplete == false) {
+      return enemyDamageValuesToCompareCurrentHealthToForUi[1]
+    } else if (props.environmentProgress.environmentThreeComplete == false) {
+      return enemyDamageValuesToCompareCurrentHealthToForUi[2]
     }
   }
   
-  
+  function getEnvironmentAndEnemyInfoForDisplay () {
+    if (props.environmentProgress.environmentOneComplete == false) {
+      return `environment: forest, enemy: cultist, enemy health: ${enemy.hp}`
+    } else if (props.environmentProgress.environmentTwoComplete == false) {
+      return `environment: tower, enemy: brute, enemy health: ${enemy.hp}`
+    } else if (props.environmentProgress.environmentThreeComplete == false) {
+      return `environment: dream state, enemy: elder, enemy health: ${enemy.hp}`
+    }
+  }
   useEffect(() => {
     console.log('enemy damaged!')
 
     let currentEnemyHp = enemy.hp // have to calculate this here since setState is async we can't check for enemy death off 
     
-    // this if statement is needed because otherwise the attack damage would happen on load
-    if (isEnvironmentIsLoaded) {
+
+    if (isEnvironmentIsLoaded) { // prevents damage from occuring on load
     currentEnemyHp = enemy.hp - props.playerStats.attackDamage
     props.calculateScore()
       setEnemy(current => {
@@ -119,7 +138,7 @@ export default function EnvironmentCombat(props:any) {
     if (isEnvironmentIsLoaded) {
       props.calculateScore()
       props.damagePlayer(enemy.attackDamage)
-      if (props.calculateCurrentPlayerHealth(enemy.attackDamage) !== 0){
+      if (props.calculateCurrentPlayerHealth(enemy.attackDamage) >= 0){
 
         props.enemyAttack()
       }
@@ -142,33 +161,47 @@ export default function EnvironmentCombat(props:any) {
 
   return (
     <div>
-    <h1 className={styles.environmentLabel}>
-        [0] forest : cultist : health: {enemy.hp}
-    </h1>
-    <div className={styles.environmentContainer}>
+      <h1 className={styles.environmentLabel}>
+        {getEnvironmentAndEnemyInfoForDisplay()}
+      </h1>
+      <div className={styles.environmentContainer}>
 
-        <Image 
-            // src="https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644" // ENVIRONMENT SPECIFIC
-            src={getEnvironmentPhotoUrl()}
-            alt=''
-            layout="fill"
-            objectFit='cover'
-        />
+          <Image 
+              src={getEnvironmentPhotoUrl()}
+              alt=''
+              layout="fill"
+              objectFit='cover'
+          />
+          
+      </div>
+      <section className={styles.keyMapGridContainer}>
+        {/* <p className={`${styles.keyMap} ${(props.input == 'left') && `${styles.keyMapSelected}`}`}> */}
+        <p className={`${styles.keyMap} ${(props.enemyCurrentMove == 'left') && `${styles.keyMapSelected}`}`}>
+        {/* 🗡️ */}
+        A
+        </p>
+        {/* <p className={`${styles.keyMap} ${(props.input == 'center') && `${styles.keyMapSelected}`}`}> */}
+        <p className={`${styles.keyMap} ${(props.enemyCurrentMove == 'center') && `${styles.keyMapSelected}`}`}>
+        {/* 🔫 */}
+        S
+        </p>
+        {/* <p className={`${styles.keyMap} ${(props.input == 'right') && `${styles.keyMapSelected}`}`}> */}
+        <p className={`${styles.keyMap} ${(props.enemyCurrentMove == 'right') && `${styles.keyMapSelected}`}`}>
+        {/* ✨ */}
+        D
+        </p>
+      </section>
+      <section className={styles.healthBarContainer}>
+        <p className={styles.healthBarLabel}>Enemy Health: {enemy.hp}</p>
+        <div 
+          className={styles.healthBar}
+          style={{
+          width: `${(enemy.hp * (100 / enemy.defaultHp))}%`,
+          }}>
+        </div>
+      </section>
+
+      
     </div>
-    <section className={styles.keyMapGridContainer}>
-      {/* <p className={`${styles.keyMap} ${(props.input == 'left') && `${styles.keyMapSelected}`}`}> */}
-      <p className={`${styles.keyMap} ${(props.enemyCurrentMove == 'left') && `${styles.keyMapSelected}`}`}>
-      🗡️
-      </p>
-      {/* <p className={`${styles.keyMap} ${(props.input == 'center') && `${styles.keyMapSelected}`}`}> */}
-      <p className={`${styles.keyMap} ${(props.enemyCurrentMove == 'center') && `${styles.keyMapSelected}`}`}>
-      🔫
-      </p>
-      {/* <p className={`${styles.keyMap} ${(props.input == 'right') && `${styles.keyMapSelected}`}`}> */}
-      <p className={`${styles.keyMap} ${(props.enemyCurrentMove == 'right') && `${styles.keyMapSelected}`}`}>
-      ✨
-      </p>
-    </section>
-</div>
   )
 }

@@ -6,6 +6,7 @@ import EnvironmentSafeZone from './EnvironmentSafeZone'
 import PauseMenu from './PauseMenu'
 import Timer from './Timer'
 import useSound from 'use-sound';
+import Image from 'next/image'
 // import drone from './audio/drone.wav'
 // import drone from '../public/drone.wav'
 
@@ -30,8 +31,24 @@ const gameStates = ['safezone', 'combat', 'paused']
 
 const defaultPlayerHealth:number = 100
 
+const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644'
+// const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/047/763/043/large/zhong-yang-.jpg?1648396136'
+
+const towerPhotoUrl = 'https://cdna.artstation.com/p/assets/images/images/042/043/192/large/max-schiller-evilemperor-outside-v01-01-v03.jpg?1633500155'
+const dreamStatePhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/033/313/719/large/huleeb-367-28-dec-2020-final-c.jpg?1609171255'
+
 
 export default function Gamestate(props:any) {
+
+    /*
+
+        i have to have the data for the current move available here, so that I can compare the players input against it
+        
+        i could encapsulate that check inside of a function and pass it as props to the environment and pass the enemy.currentMove as an argument
+
+    */
+
+    const [enemyAttackDelayTime, setEnemyAttackDelayTime] = React.useState(500)
    
     const [timerTotal, setTimerTotal] = React.useState(0)
     const [timerInitial, setTimerInitial] = React.useState(0)
@@ -117,6 +134,9 @@ export default function Gamestate(props:any) {
                         environmentProgress={environmentProgress}
                         setEnvironmentProgress={setEnvironmentProgress}
                         calculateCurrentPlayerHealth={calculateCurrentPlayerHealth}
+                        forestPhotoUrl={forestPhotoUrl}
+                        towerPhotoUrl={towerPhotoUrl}
+                        dreamStatePhotoUrl={dreamStatePhotoUrl}
                     />
         } else {
             return <EnvironmentSafeZone />
@@ -128,7 +148,6 @@ export default function Gamestate(props:any) {
         setEnemy(current => {
             return {
                 ...current,
-                hp: 20,
                 currentMove: " "
             }
         })
@@ -153,35 +172,21 @@ export default function Gamestate(props:any) {
     }
 
     const damagePlayer = (enemyAttackDamage:number) => {
-        
-        
-        // const calculateCurrentPlayerHealth = () => {
-        //     return playerStats.health - enemyAttackDamage
-        // }
         calculateCurrentPlayerHealth(enemyAttackDamage)
-        
-        // let currentPlayerHealth = playerStats.health - enemyAttackDamage
-        
         setPlayerStats(current => {
             return {
                 ...current,
                 health: calculateCurrentPlayerHealth(enemyAttackDamage),
             }
         })
-        
-        // setPlayerHealth(playerHealth - enemyAttackDamage)
-        // if ((playerStats.health - enemyAttackDamage) == 0) {
-        if (calculateCurrentPlayerHealth(enemyAttackDamage) == 0) {
+        if (calculateCurrentPlayerHealth(enemyAttackDamage) <= 0) {
             resetEverything()
         }
     }
 
     const calculateScore = () => {
-        // <p>score: {(timerTotal * playerHealth) / 100}</p>
-        // setScore((timerTotal / playerHealth))
         setScore((timerTotal / playerStats.health))
     }
-    // calculateScore()
 
     // TRIGGERED ON USER INPUT
     useEffect(() => {
@@ -258,7 +263,7 @@ export default function Gamestate(props:any) {
         let x = new Date().getTime()
         setTimerInitial(x)
 
-        await delay(500)
+        await delay(enemyAttackDelayTime)
 
         const enemyMoveNumber = getRandomInt(3)
         const enemyAttacksLeft = () => {
@@ -297,37 +302,99 @@ export default function Gamestate(props:any) {
 
     return (
         <main className={styles.mainContainer}>
+            <section className={styles.keyMapGridContainer}>
+                <div
+                className={`${styles.enemyIcon} ${environmentProgress.environmentOneComplete ? styles.enemyIconDefeated : ""}`}
+                style={{
+                    backgroundImage: `url('${forestPhotoUrl}')`,}}>
+
+                        {
+                            !environmentProgress.environmentOneComplete ?
+
+                            <p 
+                            className={`${styles.enemyIconText}`}>
+                                cultist
+                            </p>
+                            :
+                            <Image 
+                        src="https://www.pngfind.com/pngs/m/28-283944_cross-out-png-letter-x-png-transparent-png.png"
+                        alt=''
+                        layout="fill"
+                        objectFit='cover'
+                    />
+                        }
+                    {/* <p 
+                    className={`${styles.enemyIconText}`}>
+                        cultist
+                    </p> */}
+                    
+                    
+                </div>
+              
+                <div
+                className={styles.enemyIcon}
+                style={{
+                    backgroundImage: `url('${towerPhotoUrl}')`,}}>
+                    <p 
+                    className={`${styles.enemyIconText}`}>
+                        brute
+                    </p>
+                </div>
+                
+                <div
+                className={styles.enemyIcon}
+                style={{
+                    backgroundImage: `url('${dreamStatePhotoUrl}')`,}}>
+                    <p 
+                    className={`${styles.enemyIconText}`}>
+                        elder
+                    </p>
+                </div>
+            </section>
 
             {environment()}
 
-            <h1>{ gamePaused ? <PauseMenu /> : ""}</h1>
+        {!isInCombat
+         &&  
+            <section className={styles.keyMapGridContainer}>
+                {/* <p className={`${styles.keyMap} ${(props.input == 'left') && `${styles.keyMapSelected}`}`}> */}
+                <p className={`${styles.keyMap}`}>
+                
+                </p>
+                {/* <p className={`${styles.keyMap} ${(props.input == 'center') && `${styles.keyMapSelected}`}`}> */}
+                <p className={`${styles.keyMap}`}>
+                SKIP
+                </p>
+                {/* <p className={`${styles.keyMap} ${(props.input == 'right') && `${styles.keyMapSelected}`}`}> */}
+                <p className={`${styles.keyMap}`}>
+                
+                </p>
+            </section>
+         }
+
+        <section className={styles.healthBarContainer}>
+        <p className={styles.healthBarLabel}>Player Health: {playerStats.health}</p>
+        <div 
+          className={styles.healthBar}
+          style={{
+          width: `${playerStats.health}%`,
+          }}>
+          </div>
+      </section>
+        <Timer 
+        timerTotal={timerTotal}
+        />
         
-        <p>playerHealth: {playerStats.health}</p>
-        <p>enemyHealthPoints: {enemy.hp}</p>
-        <p>enemyCurrentMove: {enemy.currentMove}</p>
-        <p>gameState: {gameState}</p>
-        <p>timerTotal: {timerTotal}ms</p>
+
+
+
+                <h1>{ gamePaused ? <PauseMenu /> : ""}</h1>
         <p>Forest Enemy: {environmentProgress.environmentOneComplete ? "Dead" : "Alive"}</p>
         <p>Tower Enemy: {environmentProgress.environmentTwoComplete ? "Dead" : "Alive"}</p>
         <p>Dream Enemy: {environmentProgress.environmentThreeComplete ? "Dead" : "Alive"}</p>
         <h1>ENVIRONMENT INDEX {environmentIndex}</h1>
-        {/* <p>environmentProgress: {environmentProgress.environmentOneComplete}</p> */}
-
-
-        {/* CALCULATE SCORE FORMULA:  */}
-        
         <p>{score}</p>
-
-
-
         <p>{isInCombat ? 'isInCombat: true' : 'isInCombat: false'}</p>
-        
-        {/* <Timer /> */}
-
-        
-
-        
-        
         </main>
   )
 }

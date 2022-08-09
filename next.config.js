@@ -9,6 +9,6 @@ module.exports = nextConfig
 
 module.exports = {
   images: {
-    domains: ['cdna.artstation.com', 'cdnb.artstation.com'],
+    domains: ['cdna.artstation.com', 'cdnb.artstation.com', 'pngfind.com'],
   }
 }

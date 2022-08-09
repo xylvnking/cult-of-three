@@ -1,12 +1,4 @@
-.menu {
-    grid-column-start: 1;
-    grid-row-start: 3;
-    grid-column-end: 4;
-    /* grid-column: span 4; */
-}
-
 .pauseMenu {
-    position: fixed;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -25,6 +17,8 @@
     font-size: 5rem;
 }
 
+
+
 .environmentLabel {
     position: absolute;
     z-index: 999;
@@ -38,19 +32,17 @@
 }
 .environmentContainer {
     width: 100%;
-    height: 100px;
+    height: 200px;
     position: relative;
 }
+
+
 
 .keyMapGridContainer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    /* gap: 5px; */
-    /* height: 25vh; */
-    /* gap: 10px; */
-    /* margin: 10px; */
-    /* font-size: 3rem; */
-    background-color: rgb(91, 91, 91);
+    background-color: rgb(255, 255, 255);
+    /* background-color: rgb(0, 0, 0); */
 
 }
 
@@ -70,4 +62,64 @@
 
 .keyMapSelected {
     border-color: rgb(255, 255, 255);
+}
+
+.healthBarContainer {
+    width: 100vw;
+    /* background-color: aqua; */
+    display: grid;
+    grid-template-columns: 25vw 1fr;
+
+}
+
+.healthBar {
+    height: 100px;
+    background-color: #ffffff;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.healthBarLabel {
+    font-size: 2rem;
+    text-align: center;
+}
+
+.enemyIcon {
+    /* background-repeat: no-repeat; */
+    /* background-attachment: fixed; */
+    /* background-position: center; */
+    background-repeat:no-repeat;
+    background-position: center center;
+    /* height: 100%;
+    width: 100%; */
+    padding: 1rem;
+    margin: .25rem;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    border-radius: 4px;
+    border-width: 25px;
+}
+
+.enemyIconText {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+}
+
+.enemyIconDefeated {
+    /* position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
+    /* width: 100vw;
+    height: 100vh; */
+    filter: brightness(33%);
+    /* background-color: rgba(0, 0, 0, 0.831); */
+    /* z-index: 999; */
+    /* backdrop-filter: blur(5px); */
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
 }
