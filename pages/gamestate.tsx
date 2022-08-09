@@ -307,48 +307,28 @@ export default function Gamestate(props:any) {
                 className={`${styles.enemyIcon} ${environmentProgress.environmentOneComplete ? styles.enemyIconDefeated : ""}`}
                 style={{
                     backgroundImage: `url('${forestPhotoUrl}')`,}}>
-
-                        {
-                            !environmentProgress.environmentOneComplete ?
-
                             <p 
                             className={`${styles.enemyIconText}`}>
-                                cultist
+                                {!environmentProgress.environmentOneComplete ? '🧟':'💀' }
                             </p>
-                            :
-                            <Image 
-                        src="https://www.pngfind.com/pngs/m/28-283944_cross-out-png-letter-x-png-transparent-png.png"
-                        alt=''
-                        layout="fill"
-                        objectFit='cover'
-                    />
-                        }
-                    {/* <p 
-                    className={`${styles.enemyIconText}`}>
-                        cultist
-                    </p> */}
-                    
-                    
                 </div>
-              
                 <div
-                className={styles.enemyIcon}
+                className={`${styles.enemyIcon} ${environmentProgress.environmentTwoComplete ? styles.enemyIconDefeated : ""}`}
                 style={{
                     backgroundImage: `url('${towerPhotoUrl}')`,}}>
-                    <p 
-                    className={`${styles.enemyIconText}`}>
-                        brute
-                    </p>
+                            <p 
+                            className={`${styles.enemyIconText}`}>
+                                {!environmentProgress.environmentTwoComplete ? '🦍':'💀' }
+                            </p>
                 </div>
-                
                 <div
-                className={styles.enemyIcon}
+                className={`${styles.enemyIcon} ${environmentProgress.environmentThreeComplete ? styles.enemyIconDefeated : ""}`}
                 style={{
                     backgroundImage: `url('${dreamStatePhotoUrl}')`,}}>
-                    <p 
-                    className={`${styles.enemyIconText}`}>
-                        elder
-                    </p>
+                            <p 
+                            className={`${styles.enemyIconText}`}>
+                                {!environmentProgress.environmentThreeComplete ? '👻':'💀' }
+                            </p>
                 </div>
             </section>
 
