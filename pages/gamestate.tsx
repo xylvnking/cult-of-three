@@ -301,7 +301,12 @@ export default function Gamestate(props:any) {
     }
 
     return (
-        <main className={styles.mainContainer}>
+        <main 
+        className={styles.mainContainer}
+        // style={{
+        //     backgroundImage: `url('${forestPhotoUrl}')`
+        // }}
+        >
             <section className={styles.keyMapGridContainer}>
                 <div
                 className={`${styles.enemyIcon} ${environmentProgress.environmentOneComplete ? styles.enemyIconDefeated : ""}`}
@@ -369,12 +374,7 @@ export default function Gamestate(props:any) {
 
 
                 <h1>{ gamePaused ? <PauseMenu /> : ""}</h1>
-        <p>Forest Enemy: {environmentProgress.environmentOneComplete ? "Dead" : "Alive"}</p>
-        <p>Tower Enemy: {environmentProgress.environmentTwoComplete ? "Dead" : "Alive"}</p>
-        <p>Dream Enemy: {environmentProgress.environmentThreeComplete ? "Dead" : "Alive"}</p>
-        <h1>ENVIRONMENT INDEX {environmentIndex}</h1>
-        <p>{score}</p>
-        <p>{isInCombat ? 'isInCombat: true' : 'isInCombat: false'}</p>
+        {/* <p>{score}</p> */}
         </main>
   )
 }
