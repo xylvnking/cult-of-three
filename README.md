@@ -132,7 +132,17 @@ also i've been using function expressions needlessly when i could be using decla
 
 also obviously using a backend or *at least* local storage so people can keep their progress
 
+# next updated later on
 
+I really think this has the potential to be a procedural dungeon crawler audio-game later on. It's beyond the scope for this project, but I've been making changes to this one to make the code more reusable for that. I've learned a lot while making this.
+
+I want to make a game that would also be fun for sighted players to play with their blind friends, and give blind players something with a lo skill floor, high skill ceiling, and lots of potential grind if they want it. 
+
+Really there's actually *less* limitations on an audio game. I don't have to worry about meshes or materials or physics or any of the other performance-heavy aspects video games have. In the future I intend to create video games which are also fully accessible, but for now I'm going to have some fun with this.
+
+# designing the ui for an audio game
+
+it's been weird. i don't like the trend most audio games have of having nothing on the screen, because not everybody playing it is 100% totally blind. also as a sighted player I personally don't think I could bring myself to play and audio-only game if the screen was just blank. I understand why, but IMO a nice (and obviously accesible) ui can make a world of difference. For this project I'm going to keep it very minimal, but in the future I'd like to expand upon it a lot.
 
 
 
