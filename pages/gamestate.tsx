@@ -5,6 +5,7 @@ import EnvironmentCombat from './EnvironmentCombat'
 import EnvironmentSafeZone from './EnvironmentSafeZone'
 import PauseMenu from './PauseMenu'
 import Timer from './Timer'
+import EndScreen from './EndScreen'
 import useSound from 'use-sound';
 import Image from 'next/image'
 // import drone from './audio/drone.wav'
@@ -70,11 +71,12 @@ export default function Gamestate(props:any) {
     const [gamePaused, setGamePaused] = React.useState(false) // i think gamePaused might be redundant now but ill remove it later 
     const [gameState, setGameState] = React.useState(gameStates[0])
     const [isInCombat, setIsInCombat] = React.useState(false)
+    const [gameComplete, setGameComplete] = React.useState(false)
     const [triggerDamageToEnemy, setTriggerDamageToEnemy] = React.useState(true)
     const [triggerDamageToPlayer, setTriggerDamageToPlayer] = React.useState(true)
     const [playerStats, setPlayerStats] = React.useState({
         health: defaultPlayerHealth,
-        attackDamage: 1
+        attackDamage: 100
     })
     const [environmentProgress, setEnvironmentProgress] = React.useState({
         environmentOneComplete: false,
@@ -110,6 +112,7 @@ export default function Gamestate(props:any) {
         if (environmentIndex < 3) {
             return <EnvironmentCombat 
                         input={props.input} 
+                        keyMap={props.keyMap}
                         keyTrigger={props.keyTrigger} 
                         gameStates={gameStates}
                         gameState={gameState}
@@ -144,6 +147,22 @@ export default function Gamestate(props:any) {
 
     }
 
+    useEffect(() => {
+        if (
+            environmentProgress.environmentOneComplete == true
+            &&
+            environmentProgress.environmentTwoComplete == true
+            &&
+            environmentProgress.environmentThreeComplete == true
+        ) {
+            console.log('game complete')
+            setGameComplete(true)
+            setTimerTotal(0)
+            setTimerInitial(0)
+            setTimerFinal(0)
+        }
+    },[environmentProgress])
+
     const resetEverything = () => {
         setEnemy(current => {
             return {
@@ -157,8 +176,22 @@ export default function Gamestate(props:any) {
                 health: defaultPlayerHealth,
             }
         })
+        
+        if (gameComplete) {
+            setEnvironmentProgress({
+                    environmentOneComplete: false,
+                    environmentTwoComplete: false,
+                    environmentThreeComplete: false,
+            })
+            setScore(0)
+            setGameComplete(false)
+
+
+        }
+
         setIsInCombat(false)
         goToSafeZone()
+        
     }
     
     const goToSafeZone = () => {
@@ -246,7 +279,8 @@ export default function Gamestate(props:any) {
                     setEnvironmentIndex(2)
                     props.setInput("") // clears the input state to make sure the environment's controls aren't highlighted
                 } else {
-                    console.log('YOU WON EVERYTHING')
+                    console.log('yerrrr')
+                    resetEverything()
                 }
 
             }
@@ -373,7 +407,18 @@ export default function Gamestate(props:any) {
 
 
 
-                <h1>{ gamePaused ? <PauseMenu /> : ""}</h1>
+        <h1>{ gamePaused ? <PauseMenu /> : ""}</h1>
+        <h1>
+            { 
+            gameComplete 
+            ? <EndScreen 
+                score={score}
+                keyMap={props.keyMap}
+            /> 
+            : 
+            ""
+            }
+            </h1>
         {/* <p>{score}</p> */}
         </main>
   )

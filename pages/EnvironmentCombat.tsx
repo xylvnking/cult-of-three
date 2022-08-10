@@ -161,9 +161,9 @@ export default function EnvironmentCombat(props:any) {
 
   return (
     <div>
-      <h1 className={styles.environmentLabel}>
+      {/* <h1 className={styles.environmentLabel}>
         {getEnvironmentAndEnemyInfoForDisplay()}
-      </h1>
+      </h1> */}
       <div className={styles.environmentContainer}>
 
           <Image 
@@ -178,17 +178,17 @@ export default function EnvironmentCombat(props:any) {
         {/* <p className={`${styles.keyMap} ${(props.input == 'left') && `${styles.keyMapSelected}`}`}> */}
         <p className={`${styles.keyMap} ${(props.enemyCurrentMove == 'left') && `${styles.keyMapSelected}`}`}>
         {/* 🗡️ */}
-        A
+        {props.keyMap.left}
         </p>
         {/* <p className={`${styles.keyMap} ${(props.input == 'center') && `${styles.keyMapSelected}`}`}> */}
         <p className={`${styles.keyMap} ${(props.enemyCurrentMove == 'center') && `${styles.keyMapSelected}`}`}>
         {/* 🔫 */}
-        S
+        {props.keyMap.center}
         </p>
         {/* <p className={`${styles.keyMap} ${(props.input == 'right') && `${styles.keyMapSelected}`}`}> */}
         <p className={`${styles.keyMap} ${(props.enemyCurrentMove == 'right') && `${styles.keyMapSelected}`}`}>
         {/* ✨ */}
-        D
+        {props.keyMap.right}
         </p>
       </section>
       <section className={styles.healthBarContainer}>
