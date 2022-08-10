@@ -20,19 +20,20 @@ export default function EnvironmentSafeZone({}: Props) {
 
     
     <div>
-        <h1 className={styles.environmentLabel}>
-            SAFEZONE
-        </h1>
-      <div className={styles.environmentContainer}>
+      <section className={styles.environmentContainerContainer}>
+
+      <div className={`${styles.environmentContainer} ${styles.gridBorder}`}>
 
           <Image 
               src="https://cdna.artstation.com/p/assets/images/images/019/822/210/large/steven-wong-stevenwong-solarpunk-final.jpg?1565148539"
               alt=''
               layout="fill"
               objectFit='cover'
+              className={styles.environmentPhoto}
           />
           
       </div>
+      </section>
     </div>
   )
 }

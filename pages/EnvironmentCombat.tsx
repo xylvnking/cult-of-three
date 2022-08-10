@@ -161,43 +161,46 @@ export default function EnvironmentCombat(props:any) {
     },[])
 
   return (
-    <div>
+    <div className={styles.combatEnvironmentMain}>
       {/* <h1 className={styles.environmentLabel}>
         {getEnvironmentAndEnemyInfoForDisplay()}
       </h1> */}
-      <div className={styles.environmentActualContainer}>
-        <h1 className={styles.environmentLabel}>
+      
+        {/* <h1 className={styles.environmentLabel}>
           {getEnvironmentAndEnemyInfoForDisplay()}
-        </h1>
-        <div className={styles.environmentContainer}>
+        </h1> */}
+        <section className={`${styles.environmentContainerContainer}`}>
+          <div className={`${styles.environmentContainer} ${styles.gridBorder}`}>
 
-            <Image 
-                src={getEnvironmentPhotoUrl()}
-                alt=''
-                layout="fill"
-                objectFit='cover'
-            />
-            
-        </div>
-      </div>
+              <Image 
+                  src={getEnvironmentPhotoUrl()}
+                  alt=''
+                  layout="fill"
+                  objectFit='cover'
+                  className={styles.environmentPhoto}
+              />
+              
+          </div>
+        </section>
+      
       <section className={styles.keyMapGridContainer}>
         {/* <p className={`${styles.keyMap} ${(props.input == 'left') && `${styles.keyMapSelected}`}`}> */}
-        <p className={`${styles.keyMap} ${(props.enemyCurrentMove == 'left') && `${styles.keyMapSelected}`}`}>
+        <p className={`${styles.keyMap} ${styles.gridBorder} ${(props.enemyCurrentMove == 'left') && `${styles.keyMapSelected}`}`}>
         {/* 🗡️ */}
         {props.keyMap.left}
         </p>
         {/* <p className={`${styles.keyMap} ${(props.input == 'center') && `${styles.keyMapSelected}`}`}> */}
-        <p className={`${styles.keyMap} ${(props.enemyCurrentMove == 'center') && `${styles.keyMapSelected}`}`}>
+        <p className={`${styles.keyMap} ${styles.gridBorder} ${(props.enemyCurrentMove == 'center') && `${styles.keyMapSelected}`}`}>
         {/* 🔫 */}
         {props.keyMap.center}
         </p>
         {/* <p className={`${styles.keyMap} ${(props.input == 'right') && `${styles.keyMapSelected}`}`}> */}
-        <p className={`${styles.keyMap} ${(props.enemyCurrentMove == 'right') && `${styles.keyMapSelected}`}`}>
+        <p className={`${styles.keyMap} ${styles.gridBorder} ${(props.enemyCurrentMove == 'right') && `${styles.keyMapSelected}`}`}>
         {/* ✨ */}
         {props.keyMap.right}
         </p>
       </section>
-      <section className={styles.healthBarContainer}>
+      {/* <section className={styles.healthBarContainer}>
         <p className={styles.healthBarLabel}>Enemy Health: {enemy.hp}</p>
         <div 
           className={styles.healthBar}
@@ -205,7 +208,7 @@ export default function EnvironmentCombat(props:any) {
           width: `${(enemy.hp * (100 / enemy.defaultHp))}%`,
           }}>
         </div>
-      </section>
+      </section> */}
 
       
     </div>

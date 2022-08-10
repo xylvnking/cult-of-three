@@ -144,6 +144,17 @@ Really there's actually *less* limitations on an audio game. I don't have to wor
 
 it's been weird. i don't like the trend most audio games have of having nothing on the screen, because not everybody playing it is 100% totally blind. also as a sighted player I personally don't think I could bring myself to play and audio-only game if the screen was just blank. I understand why, but IMO a nice (and obviously accesible) ui can make a world of difference. For this project I'm going to keep it very minimal, but in the future I'd like to expand upon it a lot.
 
+# scaling font size
+
+i set of goal of making this game fully responsive without any media queries and achieved it
+
+I was having trouble with the font size. I needed it to mostly stay the same during resize, or at least not get too small, which is what was happening when i used px or vw or rem. I ended up solving it by using %
+
+```cs
+.keyMap {
+    font-size: 500%;
+}
+```
 
 
 

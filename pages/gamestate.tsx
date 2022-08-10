@@ -343,7 +343,7 @@ export default function Gamestate(props:any) {
         >
             <section className={styles.keyMapGridContainer}>
                 <div
-                className={`${styles.enemyIcon} ${environmentProgress.environmentOneComplete ? styles.enemyIconDefeated : ""}`}
+                className={`${styles.enemyIcon} ${styles.gridBorder} ${environmentProgress.environmentOneComplete ? styles.enemyIconDefeated : ""}`}
                 style={{
                     backgroundImage: `url('${forestPhotoUrl}')`,}}>
                             <p 
@@ -352,7 +352,7 @@ export default function Gamestate(props:any) {
                             </p>
                 </div>
                 <div
-                className={`${styles.enemyIcon} ${environmentProgress.environmentTwoComplete ? styles.enemyIconDefeated : ""}`}
+                className={`${styles.enemyIcon} ${styles.gridBorder} ${environmentProgress.environmentTwoComplete ? styles.enemyIconDefeated : ""}`}
                 style={{
                     backgroundImage: `url('${towerPhotoUrl}')`,}}>
                             <p 
@@ -361,7 +361,7 @@ export default function Gamestate(props:any) {
                             </p>
                 </div>
                 <div
-                className={`${styles.enemyIcon} ${environmentProgress.environmentThreeComplete ? styles.enemyIconDefeated : ""}`}
+                className={`${styles.enemyIcon} ${styles.gridBorder} ${environmentProgress.environmentThreeComplete ? styles.enemyIconDefeated : ""}`}
                 style={{
                     backgroundImage: `url('${dreamStatePhotoUrl}')`,}}>
                             <p 
@@ -377,21 +377,21 @@ export default function Gamestate(props:any) {
          &&  
             <section className={styles.keyMapGridContainer}>
                 {/* <p className={`${styles.keyMap} ${(props.input == 'left') && `${styles.keyMapSelected}`}`}> */}
-                <p className={`${styles.keyMap}`}>
+                <p className={`${styles.keyMap} ${styles.gridBorder}`}>
                 
                 </p>
                 {/* <p className={`${styles.keyMap} ${(props.input == 'center') && `${styles.keyMapSelected}`}`}> */}
-                <p className={`${styles.keyMap}`}>
-                SKIP
+                <p className={`${styles.keyMap} ${styles.gridBorder}`}>
+                 {props.keyMap.center}
                 </p>
                 {/* <p className={`${styles.keyMap} ${(props.input == 'right') && `${styles.keyMapSelected}`}`}> */}
-                <p className={`${styles.keyMap}`}>
+                <p className={`${styles.keyMap} ${styles.gridBorder}`}>
                 
                 </p>
             </section>
          }
 
-        <section className={styles.healthBarContainer}>
+        {/* <section className={styles.healthBarContainer}>
         <p className={styles.healthBarLabel}>Player Health: {playerStats.health}</p>
         <div 
           className={styles.healthBar}
@@ -402,13 +402,13 @@ export default function Gamestate(props:any) {
       </section>
         <Timer 
         timerTotal={timerTotal}
-        />
+        /> */}
         
 
 
 
-        <h1>{ gamePaused ? <PauseMenu /> : ""}</h1>
-        <h1>
+        { gamePaused ? <PauseMenu /> : ""}
+        
             { 
             gameComplete 
             ? <EndScreen 
@@ -418,7 +418,7 @@ export default function Gamestate(props:any) {
             : 
             ""
             }
-            </h1>
+            
         {/* <p>{score}</p> */}
         </main>
   )
