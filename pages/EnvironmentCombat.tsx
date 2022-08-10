@@ -76,11 +76,12 @@ export default function EnvironmentCombat(props:any) {
   
   function getEnvironmentAndEnemyInfoForDisplay () {
     if (props.environmentProgress.environmentOneComplete == false) {
-      return `environment: forest, enemy: cultist, enemy health: ${enemy.hp}`
+      // return `environment: forest, enemy: cultist, enemy health: ${enemy.hp}`
+      return `FOREST`
     } else if (props.environmentProgress.environmentTwoComplete == false) {
-      return `environment: tower, enemy: brute, enemy health: ${enemy.hp}`
+      return `TOWER`
     } else if (props.environmentProgress.environmentThreeComplete == false) {
-      return `environment: dream state, enemy: elder, enemy health: ${enemy.hp}`
+      return `DREAM STATE`
     }
   }
   useEffect(() => {
@@ -164,15 +165,20 @@ export default function EnvironmentCombat(props:any) {
       {/* <h1 className={styles.environmentLabel}>
         {getEnvironmentAndEnemyInfoForDisplay()}
       </h1> */}
-      <div className={styles.environmentContainer}>
+      <div className={styles.environmentActualContainer}>
+        <h1 className={styles.environmentLabel}>
+          {getEnvironmentAndEnemyInfoForDisplay()}
+        </h1>
+        <div className={styles.environmentContainer}>
 
-          <Image 
-              src={getEnvironmentPhotoUrl()}
-              alt=''
-              layout="fill"
-              objectFit='cover'
-          />
-          
+            <Image 
+                src={getEnvironmentPhotoUrl()}
+                alt=''
+                layout="fill"
+                objectFit='cover'
+            />
+            
+        </div>
       </div>
       <section className={styles.keyMapGridContainer}>
         {/* <p className={`${styles.keyMap} ${(props.input == 'left') && `${styles.keyMapSelected}`}`}> */}
