@@ -7,87 +7,21 @@ import styles from '../styles/Main.module.css'
 // const towerPhotoUrl = 'https://cdna.artstation.com/p/assets/images/images/042/043/192/large/max-schiller-evilemperor-outside-v01-01-v03.jpg?1633500155'
 // const dreamstatePhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/033/313/719/large/huleeb-367-28-dec-2020-final-c.jpg?1609171255'
 
-const enemyDefaultHpValuesToCompareCurrentHealthToForUi = [3, 6, 9]
-const enemyDamageValuesToCompareCurrentHealthToForUi = [10, 10, 10]
-
 export default function EnvironmentCombat(props:any) {
 
   const [isEnvironmentIsLoaded, setIsEnvironmentIsLoaded] = React.useState(false)
 
   const [enemy, setEnemy] = React.useState({
-    hp: setEnemyDefaultHpAccordingToEnvironmentCompleted(),
-    defaultHp: setEnemyDefaultHpAccordingToEnvironmentCompleted(),
-    attackDamage: setEnemyDamageAccordingToEnvironmentCompleted(),
-    abilityPower: 10,
-    moveSet: ['attack', 'charge', 'buff'],
+    hp: 3,
+    defaultHp: 3,
+    attackDamage: 10,
     currentMove: "",
     isAlive: true
   })
 
-  
-
-  function playEnvironmentSound() {
-    if (props.environmentIndex == 0) {
-      props.playEnvironmentOneSound()
-    } else if (props.environmentIndex == 1) {
-      props.playEnvironmentTwoSound()
-    } else if (props.environmentIndex == 2) {
-      props.playEnvironmentThreeSound()
-    }
-  }
-  
-  function stopEnvironmentSound() {
-    if (props.environmentIndex == 0) {
-      props.playEnvironmentOneSoundControls.stop()
-    } else if (props.environmentIndex == 1) {
-      props.playEnvironmentTwoSoundControls.stop()
-    } else if (props.environmentIndex == 2) {
-      props.playEnvironmentThreeSoundControls.stop()
-    }
-
-  }
-
-  function getEnvironmentPhotoUrl () {
-    if (props.environmentIndex == 0) {
-      return props.forestPhotoUrl
-    } else if (props.environmentIndex == 1) {
-      return props.towerPhotoUrl
-    } else if (props.environmentIndex == 2) {
-      return props.dreamStatePhotoUrl
-    }
-  }
-
-  function setEnemyDefaultHpAccordingToEnvironmentCompleted () {
-    if (props.environmentProgress.environmentOneComplete == false) {
-      return enemyDefaultHpValuesToCompareCurrentHealthToForUi[0]
-    } else if (props.environmentProgress.environmentTwoComplete == false) {
-      return enemyDefaultHpValuesToCompareCurrentHealthToForUi[1]
-    } else if (props.environmentProgress.environmentThreeComplete == false) {
-      return enemyDefaultHpValuesToCompareCurrentHealthToForUi[2]
-    }
-  }
-  function setEnemyDamageAccordingToEnvironmentCompleted () {
-    if (props.environmentProgress.environmentOneComplete == false) {
-      return enemyDamageValuesToCompareCurrentHealthToForUi[0]
-    } else if (props.environmentProgress.environmentTwoComplete == false) {
-      return enemyDamageValuesToCompareCurrentHealthToForUi[1]
-    } else if (props.environmentProgress.environmentThreeComplete == false) {
-      return enemyDamageValuesToCompareCurrentHealthToForUi[2]
-    }
-  }
-  
-  function getEnvironmentAndEnemyInfoForDisplay () {
-    if (props.environmentProgress.environmentOneComplete == false) {
-      // return `environment: forest, enemy: cultist, enemy health: ${enemy.hp}`
-      return `FOREST`
-    } else if (props.environmentProgress.environmentTwoComplete == false) {
-      return `TOWER`
-    } else if (props.environmentProgress.environmentThreeComplete == false) {
-      return `DREAM STATE`
-    }
-  }
+  // ENEMY TAKES DAMAGE
   useEffect(() => {
-    console.log('enemy damaged!')
+    
 
     let currentEnemyHp = enemy.hp // have to calculate this here since setState is async we can't check for enemy death off 
     
@@ -106,6 +40,8 @@ export default function EnvironmentCombat(props:any) {
     // ENEMY KILLED
     if (currentEnemyHp <= 0) {
       props.playEnemyKilledSound()
+      props.playEndingMusic()
+      
       // if forest :
       if (props.environmentIndex == 0) {
         props.setEnvironmentProgress(current => {
@@ -114,22 +50,10 @@ export default function EnvironmentCombat(props:any) {
               environmentOneComplete: true
           }
         })
-      } else if (props.environmentIndex == 1) {
-        props.setEnvironmentProgress(current => {
-          return {
-              ...current,
-              environmentTwoComplete: true
-          }
-        })
-      } else if (props.environmentIndex == 2) {
-        props.setEnvironmentProgress(current => {
-          return {
-              ...current,
-              environmentThreeComplete: true
-          }
-        })
-      }
-      props.resetEverything()
+      } 
+      props.setGameComplete(true)
+      
+      // props.resetEverything()
 
     } else {
       // THIS FIRES ON LOAD
@@ -152,14 +76,16 @@ export default function EnvironmentCombat(props:any) {
   
   // ENTER & LEAVE :: ENVIRONMENT
   useEffect(() => {
-      playEnvironmentSound()
+      
+      props.playCombatEnvironmentSound()
       props.setIsInCombat(true)
       props.setGameState(props.gameStates[1]) 
       setIsEnvironmentIsLoaded(true)
       return () => {
           setIsEnvironmentIsLoaded(false)
           props.setIsInCombat(false)
-          stopEnvironmentSound()
+          
+          props.playCombatEnvironmentSoundControls.stop()
       }
     },[])
 
@@ -176,7 +102,7 @@ export default function EnvironmentCombat(props:any) {
           <div className={`${styles.environmentContainer} ${styles.gridBorder}`}>
 
               <Image 
-                  src={getEnvironmentPhotoUrl()}
+                  src={props.forestPhotoUrl}
                   alt=''
                   layout="fill"
                   objectFit='cover'
@@ -203,15 +129,6 @@ export default function EnvironmentCombat(props:any) {
         {props.keyMap.right}
         </p>
       </section>
-      {/* <section className={styles.healthBarContainer}>
-        <p className={styles.healthBarLabel}>Enemy Health: {enemy.hp}</p>
-        <div 
-          className={styles.healthBar}
-          style={{
-          width: `${(enemy.hp * (100 / enemy.defaultHp))}%`,
-          }}>
-        </div>
-      </section> */}
 
       
     </div>

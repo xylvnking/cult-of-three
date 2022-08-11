@@ -16,7 +16,7 @@ export default function EndScreen(props:any) {
             <p>Once the game is over, that total time is divded by the amount of health you have left.</p>
             <p>The faster you are, the lower your score.</p> */}
             
-            <h1 className={styles.endScreenText}>Press the <span style={{fontWeight: 700}}>{props.keyMap.center}</span> key to play again</h1>
+            <h1 className={styles.endScreenText}>Press the <span style={{fontWeight: 700}}>{props.keyMap.center}</span> key to play again!</h1>
         </main>
     </div>
   )

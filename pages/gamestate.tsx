@@ -30,7 +30,7 @@ function getRandomInt(max:number) {
 
 const gameStates = ['safezone', 'combat', 'paused']
 
-const defaultPlayerHealth:number = 100
+const defaultPlayerHealth:number = 2
 
 const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644'
 // const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/047/763/043/large/zhong-yang-.jpg?1648396136'
@@ -89,22 +89,15 @@ export default function Gamestate(props:any) {
 
     const [soundMuted, setSoundMuted] = React.useState(false)
 
-    const [playEnvironmentOneSound, playEnvironmentOneSoundControls] = useSound('/forest.mp3', {
-        volume: 0.5,
+    const [playEndingMusic, playEndingMusicControls] = useSound('/EndingMusic3.wav', {
+        volume: .7,
         loop: true,
         mute: soundMuted
     })
-    const [playEnvironmentTwoSound, playEnvironmentTwoSoundControls] = useSound('/rain.mp3', {
+    const [playCombatEnvironmentSound, playCombatEnvironmentSoundControls] = useSound('/rain.mp3', {
         volume: 0.5,
         loop: true,
         mute: soundMuted
-    })
-    const [playEnvironmentThreeSound, playEnvironmentThreeSoundControls] = useSound('/drone.wav', {
-        volume: 0.5,
-        loop: true,
-        playbackRate: .5,
-        mute: soundMuted
-        
     })
     const [playEnvironmentSafeZoneSound, playEnvironmentSafeZoneSoundControls] = useSound('/music.mp3', {
         volume: 0.5,
@@ -115,36 +108,64 @@ export default function Gamestate(props:any) {
     })
 
     const toggleEnvironmentSoundMute = () => {
-        playEnvironmentOneSoundControls.sound.mute(!playEnvironmentOneSoundControls.sound._muted)
-        playEnvironmentTwoSoundControls.sound.mute(!playEnvironmentTwoSoundControls.sound._muted)
-        playEnvironmentThreeSoundControls.sound.mute(!playEnvironmentThreeSoundControls.sound._muted)
+        playCombatEnvironmentSound.sound.mute(!playCombatEnvironmentSoundControls.sound._muted)
+        
     }
 
-    const [playAttackOneSound, playAttackOneSoundControls] = useSound('/ElderLight.mp3', {
+    const [playEnemyAttackOneSound, playAttackOneSoundControls] = useSound('/breach2.mp3', {
         volume: 1,
         loop: false,
         mute: soundMuted
     })
-    const [playAttackTwoSound, playAttackTwoSoundControls] = useSound('/ElderHeavy.mp3', {
+    const [playAttackTwoSound, playAttackTwoSoundControls] = useSound('/omen.mp3', {
         volume: 1,
         loop: false,
         mute: soundMuted
     })
-    const [playAttackThreeSound, playAttackThreeSoundControls] = useSound('/knifeThrow.wav', {
+    const [playAttackThreeSound, playAttackThreeSoundControls] = useSound('/reyna1.mp3', {
         volume: 1,
         loop: false,
         mute: soundMuted
     })
-    function playAttackSound() {
+    function playEnemyAttackSound() {
         switch(enemy.currentMove) {
             case 'left':
-                playAttackOneSound()
+                playEnemyAttackOneSound()
                 break;
             case 'center':
                 playAttackTwoSound()
                 break;
             case 'right':
                 playAttackThreeSound()
+                break;
+                
+            }
+        }
+    const [playPlayerAttackOneSound, playPlayerAttackOneSoundControls] = useSound('/CultistHeavy.mp3', {
+        volume: 1,
+        loop: false,
+        mute: soundMuted
+    })
+    const [playPlayerAttackTwoSound, playPlayerAttackTwoSoundControls] = useSound('/BruteHeavy.mp3', {
+        volume: 1,
+        loop: false,
+        mute: soundMuted
+    })
+    const [playPlayerAttackThreeSound, playPlayerAttackThreeSoundControls] = useSound('/ElderHeavy.mp3', {
+        volume: 1,
+        loop: false,
+        mute: soundMuted
+    })
+    function playPlayerAttackSound() {
+        switch(enemy.currentMove) {
+            case 'left':
+                playPlayerAttackOneSound()
+                break;
+            case 'center':
+                playPlayerAttackTwoSound()
+                break;
+            case 'right':
+                playPlayerAttackThreeSound()
                 break;
 
         }
@@ -156,7 +177,7 @@ export default function Gamestate(props:any) {
     }
 
     useEffect(() => {
-        playAttackSound()
+        playEnemyAttackSound()
     },[enemy.currentMove])
 
     // const [playPlayerDamagedSound, playPlayerDamagedSoundControls] = useSound('/playerTakeDamageSfx.mp3', {
@@ -174,7 +195,7 @@ export default function Gamestate(props:any) {
         playbackRate: currentRound
     })
     const [playEnemyKilledSound, playEnemyKilledSoundControls] = useSound('/ace.mp3', {
-        volume: 1,
+        volume: 0,
         loop: false,
         mute: soundMuted
     })
@@ -195,12 +216,10 @@ export default function Gamestate(props:any) {
                         gamePaused={gamePaused}
                         setIsInCombat={setIsInCombat}
                         environmentIndex={environmentIndex}
-                        playEnvironmentOneSound={playEnvironmentOneSound}
-                        playEnvironmentTwoSound={playEnvironmentTwoSound}
-                        playEnvironmentThreeSound={playEnvironmentThreeSound}
-                        playEnvironmentOneSoundControls={playEnvironmentOneSoundControls}
-                        playEnvironmentTwoSoundControls={playEnvironmentTwoSoundControls}
-                        playEnvironmentThreeSoundControls={playEnvironmentThreeSoundControls}
+                        playCombatEnvironmentSound={playCombatEnvironmentSound}
+                        
+                        playCombatEnvironmentSoundControls={playCombatEnvironmentSoundControls}
+                        
                         resetEverything={resetEverything}
                         enemyCurrentMove={enemy.currentMove}
                         enemyAttack={enemyAttack}
@@ -217,6 +236,8 @@ export default function Gamestate(props:any) {
                         dreamStatePhotoUrl={dreamStatePhotoUrl}
                         soundMuted={soundMuted}
                         playEnemyKilledSound={playEnemyKilledSound}
+                        setGameComplete={setGameComplete}
+                        playEndingMusic={playEndingMusic}
                     />
         } else {
             return <EnvironmentSafeZone 
@@ -228,23 +249,8 @@ export default function Gamestate(props:any) {
 
     }
 
-    useEffect(() => {
-        if (
-            environmentProgress.environmentOneComplete == true
-            &&
-            environmentProgress.environmentTwoComplete == true
-            &&
-            environmentProgress.environmentThreeComplete == true
-        ) {
-            console.log('game complete')
-            setGameComplete(true)
-            setTimerTotal(0)
-            setTimerInitial(0)
-            setTimerFinal(0)
-        }
-    },[environmentProgress])
-
     const resetEverything = () => {
+        
         setEnemy(current => {
             return {
                 ...current,
@@ -260,13 +266,20 @@ export default function Gamestate(props:any) {
         setCurrentRound(1)
         
         if (gameComplete) {
-            setEnvironmentProgress({
-                    environmentOneComplete: false,
-                    environmentTwoComplete: false,
-                    environmentThreeComplete: false,
-            })
             setScore(0)
+            setTimerTotal(0)
+            setTimerInitial(0)
+            setTimerFinal(0)
+            playEndingMusicControls.stop()
+            
             setGameComplete(false)
+            setEnvironmentProgress(current => {
+              return {
+                  ...current,
+                  environmentOneComplete: false
+              }
+            })
+           
 
 
         }
@@ -277,10 +290,11 @@ export default function Gamestate(props:any) {
         setGameState(gameStates[0])
         
     }
-    
-    const goToSafeZone = () => {
-    }
 
+    useEffect(() => {
+        setGameState('safezone')
+        playCombatEnvironmentSoundControls.stop()
+    }, [gameComplete])
 
     const calculateCurrentPlayerHealth = (enemyAttackDamage:number) => {
         return playerStats.health - enemyAttackDamage
@@ -296,7 +310,15 @@ export default function Gamestate(props:any) {
             }
         })
         if (calculateCurrentPlayerHealth(enemyAttackDamage) <= 0) {
-            resetEverything()
+            if (environmentIndex == 0) {
+                setEnvironmentProgress(current => {
+                  return {
+                      ...current,
+                      environmentOneComplete: true
+                  }
+                })
+              } 
+              setGameComplete(true)
         }
     }
 
@@ -336,6 +358,11 @@ export default function Gamestate(props:any) {
                     if (props.input == enemy.currentMove) {
                         playEnemyDamagedSound()
                         setCurrentRound(currentRound + .1)
+
+
+                        playPlayerAttackSound()
+
+
                         // toggles a change in state data which is passed as a prop in environment, triggering a useEffect which then applies damage to that environment's enemy object
                         setTriggerDamageToEnemy(!triggerDamageToEnemy)
                     } else {
@@ -347,7 +374,7 @@ export default function Gamestate(props:any) {
                             currentMove: ""
                         }
                     })
-                    console.log('calculate')
+                    
                 }
                 playerAction()
             }   
@@ -358,16 +385,23 @@ export default function Gamestate(props:any) {
                 if (!environmentProgress.environmentOneComplete) {
                     setEnvironmentIndex(0)
                     props.setInput("") // clears the input state to make sure the environment's controls aren't highlighted
-                } else if (!environmentProgress.environmentTwoComplete) {
-                    setEnvironmentIndex(1)
+                } else if (gameComplete) {
                     props.setInput("") // clears the input state to make sure the environment's controls aren't highlighted
-                } else if (!environmentProgress.environmentThreeComplete) {
-                    setEnvironmentIndex(2)
-                    props.setInput("") // clears the input state to make sure the environment's controls aren't highlighted
-                } else {
-                    console.log('yerrrr')
                     resetEverything()
                 }
+                
+                    // setEnvironmentIndex(0)
+                
+                // else if (!environmentProgress.environmentTwoComplete) {
+                //     setEnvironmentIndex(1)
+                //     props.setInput("") // clears the input state to make sure the environment's controls aren't highlighted
+                // } else if (!environmentProgress.environmentThreeComplete) {
+                //     setEnvironmentIndex(2)
+                //     props.setInput("") // clears the input state to make sure the environment's controls aren't highlighted
+                // } else {
+                //     console.log('yerrrr')
+                //     resetEverything()
+                // }
 
             }
 
@@ -438,31 +472,22 @@ export default function Gamestate(props:any) {
             </button> */}
             <section className={styles.keyMapGridContainer}>
                 <div
-                className={`${styles.enemyIcon} ${styles.gridBorder} ${environmentProgress.environmentOneComplete ? styles.enemyIconDefeated : ""}`}
+                className={`${styles.enemyIcon} ${styles.gridBorder} `}
                 style={{
                     backgroundImage: `url('${forestPhotoUrl}')`,}}>
-                            {/* <p 
-                            className={`${styles.enemyIconText}`}>
-                                {!environmentProgress.environmentOneComplete ? '🧟':'💀' }
-                            </p> */}
+
                 </div>
                 <div
-                className={`${styles.enemyIcon} ${styles.gridBorder} ${environmentProgress.environmentTwoComplete ? styles.enemyIconDefeated : ""}`}
+                className={`${styles.enemyIcon} ${styles.gridBorder} `}
                 style={{
                     backgroundImage: `url('${towerPhotoUrl}')`,}}>
-                            {/* <p 
-                            className={`${styles.enemyIconText}`}>
-                                {!environmentProgress.environmentTwoComplete ? '🦍':'💀' }
-                            </p> */}
+
                 </div>
                 <div
-                className={`${styles.enemyIcon} ${styles.gridBorder} ${environmentProgress.environmentThreeComplete ? styles.enemyIconDefeated : ""}`}
+                className={`${styles.enemyIcon} ${styles.gridBorder} `}
                 style={{
                     backgroundImage: `url('${dreamStatePhotoUrl}')`,}}>
-                            {/* <p 
-                            className={`${styles.enemyIconText}`}>
-                                {!environmentProgress.environmentThreeComplete ? '👻':'💀' }
-                            </p> */}
+
                 </div>
             </section>
 

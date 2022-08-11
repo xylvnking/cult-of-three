@@ -9,14 +9,14 @@ export default function EnvironmentSafeZone(props:any) {
 
 
   useEffect(() => {
-    console.log('entering safe zone...')
+    // console.log('entering safe zone...')
     // props.playEnemyDamagedSoundControls.stop()
       props.playEnvironmentSafeZoneSound()
         
         return () => {
           props.playEnvironmentSafeZoneSoundControls.stop()
           
-            console.log('leaving safe zone...')
+            // console.log('leaving safe zone...')
         }
     },[])
 
