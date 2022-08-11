@@ -382,7 +382,7 @@ export default function Gamestate(props:any) {
             // SAFEZONE
             else if (!gamePaused && (gameState == 'safezone')){
                 // if enemy 1 alive, 's' enters forest
-                if (!environmentProgress.environmentOneComplete) {
+                if (!gameComplete) {
                     setEnvironmentIndex(0)
                     props.setInput("") // clears the input state to make sure the environment's controls aren't highlighted
                 } else if (gameComplete) {
