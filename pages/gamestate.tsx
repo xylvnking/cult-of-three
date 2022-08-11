@@ -441,28 +441,28 @@ export default function Gamestate(props:any) {
                 className={`${styles.enemyIcon} ${styles.gridBorder} ${environmentProgress.environmentOneComplete ? styles.enemyIconDefeated : ""}`}
                 style={{
                     backgroundImage: `url('${forestPhotoUrl}')`,}}>
-                            <p 
+                            {/* <p 
                             className={`${styles.enemyIconText}`}>
                                 {!environmentProgress.environmentOneComplete ? '🧟':'💀' }
-                            </p>
+                            </p> */}
                 </div>
                 <div
                 className={`${styles.enemyIcon} ${styles.gridBorder} ${environmentProgress.environmentTwoComplete ? styles.enemyIconDefeated : ""}`}
                 style={{
                     backgroundImage: `url('${towerPhotoUrl}')`,}}>
-                            <p 
+                            {/* <p 
                             className={`${styles.enemyIconText}`}>
                                 {!environmentProgress.environmentTwoComplete ? '🦍':'💀' }
-                            </p>
+                            </p> */}
                 </div>
                 <div
                 className={`${styles.enemyIcon} ${styles.gridBorder} ${environmentProgress.environmentThreeComplete ? styles.enemyIconDefeated : ""}`}
                 style={{
                     backgroundImage: `url('${dreamStatePhotoUrl}')`,}}>
-                            <p 
+                            {/* <p 
                             className={`${styles.enemyIconText}`}>
                                 {!environmentProgress.environmentThreeComplete ? '👻':'💀' }
-                            </p>
+                            </p> */}
                 </div>
             </section>
 
