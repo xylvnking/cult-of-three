@@ -158,7 +158,13 @@ I was having trouble with the font size. I needed it to mostly stay the same dur
 
 
 
+# up next
 
+I think what I'd like to do ultimately is make scenes in unity/unreal to be able to 'set the stage' with the audio - it's difficult and basically impossible to create a believable 3d space without using 3D software. in howler or three.js it's *possible* but the amount of work wouldn't be worth the result. 
+
+My big gripe with lots of other audio games was that they forced you to use the 3D sound to navigate and whatnot, but i think using it just as a way to provide immersion is really the value it can provide. 
+
+it's beyond the scope of this demo tho.
 
 
 

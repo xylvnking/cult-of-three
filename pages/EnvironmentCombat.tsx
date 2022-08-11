@@ -24,6 +24,8 @@ export default function EnvironmentCombat(props:any) {
     isAlive: true
   })
 
+  
+
   function playEnvironmentSound() {
     if (props.environmentIndex == 0) {
       props.playEnvironmentOneSound()
@@ -103,6 +105,7 @@ export default function EnvironmentCombat(props:any) {
 
     // ENEMY KILLED
     if (currentEnemyHp <= 0) {
+      props.playEnemyKilledSound()
       // if forest :
       if (props.environmentIndex == 0) {
         props.setEnvironmentProgress(current => {

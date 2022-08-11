@@ -2,15 +2,20 @@ import React, { useEffect } from 'react'
 import Image from 'next/image'
 import styles from '../styles/Main.module.css'
 
-type Props = {}
-
-export default function EnvironmentSafeZone({}: Props) {
+// type Props = {}
 
 
-    useEffect(() => {
-        console.log('entering safe zone...')
+export default function EnvironmentSafeZone(props:any) {
 
+
+  useEffect(() => {
+    console.log('entering safe zone...')
+    // props.playEnemyDamagedSoundControls.stop()
+      props.playEnvironmentSafeZoneSound()
+        
         return () => {
+          props.playEnvironmentSafeZoneSoundControls.stop()
+          
             console.log('leaving safe zone...')
         }
     },[])
@@ -25,7 +30,7 @@ export default function EnvironmentSafeZone({}: Props) {
       <div className={`${styles.environmentContainer} ${styles.gridBorder}`}>
 
           <Image 
-              src="https://cdna.artstation.com/p/assets/images/images/019/822/210/large/steven-wong-stevenwong-solarpunk-final.jpg?1565148539"
+              src="https://cdna.artstation.com/p/assets/images/images/027/307/130/large/simeon-donchev-render-01.jpg?1591169204"
               alt=''
               layout="fill"
               objectFit='cover'
