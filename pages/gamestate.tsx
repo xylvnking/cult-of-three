@@ -32,11 +32,16 @@ const gameStates = ['safezone', 'combat', 'paused']
 
 const defaultPlayerHealth:number = 2
 
-const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644'
+// const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644'
+const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/052/484/597/large/huyang-5547.jpg?1659930152'
+const cultistPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/001/953/729/large/mark-van-haitsma-skull-g-sm.jpg?1455091171'
+
 // const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/047/763/043/large/zhong-yang-.jpg?1648396136'
 
 const towerPhotoUrl = 'https://cdna.artstation.com/p/assets/images/images/042/043/192/large/max-schiller-evilemperor-outside-v01-01-v03.jpg?1633500155'
+const brutePhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/001/115/499/large/frederic-daoust-big-dog-3.jpg?1443928827'
 const dreamStatePhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/033/313/719/large/huleeb-367-28-dec-2020-final-c.jpg?1609171255'
+const elderPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/035/006/675/large/aleksandra-alekseeva-love-signature.jpg?1613847121'
 
 
 
@@ -44,11 +49,9 @@ export default function Gamestate(props:any) {
     
 
     /*
-
         i have to have the data for the current move available here, so that I can compare the players input against it
         
-        i could encapsulate that check inside of a function and pass it as props to the environment and pass the enemy.currentMove as an argument
-
+        i could encapsulate that check inside of a function and pass it as props to the environment and pass the enemy.nameOfAttackingEnemy as an argument
     */
 
     const [enemyAttackDelayTime, setEnemyAttackDelayTime] = React.useState(500)
@@ -65,7 +68,7 @@ export default function Gamestate(props:any) {
         attackDamage: 10,
         abilityPower: 10,
         moveSet: ['attack', 'charge', 'buff'],
-        currentMove: ""
+        nameOfAttackingEnemy: ""
     })
     const [environmentOneSoundIsPlaying, setEnvironmentOneSoundIsPlaying] = React.useState(false)
     const [environmentTwoSoundIsPlaying, setEnvironmentTwoSoundIsPlaying] = React.useState(false)
@@ -128,7 +131,7 @@ export default function Gamestate(props:any) {
         mute: soundMuted
     })
     function playEnemyAttackSound() {
-        switch(enemy.currentMove) {
+        switch(enemy.nameOfAttackingEnemy) {
             case 'left':
                 playEnemyAttackOneSound()
                 break;
@@ -157,7 +160,7 @@ export default function Gamestate(props:any) {
         mute: soundMuted
     })
     function playPlayerAttackSound() {
-        switch(enemy.currentMove) {
+        switch(enemy.nameOfAttackingEnemy) {
             case 'left':
                 playPlayerAttackOneSound()
                 break;
@@ -178,7 +181,7 @@ export default function Gamestate(props:any) {
 
     useEffect(() => {
         playEnemyAttackSound()
-    },[enemy.currentMove])
+    },[enemy.nameOfAttackingEnemy])
 
     // const [playPlayerDamagedSound, playPlayerDamagedSoundControls] = useSound('/playerTakeDamageSfx.mp3', {
     const [playPlayerDamagedSound, playPlayerDamagedSoundControls] = useSound('/headshotSound.mp3', {
@@ -221,7 +224,7 @@ export default function Gamestate(props:any) {
                         playCombatEnvironmentSoundControls={playCombatEnvironmentSoundControls}
                         
                         resetEverything={resetEverything}
-                        enemyCurrentMove={enemy.currentMove}
+                        nameOfAttackingEnemy={enemy.nameOfAttackingEnemy}
                         enemyAttack={enemyAttack}
                         triggerDamageToEnemy={triggerDamageToEnemy}
                         triggerDamageToPlayer={triggerDamageToPlayer}
@@ -254,7 +257,7 @@ export default function Gamestate(props:any) {
         setEnemy(current => {
             return {
                 ...current,
-                currentMove: " "
+                nameOfAttackingEnemy: " "
             }
         })
         setPlayerStats(current => {
@@ -355,7 +358,7 @@ export default function Gamestate(props:any) {
                 setTimerTotal(timerTotal + y)
 
                 const playerAction = async () => {
-                    if (props.input == enemy.currentMove) {
+                    if (props.input == enemy.nameOfAttackingEnemy) {
                         playEnemyDamagedSound()
                         setCurrentRound(currentRound + .1)
 
@@ -371,7 +374,7 @@ export default function Gamestate(props:any) {
                     setEnemy(current => {
                         return {
                             ...current,
-                            currentMove: ""
+                            nameOfAttackingEnemy: ""
                         }
                     })
                     
@@ -425,7 +428,7 @@ export default function Gamestate(props:any) {
             setEnemy(current => {
                 return {
                     ...current,
-                    currentMove: 'left'
+                    nameOfAttackingEnemy: 'left'
                 }
             })
             
@@ -434,7 +437,7 @@ export default function Gamestate(props:any) {
             setEnemy(current => {
                 return {
                     ...current,
-                    currentMove: 'center'
+                    nameOfAttackingEnemy: 'center'
                 }
             })
             
@@ -443,7 +446,7 @@ export default function Gamestate(props:any) {
             setEnemy(current => {
                 return {
                     ...current,
-                    currentMove: 'right'
+                    nameOfAttackingEnemy: 'right'
                 }
             })
         }
@@ -458,6 +461,7 @@ export default function Gamestate(props:any) {
         }
     }
 
+    console.log()
     return (
         <main 
         className={styles.mainContainer}
@@ -468,25 +472,37 @@ export default function Gamestate(props:any) {
             {/* <button
                 onClick={toggleEnvironmentSoundMute}
             >
-
             </button> */}
+
+             
+
+                {/* DARKEN ENEMY ICONS IN SAFEZONE */}
+
+
+
             <section className={styles.keyMapGridContainer}>
                 <div
-                className={`${styles.enemyIcon} ${styles.gridBorder} `}
+                // className={`${styles.enemyIcon} ${styles.gridBorder} `}
+                className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'left') && `${styles.keyMapSelected}`}`}
+                
                 style={{
-                    backgroundImage: `url('${forestPhotoUrl}')`,}}>
+                    backgroundImage: `url('${cultistPhotoUrl}')`,}}
+                    >
 
                 </div>
                 <div
-                className={`${styles.enemyIcon} ${styles.gridBorder} `}
+                // className={`${styles.enemyIcon} ${styles.gridBorder} `}
+                className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'center') && `${styles.keyMapSelected}`}`}
                 style={{
-                    backgroundImage: `url('${towerPhotoUrl}')`,}}>
+                    // backgroundImage: `url('${(enemy.nameOfAttackingEnemy == 'center') ? brutePhotoUrl : ""}')`,}}>
+                    backgroundImage: `url('${brutePhotoUrl}')`,}}>
 
                 </div>
                 <div
-                className={`${styles.enemyIcon} ${styles.gridBorder} `}
+                className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'right') && `${styles.keyMapSelected}`}`}
                 style={{
-                    backgroundImage: `url('${dreamStatePhotoUrl}')`,}}>
+                    // backgroundImage: `url('${(enemy.nameOfAttackingEnemy == 'right') ? elderPhotoUrl : ""}')`,}}>
+                    backgroundImage: `url('${elderPhotoUrl}')`,}}>
 
                 </div>
             </section>
@@ -543,8 +559,3 @@ export default function Gamestate(props:any) {
         </main>
   )
 }
-
-
-
-
-
