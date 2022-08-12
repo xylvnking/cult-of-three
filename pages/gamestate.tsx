@@ -94,6 +94,7 @@ export default function Gamestate(props:any) {
         environmentThreeComplete: false,
     })
 
+    const [playerDied, setPlayerDied] = React.useState(false)
     
     const [scuffedGameStartCounter, setScuffedGameStartCounter] = React.useState(0)
     
@@ -206,6 +207,15 @@ export default function Gamestate(props:any) {
         mute: soundMuted
     })
 
+    const [playTransitionSound, playTransitionSoundControls] = useSound('/woosh.mp3', {
+        volume: 1,
+        loop: false,
+        mute: soundMuted
+    })
+
+    useEffect(() => {
+        playTransitionSound()
+    }, [environmentIndex])
 
     // toggleEnvironmentSoundMute()
 
@@ -295,6 +305,7 @@ export default function Gamestate(props:any) {
         // goToSafeZone()
         setEnvironmentIndex(3)
         setGameState(gameStates[0])
+        setPlayerDied(false)
         
     }
 
@@ -325,7 +336,10 @@ export default function Gamestate(props:any) {
                   }
                 })
               } 
+              setScore(0)
               setGameComplete(true)
+              setPlayerDied(true)
+              
         }
     }
 
@@ -524,6 +538,7 @@ export default function Gamestate(props:any) {
             ? <EndScreen 
                 score={score}
                 keyMap={props.keyMap}
+                playerDied={playerDied}
             /> 
             : 
             ""
