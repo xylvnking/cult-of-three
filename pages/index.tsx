@@ -17,15 +17,6 @@ const Home: NextPage = () => {
 
   return (
     <div>
-        
-        {/* {gameStarted && <GameInput 
-        setGameStarted={setGameStarted}
-        gameStarted={gameStarted}
-        
-        />}
-        {!gameStarted && <IntroScreen 
-        setGameStarted={setGameStarted}
-        />} */}
         <GameInput
           
         

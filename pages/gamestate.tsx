@@ -503,7 +503,7 @@ export default function Gamestate(props:any) {
 
             {environment()}
 
-        {!isInCombat
+        {/* {!isInCombat
          &&  
             <section className={styles.keyMapGridContainer}>
                 <p className={`${styles.keyMap} ${styles.gridBorder}`}>
@@ -516,7 +516,7 @@ export default function Gamestate(props:any) {
                 
                 </p>
             </section>
-         }
+         } */}
         { gamePaused ? <PauseMenu /> : ""}
         
             { 

@@ -114,18 +114,18 @@ export default function EnvironmentCombat(props:any) {
         </section>
       
       <section className={styles.keyMapGridContainer}>
-        {/* <p className={`${styles.keyMap} ${(props.input == 'left') && `${styles.keyMapSelected}`}`}> */}
-        <p className={`${styles.keyMap} ${styles.gridBorder} ${(props.nameOfAttackingEnemy == 'left') && `${styles.keyMapSelected}`}`}>
+        
+        <p className={`${styles.keyMap} ${styles.gridBorder}`}>
         {/* 🗡️ */}
         {props.keyMap.left}
         </p>
-        {/* <p className={`${styles.keyMap} ${(props.input == 'center') && `${styles.keyMapSelected}`}`}> */}
-        <p className={`${styles.keyMap} ${styles.gridBorder} ${(props.nameOfAttackingEnemy == 'center') && `${styles.keyMapSelected}`}`}>
+        
+        <p className={`${styles.keyMap} ${styles.gridBorder} `}>
         {/* 🔫 */}
         {props.keyMap.center}
         </p>
-        {/* <p className={`${styles.keyMap} ${(props.input == 'right') && `${styles.keyMapSelected}`}`}> */}
-        <p className={`${styles.keyMap} ${styles.gridBorder} ${(props.nameOfAttackingEnemy == 'right') && `${styles.keyMapSelected}`}`}>
+        
+        <p className={`${styles.keyMap} ${styles.gridBorder} `}>
         {/* ✨ */}
         {props.keyMap.right}
         </p>
