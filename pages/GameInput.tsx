@@ -10,7 +10,7 @@ const delay = ms => new Promise(
   );
 
 
-const GameInput: React.FC<Props> = ({}: Props) => {
+const GameInput: React.FC<Props> = (props:any) => {
 
 
 
@@ -23,14 +23,15 @@ const GameInput: React.FC<Props> = ({}: Props) => {
     // twice in a row since the value hadn't actually changed
     const [keyTrigger, setKeyTrigger] = React.useState(false)
     
-    // console.log(currentKeyPressed)
-
     const handleKeyDown = async (val:string) => {
-        setCurrentKeyPressed([])
-        setCurrentKeyPressed((current: any) => [...current, val])
+        
+            setCurrentKeyPressed([])
+            setCurrentKeyPressed((current: any) => [...current, val])
+            
         
         
-        // console.log('yer')
+        
+        
         
     }
 
@@ -101,18 +102,19 @@ const GameInput: React.FC<Props> = ({}: Props) => {
     useEffect(() => {
         // document.addEventListener('keydown', (e: KeyboardEvent) => setCurrentKeyPressed(e.key))
         document.addEventListener('keydown', (e: KeyboardEvent) => handleKeyDown(e.key))
-        // console.log('event listener added')
+        
         
     }, [])
 
 
-    // console.log(typeof setInput)
+    
   return (
     <div>
         <main>
 
             <GameState 
                 // currentKeyPressed={currentKeyPressed}
+                
                 input={input}
                 setInput={setInput}
                 keyTrigger={keyTrigger}

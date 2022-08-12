@@ -8,6 +8,8 @@ import Timer from './Timer'
 import EndScreen from './EndScreen'
 import useSound from 'use-sound';
 import Image from 'next/image'
+import { truncate } from 'fs'
+import IntroScreen from './IntroScreen'
 // import drone from './audio/drone.wav'
 // import drone from '../public/drone.wav'
 
@@ -54,6 +56,8 @@ export default function Gamestate(props:any) {
         i could encapsulate that check inside of a function and pass it as props to the environment and pass the enemy.nameOfAttackingEnemy as an argument
     */
 
+    
+
     const [enemyAttackDelayTime, setEnemyAttackDelayTime] = React.useState(500)
    
     const [timerTotal, setTimerTotal] = React.useState(0)
@@ -70,9 +74,6 @@ export default function Gamestate(props:any) {
         moveSet: ['attack', 'charge', 'buff'],
         nameOfAttackingEnemy: ""
     })
-    const [environmentOneSoundIsPlaying, setEnvironmentOneSoundIsPlaying] = React.useState(false)
-    const [environmentTwoSoundIsPlaying, setEnvironmentTwoSoundIsPlaying] = React.useState(false)
-    const [environmentThreeSoundIsPlaying, setEnvironmentThreeSoundIsPlaying] = React.useState(false)
     const [gamePaused, setGamePaused] = React.useState(false) // i think gamePaused might be redundant now but ill remove it later 
     const [gameState, setGameState] = React.useState(gameStates[0])
     const [isInCombat, setIsInCombat] = React.useState(false)
@@ -90,7 +91,11 @@ export default function Gamestate(props:any) {
         environmentThreeComplete: false,
     })
 
-    const [soundMuted, setSoundMuted] = React.useState(false)
+    
+    const [scuffedGameStartCounter, setScuffedGameStartCounter] = React.useState(0)
+    
+
+    const soundMuted = false
 
     const [playEndingMusic, playEndingMusicControls] = useSound('/EndingMusic3.wav', {
         volume: .7,
@@ -109,11 +114,6 @@ export default function Gamestate(props:any) {
         mute: soundMuted
         
     })
-
-    const toggleEnvironmentSoundMute = () => {
-        playCombatEnvironmentSound.sound.mute(!playCombatEnvironmentSoundControls.sound._muted)
-        
-    }
 
     const [playEnemyAttackOneSound, playAttackOneSoundControls] = useSound('/breach2.mp3', {
         volume: 1,
@@ -329,13 +329,27 @@ export default function Gamestate(props:any) {
         setScore((timerTotal / playerStats.health))
     }
 
-    // TRIGGERED ON USER INPUT
-    useEffect(() => {
-        if (props.input) {
+    function increaseScuffedGameStartCounter() {
+        setScuffedGameStartCounter(current => {
+            return current + 1
+                
+            
+        })
 
+        if (scuffedGameStartCounter >= 2) {
+            playEnvironmentSafeZoneSoundControls.stop()
+        }
+    }
+
+    useEffect(() => {
+        if (props.input ) {
+            increaseScuffedGameStartCounter()
+            
+            
             // PAUSED
-            if (props.input == 'menu') {
+            if (props.input == 'menu' && scuffedGameStartCounter >= 2) {
                 setGamePaused(!gamePaused)
+                
                 // if the game is not paused, set the game state to paused
                 if (!gamePaused) {
                     setGameState(gameStates[2])
@@ -348,9 +362,11 @@ export default function Gamestate(props:any) {
                 }
             } 
 
+
             // COMBAT !!
-            else if (!gamePaused && (gameState == 'combat')) { // i think gamepaused might be redundant now but ill remove it later 
+            else if (!gamePaused && (gameState == 'combat') && scuffedGameStartCounter >= 2) { // i think gamepaused might be redundant now but ill remove it later 
                 stopAttackSound()
+                
 
                 let x = new Date().getTime()
                 setTimerFinal(x)
@@ -383,7 +399,7 @@ export default function Gamestate(props:any) {
             }   
 
             // SAFEZONE
-            else if (!gamePaused && (gameState == 'safezone')){
+            else if (!gamePaused && (gameState == 'safezone') && scuffedGameStartCounter >= 2){
                 // if enemy 1 alive, 's' enters forest
                 if (!gameComplete) {
                     setEnvironmentIndex(0)
@@ -392,19 +408,6 @@ export default function Gamestate(props:any) {
                     props.setInput("") // clears the input state to make sure the environment's controls aren't highlighted
                     resetEverything()
                 }
-                
-                    // setEnvironmentIndex(0)
-                
-                // else if (!environmentProgress.environmentTwoComplete) {
-                //     setEnvironmentIndex(1)
-                //     props.setInput("") // clears the input state to make sure the environment's controls aren't highlighted
-                // } else if (!environmentProgress.environmentThreeComplete) {
-                //     setEnvironmentIndex(2)
-                //     props.setInput("") // clears the input state to make sure the environment's controls aren't highlighted
-                // } else {
-                //     console.log('yerrrr')
-                //     resetEverything()
-                // }
 
             }
 
@@ -461,28 +464,13 @@ export default function Gamestate(props:any) {
         }
     }
 
-    console.log()
+    
     return (
         <main 
         className={styles.mainContainer}
-        // style={{
-        //     backgroundImage: `url('${forestPhotoUrl}')`
-        // }}
         >
-            {/* <button
-                onClick={toggleEnvironmentSoundMute}
-            >
-            </button> */}
-
-             
-
-                {/* DARKEN ENEMY ICONS IN SAFEZONE */}
-
-
-
             <section className={styles.keyMapGridContainer}>
                 <div
-                // className={`${styles.enemyIcon} ${styles.gridBorder} `}
                 className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'left') && `${styles.keyMapSelected}`}`}
                 
                 style={{
@@ -491,17 +479,14 @@ export default function Gamestate(props:any) {
 
                 </div>
                 <div
-                // className={`${styles.enemyIcon} ${styles.gridBorder} `}
                 className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'center') && `${styles.keyMapSelected}`}`}
                 style={{
-                    // backgroundImage: `url('${(enemy.nameOfAttackingEnemy == 'center') ? brutePhotoUrl : ""}')`,}}>
                     backgroundImage: `url('${brutePhotoUrl}')`,}}>
 
                 </div>
                 <div
                 className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'right') && `${styles.keyMapSelected}`}`}
                 style={{
-                    // backgroundImage: `url('${(enemy.nameOfAttackingEnemy == 'right') ? elderPhotoUrl : ""}')`,}}>
                     backgroundImage: `url('${elderPhotoUrl}')`,}}>
 
                 </div>
@@ -512,37 +497,17 @@ export default function Gamestate(props:any) {
         {!isInCombat
          &&  
             <section className={styles.keyMapGridContainer}>
-                {/* <p className={`${styles.keyMap} ${(props.input == 'left') && `${styles.keyMapSelected}`}`}> */}
                 <p className={`${styles.keyMap} ${styles.gridBorder}`}>
                 
                 </p>
-                {/* <p className={`${styles.keyMap} ${(props.input == 'center') && `${styles.keyMapSelected}`}`}> */}
                 <p className={`${styles.keyMap} ${styles.gridBorder}`}>
                  {props.keyMap.center}
                 </p>
-                {/* <p className={`${styles.keyMap} ${(props.input == 'right') && `${styles.keyMapSelected}`}`}> */}
                 <p className={`${styles.keyMap} ${styles.gridBorder}`}>
                 
                 </p>
             </section>
          }
-
-        {/* <section className={styles.healthBarContainer}>
-        <p className={styles.healthBarLabel}>Player Health: {playerStats.health}</p>
-        <div 
-          className={styles.healthBar}
-          style={{
-          width: `${playerStats.health}%`,
-          }}>
-          </div>
-      </section>
-        <Timer 
-        timerTotal={timerTotal}
-        /> */}
-        
-
-
-
         { gamePaused ? <PauseMenu /> : ""}
         
             { 
@@ -554,8 +519,12 @@ export default function Gamestate(props:any) {
             : 
             ""
             }
-            
-        {/* <p>{score}</p> */}
+        { scuffedGameStartCounter < 1 ? <IntroScreen 
+        increaseScuffedGameStartCounter={increaseScuffedGameStartCounter}
+        playEnvironmentSafeZoneSound={playEnvironmentSafeZoneSound}
+        
+        
+        /> : ""}
         </main>
   )
 }

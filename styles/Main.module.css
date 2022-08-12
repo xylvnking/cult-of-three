@@ -230,3 +230,33 @@
     justify-content: center; */
 }
 
+.introScreenText {
+    max-width: 90vw;
+    text-align: center;
+    font-weight: 300;
+    /* font-size: 150%; */
+    font-size: 24px;
+    /* max-width: 750px; */
+}
+
+.introScreenBigText {
+    text-align: center;
+
+    font-size: 3rem;
+    font-weight: 300;
+}
+
+@media (max-width: 600px) {
+    
+    .introScreenText {
+        
+        font-size: 20px;
+        
+    }
+    .introScreenBigText {
+        max-width: 90vw;
+        font-size: 30px;
+    }
+
+}
+
