@@ -80,6 +80,7 @@ export default function EnvironmentCombat(props:any) {
       props.playCombatEnvironmentSound()
       props.setIsInCombat(true)
       props.setGameState(props.gameStates[1]) 
+      props.playEnvironmentSafeZoneSoundControls.stop()
       setIsEnvironmentIsLoaded(true)
       return () => {
           setIsEnvironmentIsLoaded(false)

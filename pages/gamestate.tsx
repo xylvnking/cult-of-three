@@ -36,16 +36,19 @@ const defaultPlayerHealth:number = 2
 
 // const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644'
 const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/052/484/597/large/huyang-5547.jpg?1659930152'
-const cultistPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/001/953/729/large/mark-van-haitsma-skull-g-sm.jpg?1455091171'
+// const cultistPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/001/953/729/large/mark-van-haitsma-skull-g-sm.jpg?1455091171'
 
 // const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/047/763/043/large/zhong-yang-.jpg?1648396136'
 
 const towerPhotoUrl = 'https://cdna.artstation.com/p/assets/images/images/042/043/192/large/max-schiller-evilemperor-outside-v01-01-v03.jpg?1633500155'
-const brutePhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/001/115/499/large/frederic-daoust-big-dog-3.jpg?1443928827'
+// const brutePhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/001/115/499/large/frederic-daoust-big-dog-3.jpg?1443928827'
 const dreamStatePhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/033/313/719/large/huleeb-367-28-dec-2020-final-c.jpg?1609171255'
-const elderPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/035/006/675/large/aleksandra-alekseeva-love-signature.jpg?1613847121'
+// const elderPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/035/006/675/large/aleksandra-alekseeva-love-signature.jpg?1613847121'
 
 
+const brutePhotoUrl = 'https://mj-gallery.com/5c17343d-0603-4010-ae3e-22781ba989ec/grid_0.png'
+const cultistPhotoUrl = 'https://mj-gallery.com/9c40ea5a-078f-4faf-9d11-18e710bd8116/grid_0.png'
+const elderPhotoUrl = 'https://mj-gallery.com/a8e5978d-d5ac-4cf6-a6ca-90d5c1ff0dac/grid_0.png'
 
 export default function Gamestate(props:any) {
     
@@ -241,6 +244,7 @@ export default function Gamestate(props:any) {
                         playEnemyKilledSound={playEnemyKilledSound}
                         setGameComplete={setGameComplete}
                         playEndingMusic={playEndingMusic}
+                        playEnvironmentSafeZoneSoundControls={playEnvironmentSafeZoneSoundControls}
                     />
         } else {
             return <EnvironmentSafeZone 
@@ -337,7 +341,8 @@ export default function Gamestate(props:any) {
         })
 
         if (scuffedGameStartCounter >= 2) {
-            playEnvironmentSafeZoneSoundControls.stop()
+            // playEnvironmentSafeZoneSoundControls.stop()
+            console.log('called')
         }
     }
 
@@ -347,7 +352,7 @@ export default function Gamestate(props:any) {
             
             
             // PAUSED
-            if (props.input == 'menu' && scuffedGameStartCounter >= 2) {
+            if (props.input == 'menu' && scuffedGameStartCounter >= 2 && !gameComplete) {
                 setGamePaused(!gamePaused)
                 
                 // if the game is not paused, set the game state to paused
@@ -364,7 +369,8 @@ export default function Gamestate(props:any) {
 
 
             // COMBAT !!
-            else if (!gamePaused && (gameState == 'combat') && scuffedGameStartCounter >= 2) { // i think gamepaused might be redundant now but ill remove it later 
+            else if (!gamePaused && (gameState == 'combat') && scuffedGameStartCounter >= 2) { // i think gamepaused might be redundant now but ill remove it later
+                
                 stopAttackSound()
                 
 
@@ -474,14 +480,17 @@ export default function Gamestate(props:any) {
                 className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'left') && `${styles.keyMapSelected}`}`}
                 
                 style={{
-                    backgroundImage: `url('${cultistPhotoUrl}')`,}}
+                    backgroundImage: `url('${cultistPhotoUrl}')`,
+                    backgroundPosition: 'top'}}
                     >
 
                 </div>
                 <div
                 className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'center') && `${styles.keyMapSelected}`}`}
                 style={{
-                    backgroundImage: `url('${brutePhotoUrl}')`,}}>
+                    backgroundImage: `url('${brutePhotoUrl}')`,
+                    backgroundPosition: 'top'}}>
+                    
 
                 </div>
                 <div
