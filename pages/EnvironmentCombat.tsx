@@ -12,7 +12,7 @@ export default function EnvironmentCombat(props:any) {
   const [isEnvironmentIsLoaded, setIsEnvironmentIsLoaded] = React.useState(false)
 
   const [enemy, setEnemy] = React.useState({
-    hp: 3,
+    hp: 10,
     defaultHp: 3,
     attackDamage: 10,
     nameOfAttackingEnemy: "",

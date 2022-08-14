@@ -152,7 +152,7 @@
 .keyMap {
     /* background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/memphis-mini-dark.png'); */
     /* background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/dark-honeycomb.png'); */
-    background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/cartographer.png');
+    /* background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/cartographer.png'); */
     /* background-image: url('https://i.pinimg.com/originals/80/1f/0b/801f0b350f7217acbed65a915e1991eb.jpg'); */
     /* background-image: url('https://media.istockphoto.com/vectors/modern-camouflage-pattern-vector-background-vector-id1164844755?b=1&k=20&m=1164844755&s=612x612&w=0&h=3rS_onOPt15C_Sfj_cBcxVLevxBffLE1xzJxMdfCPzQ='); */
     padding: 1rem;
@@ -162,8 +162,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: black;
-    font-size: 500%;
+    /* background-color: black; */
+    font-size: 600%;
     text-transform: capitalize
     /* border-style: solid;
     border-color: rgb(0, 0, 0);

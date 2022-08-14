@@ -167,6 +167,11 @@ My big gripe with lots of other audio games was that they forced you to use the 
 it's beyond the scope of this demo tho.
 
 
+# refactoring
+
+taking the environment progression away. instead of 3 enemies with 3 moves each in 3 stages, we're having 3 enemies, with one 'move' (which is just a sound saying they've appeared) each, and whent hey are defeated, the game is done.
+
+
 
 
 
@@ -218,4 +223,9 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 
+# midjourney
 
+used midjourney to get visuals for the UI
+
+
+# I'm having a hard time actually testing this for accessibility because I'm not good at using the screenreader. It's something I'll have to work on. For now, this project is done.

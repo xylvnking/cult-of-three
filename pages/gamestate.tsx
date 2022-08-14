@@ -32,7 +32,7 @@ function getRandomInt(max:number) {
 
 const gameStates = ['safezone', 'combat', 'paused']
 
-const defaultPlayerHealth:number = 2
+const defaultPlayerHealth:number = 30
 
 // const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644'
 const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/052/484/597/large/huyang-5547.jpg?1659930152'
@@ -61,7 +61,7 @@ export default function Gamestate(props:any) {
 
     
 
-    const [enemyAttackDelayTime, setEnemyAttackDelayTime] = React.useState(500)
+    const [enemyAttackDelayTime, setEnemyAttackDelayTime] = React.useState(1000)
    
     const [timerTotal, setTimerTotal] = React.useState(0)
     const [timerInitial, setTimerInitial] = React.useState(0)
@@ -101,65 +101,74 @@ export default function Gamestate(props:any) {
 
     const soundMuted = false
 
-    const [playEndingMusic, playEndingMusicControls] = useSound('/EndingMusic3.wav', {
-        volume: .7,
+    const [playEndingMusic, playEndingMusicControls] = useSound('/Vinyl.wav', {
+        volume: 3,
         loop: true,
         mute: soundMuted
     })
-    const [playCombatEnvironmentSound, playCombatEnvironmentSoundControls] = useSound('/rain.mp3', {
-        volume: 0.5,
+    // const [playCombatEnvironmentSound, playCombatEnvironmentSoundControls] = useSound('/rain.mp3', {
+    const [playCombatEnvironmentSound, playCombatEnvironmentSoundControls] = useSound('/CombatBackground.mp3', {
+        volume: .6,
         loop: true,
         mute: soundMuted
     })
     const [playEnvironmentSafeZoneSound, playEnvironmentSafeZoneSoundControls] = useSound('/music.mp3', {
-        volume: 0.5,
+        volume: .6,
         loop: true,
         playbackRate: 1,
         mute: soundMuted
         
     })
 
-    const [playEnemyAttackOneSound, playAttackOneSoundControls] = useSound('/breach2.mp3', {
+    const [playEnemyAttackOneSound, playAttackOneSoundControls] = useSound('/cultistAttackLeft.mp3', {
         volume: 1,
-        loop: false,
+        loop: true,
         mute: soundMuted
     })
-    const [playAttackTwoSound, playAttackTwoSoundControls] = useSound('/omen.mp3', {
+    const [playAttackTwoSound, playAttackTwoSoundControls] = useSound('/BruteAttack.mp3', {
         volume: 1,
-        loop: false,
+        loop: true,
         mute: soundMuted
     })
-    const [playAttackThreeSound, playAttackThreeSoundControls] = useSound('/reyna1.mp3', {
+    const [playAttackThreeSound, playAttackThreeSoundControls] = useSound('/elderAttackRight.mp3', {
         volume: 1,
-        loop: false,
+        loop: true,
         mute: soundMuted
     })
     function playEnemyAttackSound() {
-        switch(enemy.nameOfAttackingEnemy) {
-            case 'left':
-                playEnemyAttackOneSound()
-                break;
-            case 'center':
-                playAttackTwoSound()
-                break;
-            case 'right':
-                playAttackThreeSound()
-                break;
-                
-            }
+        if (playerDied == false) {
+
+            switch(enemy.nameOfAttackingEnemy) {
+                case 'left':
+                    playEnemyAttackOneSound()
+                    break;
+                case 'center':
+                    playAttackTwoSound()
+                    break;
+                case 'right':
+                    playAttackThreeSound()
+                    break;
+                    
+                }
         }
-    const [playPlayerAttackOneSound, playPlayerAttackOneSoundControls] = useSound('/CultistHeavy.mp3', {
+        }
+    // const [playPlayerAttackOneSound, playPlayerAttackOneSoundControls] = useSound('/CultistHeavy.mp3', {
+    const [playPlayerAttackOneSound, playPlayerAttackOneSoundControls] = useSound('/opLeft25.mp3', {
+        volume: 1.5,
+        loop: false,
+        mute: soundMuted,
+        
+    })
+    // const [playPlayerAttackTwoSound, playPlayerAttackTwoSoundControls] = useSound('/BruteHeavy.mp3', {
+        const [playPlayerAttackTwoSound, playPlayerAttackTwoSoundControls] = useSound('/opCenter.mp3', {
         volume: 1,
         loop: false,
         mute: soundMuted
     })
-    const [playPlayerAttackTwoSound, playPlayerAttackTwoSoundControls] = useSound('/BruteHeavy.mp3', {
-        volume: 1,
-        loop: false,
-        mute: soundMuted
-    })
-    const [playPlayerAttackThreeSound, playPlayerAttackThreeSoundControls] = useSound('/ElderHeavy.mp3', {
-        volume: 1,
+    // const [playPlayerAttackThreeSound, playPlayerAttackThreeSoundControls] = useSound('/ElderHeavy.mp3', {
+    const [playPlayerAttackThreeSound, playPlayerAttackThreeSoundControls] = useSound('/opRight25.mp3', {
+        
+        volume: 1.5,
         loop: false,
         mute: soundMuted
     })
@@ -196,7 +205,7 @@ export default function Gamestate(props:any) {
     const [playEnemyDamagedSound, playEnemyDamagedSoundControls] = useSound('/lock.wav', {
     // const [playEnemyDamagedSound, playEnemyDamagedSoundControls] = useSound('/operatorTap.mp3', {
     // const [playEnemyDamagedSound, playEnemyDamagedSoundControls] = useSound('/successSfx.mp3', {
-        volume: 1,
+        volume: 0,
         loop: false,
         mute: soundMuted,
         playbackRate: currentRound
@@ -208,7 +217,7 @@ export default function Gamestate(props:any) {
     })
 
     const [playTransitionSound, playTransitionSoundControls] = useSound('/woosh.mp3', {
-        volume: 1,
+        volume: .5,
         loop: false,
         mute: soundMuted
     })
@@ -218,6 +227,7 @@ export default function Gamestate(props:any) {
     }, [environmentIndex])
 
     // toggleEnvironmentSoundMute()
+    
 
     const environment = () => {
         if (environmentIndex < 3) {
@@ -255,6 +265,7 @@ export default function Gamestate(props:any) {
                         setGameComplete={setGameComplete}
                         playEndingMusic={playEndingMusic}
                         playEnvironmentSafeZoneSoundControls={playEnvironmentSafeZoneSoundControls}
+                        playerDied={playerDied}
                     />
         } else {
             return <EnvironmentSafeZone 
@@ -306,6 +317,9 @@ export default function Gamestate(props:any) {
         setEnvironmentIndex(3)
         setGameState(gameStates[0])
         setPlayerDied(false)
+        playAttackOneSoundControls.stop()
+        playAttackTwoSoundControls.stop()
+        playAttackThreeSoundControls.stop()
         
     }
 
@@ -340,7 +354,10 @@ export default function Gamestate(props:any) {
               setGameComplete(true)
               setPlayerDied(true)
               
+            //   resetEverything()
+              
         }
+
     }
 
     const calculateScore = () => {
@@ -356,12 +373,11 @@ export default function Gamestate(props:any) {
 
         if (scuffedGameStartCounter >= 2) {
             // playEnvironmentSafeZoneSoundControls.stop()
-            console.log('called')
         }
     }
 
     useEffect(() => {
-        if (props.input ) {
+        if (props.input && scuffedGameStartCounter > 1 ) {
             increaseScuffedGameStartCounter()
             
             
@@ -445,6 +461,9 @@ export default function Gamestate(props:any) {
 
         await delay(enemyAttackDelayTime)
         playEnemyDamagedSoundControls.stop()
+        playPlayerAttackOneSoundControls.stop()
+        playPlayerAttackTwoSoundControls.stop()
+        playPlayerAttackThreeSoundControls.stop()
 
         const enemyMoveNumber = getRandomInt(3)
         const enemyAttacksLeft = () => {
@@ -455,6 +474,7 @@ export default function Gamestate(props:any) {
                 }
             })
             
+            
         }
         const enemyAttacksCenter = () => {
             setEnemy(current => {
@@ -464,6 +484,7 @@ export default function Gamestate(props:any) {
                 }
             })
             
+            
         }
         const enemyAttacksRight = () => {
             setEnemy(current => {
@@ -472,10 +493,12 @@ export default function Gamestate(props:any) {
                     nameOfAttackingEnemy: 'right'
                 }
             })
+            
         }
         
 
         if (enemyMoveNumber == 0) {
+            
             enemyAttacksLeft()
         } else if (enemyMoveNumber == 1) {
             enemyAttacksCenter()
@@ -486,32 +509,40 @@ export default function Gamestate(props:any) {
 
     
     return (
+        // aria-hidden="true"
         <main 
         className={styles.mainContainer}
         >
             <section className={styles.keyMapGridContainer}>
                 <div
-                className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'left') && `${styles.keyMapSelected}`}`}
+                className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'left' && playerDied == false) && `${styles.keyMapSelected}`}`}
                 
                 style={{
                     backgroundImage: `url('${cultistPhotoUrl}')`,
                     backgroundPosition: 'top'}}
                     >
+                        <p className={`${styles.keyMap} `}>
+                        {props.keyMap.left}
+                        </p>
 
                 </div>
                 <div
-                className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'center') && `${styles.keyMapSelected}`}`}
+                className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'center' && playerDied == false) && `${styles.keyMapSelected}`}`}
                 style={{
                     backgroundImage: `url('${brutePhotoUrl}')`,
                     backgroundPosition: 'top'}}>
                     
-
+                    <p className={`${styles.keyMap} `}>
+                        {props.keyMap.center}
+                    </p>
                 </div>
                 <div
-                className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'right') && `${styles.keyMapSelected}`}`}
+                className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'right' && playerDied == false) && `${styles.keyMapSelected}`}`}
                 style={{
                     backgroundImage: `url('${elderPhotoUrl}')`,}}>
-
+                        <p className={`${styles.keyMap} `}>
+                        {props.keyMap.right}
+                    </p>
                 </div>
             </section>
 
