@@ -1,26 +1,13 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../styles/Main.module.css'
 
 import EnvironmentCombat from './EnvironmentCombat'
 import EnvironmentSafeZone from './EnvironmentSafeZone'
 import PauseMenu from './PauseMenu'
-import Timer from './Timer'
+
 import EndScreen from './EndScreen'
 import useSound from 'use-sound';
-import Image from 'next/image'
-import { truncate } from 'fs'
 import IntroScreen from './IntroScreen'
-// import drone from './audio/drone.wav'
-// import drone from '../public/drone.wav'
-
-type GameStateProps = {
-    // currentKeyPressed:Array<string>
-    input:string,
-    // setInput:object,
-    keyTrigger:boolean,
-    
-    children?: React.ReactNode
-}
 
 const delay = (ms: any) => new Promise(
     resolve => setTimeout(resolve, ms)
@@ -34,52 +21,40 @@ const gameStates = ['safezone', 'combat', 'paused']
 
 const defaultPlayerHealth:number = 30
 
-// const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/029/291/257/large/aaron-limonick-finding-zebra-clearing-post.jpg?1597078644'
-const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/052/484/597/large/huyang-5547.jpg?1659930152'
-// const cultistPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/001/953/729/large/mark-van-haitsma-skull-g-sm.jpg?1455091171'
+// const brutePhotoUrl = 'https://mj-gallery.com/5c17343d-0603-4010-ae3e-22781ba989ec/grid_0.png'
+const brutePhotoUrl = "/images/brute.png"
 
-// const forestPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/047/763/043/large/zhong-yang-.jpg?1648396136'
+// const cultistPhotoUrl = 'https://mj-gallery.com/9c40ea5a-078f-4faf-9d11-18e710bd8116/grid_0.png'
+const cultistPhotoUrl = "/images/cultist.png"
 
-const towerPhotoUrl = 'https://cdna.artstation.com/p/assets/images/images/042/043/192/large/max-schiller-evilemperor-outside-v01-01-v03.jpg?1633500155'
-// const brutePhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/001/115/499/large/frederic-daoust-big-dog-3.jpg?1443928827'
-const dreamStatePhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/033/313/719/large/huleeb-367-28-dec-2020-final-c.jpg?1609171255'
-// const elderPhotoUrl = 'https://cdnb.artstation.com/p/assets/images/images/035/006/675/large/aleksandra-alekseeva-love-signature.jpg?1613847121'
-
-
-const brutePhotoUrl = 'https://mj-gallery.com/5c17343d-0603-4010-ae3e-22781ba989ec/grid_0.png'
-const cultistPhotoUrl = 'https://mj-gallery.com/9c40ea5a-078f-4faf-9d11-18e710bd8116/grid_0.png'
-const elderPhotoUrl = 'https://mj-gallery.com/a8e5978d-d5ac-4cf6-a6ca-90d5c1ff0dac/grid_0.png'
+// const elderPhotoUrl = 'https://mj-gallery.com/a8e5978d-d5ac-4cf6-a6ca-90d5c1ff0dac/grid_0.png'
+const elderPhotoUrl = "/images/elder.png"
 
 export default function Gamestate(props:any) {
 
-    const [enemyAttackDelayTime, setEnemyAttackDelayTime] = React.useState(2000)
-    const [timerTotal, setTimerTotal] = React.useState(0)
-    const [timerInitial, setTimerInitial] = React.useState(0)
-    const [timerFinal, setTimerFinal] = React.useState(0)
-    const [score, setScore] = React.useState(0)
-    const [environmentIndex, setEnvironmentIndex] = React.useState<number>(3)
-    const [enemy, setEnemy] = React.useState({
+    const [enemyAttackDelayTime, setEnemyAttackDelayTime] = useState<number>(2000)
+    const [timerTotal, setTimerTotal] = useState<number>(0)
+    const [timerInitial, setTimerInitial] = useState<number>(0)
+    const [timerFinal, setTimerFinal] = useState<number>(0)
+    const [score, setScore] = useState<number>(0)
+    const [environmentIndex, setEnvironmentIndex] = useState<number>(3)
+    const [enemy, setEnemy] = useState({
         hp: 20,
         nameOfAttackingEnemy: ""
     })
-    const [gamePaused, setGamePaused] = React.useState(false) // i think gamePaused might be redundant now but ill remove it later 
-    const [gameState, setGameState] = React.useState(gameStates[0])
-    const [isInCombat, setIsInCombat] = React.useState(false)
-    const [gameComplete, setGameComplete] = React.useState(false)
-    const [triggerDamageToEnemy, setTriggerDamageToEnemy] = React.useState(true)
-    const [triggerDamageToPlayer, setTriggerDamageToPlayer] = React.useState(true)
-    const [playerStats, setPlayerStats] = React.useState({
+    const [gamePaused, setGamePaused] = useState<boolean>(false) // i think gamePaused might be redundant now but ill remove it later 
+    const [gameState, setGameState] = useState<string>(gameStates[0])
+    const [isInCombat, setIsInCombat] = useState<boolean>(false)
+    const [gameComplete, setGameComplete] = useState<boolean>(false)
+    const [triggerDamageToEnemy, setTriggerDamageToEnemy] = useState<boolean>(true)
+    const [triggerDamageToPlayer, setTriggerDamageToPlayer] = useState<boolean>(true)
+    const [playerStats, setPlayerStats] = useState({
         health: defaultPlayerHealth,
         attackDamage: 1
     })
-    const [currentRound, setCurrentRound] = React.useState(1)
-    
-
-    const [playerDied, setPlayerDied] = React.useState(false)
-    const [scuffedGameStartCounter, setScuffedGameStartCounter] = React.useState(0)
-
+    const [playerDied, setPlayerDied] = useState<boolean>(false)
+    const [scuffedGameStartCounter, setScuffedGameStartCounter] = useState<number>(0)
     const soundMuted = false
-
     const [playEndingMusic, playEndingMusicControls] = useSound('/Vinyl.wav', {
         volume: 3,
         loop: true,
@@ -95,9 +70,7 @@ export default function Gamestate(props:any) {
         loop: true,
         playbackRate: 1,
         mute: soundMuted
-        
     })
-
     const [playEnemyAttackOneSound, playAttackOneSoundControls] = useSound('/cultistAttackLeft.mp3', {
         volume: 1,
         loop: true,
@@ -113,9 +86,36 @@ export default function Gamestate(props:any) {
         loop: true,
         mute: soundMuted
     })
+    const [playPlayerAttackOneSound, playPlayerAttackOneSoundControls] = useSound('/opLeft25.mp3', {
+        volume: 1.2,
+        loop: false,
+        mute: soundMuted,
+        
+    })
+        const [playPlayerAttackTwoSound, playPlayerAttackTwoSoundControls] = useSound('/opCenter.mp3', {
+        volume: .8,
+        loop: false,
+        mute: soundMuted
+    })
+    const [playPlayerAttackThreeSound, playPlayerAttackThreeSoundControls] = useSound('/opRight25.mp3', {
+        
+        volume: 1.2,
+        loop: false,
+        mute: soundMuted
+    })
+    const [playPlayerDamagedSound, playPlayerDamagedSoundControls] = useSound('/headshotSound.mp3', {
+        volume: .7,
+        loop: false,
+        mute: soundMuted
+    })
+    const [playTransitionSound, playTransitionSoundControls] = useSound('/woosh.mp3', {
+        volume: .5,
+        loop: false,
+        mute: soundMuted
+    })
+
     function playEnemyAttackSound() {
         if (playerDied == false) {
-
             switch(enemy.nameOfAttackingEnemy) {
                 case 'left':
                     playEnemyAttackOneSound()
@@ -125,31 +125,11 @@ export default function Gamestate(props:any) {
                     break;
                 case 'right':
                     playAttackThreeSound()
-                    break;
-                    
+                    break;     
                 }
         }
-        }
-    // const [playPlayerAttackOneSound, playPlayerAttackOneSoundControls] = useSound('/CultistHeavy.mp3', {
-    const [playPlayerAttackOneSound, playPlayerAttackOneSoundControls] = useSound('/opLeft25.mp3', {
-        volume: 1.2,
-        loop: false,
-        mute: soundMuted,
-        
-    })
-    // const [playPlayerAttackTwoSound, playPlayerAttackTwoSoundControls] = useSound('/BruteHeavy.mp3', {
-        const [playPlayerAttackTwoSound, playPlayerAttackTwoSoundControls] = useSound('/opCenter.mp3', {
-        volume: .8,
-        loop: false,
-        mute: soundMuted
-    })
-    // const [playPlayerAttackThreeSound, playPlayerAttackThreeSoundControls] = useSound('/ElderHeavy.mp3', {
-    const [playPlayerAttackThreeSound, playPlayerAttackThreeSoundControls] = useSound('/opRight25.mp3', {
-        
-        volume: 1.2,
-        loop: false,
-        mute: soundMuted
-    })
+    } 
+
     function playPlayerAttackSound() {
         switch(enemy.nameOfAttackingEnemy) {
             case 'left':
@@ -161,9 +141,9 @@ export default function Gamestate(props:any) {
             case 'right':
                 playPlayerAttackThreeSound()
                 break;
-
         }
     }
+
     function stopAttackSound() {
         playAttackOneSoundControls.stop()
         playAttackTwoSoundControls.stop()
@@ -171,78 +151,27 @@ export default function Gamestate(props:any) {
     }
 
     useEffect(() => {
-        playEnemyAttackSound()
-    },[enemy.nameOfAttackingEnemy])
-
-    // const [playPlayerDamagedSound, playPlayerDamagedSoundControls] = useSound('/playerTakeDamageSfx.mp3', {
-    const [playPlayerDamagedSound, playPlayerDamagedSoundControls] = useSound('/headshotSound.mp3', {
-        volume: .7,
-        loop: false,
-        mute: soundMuted
-    })
-    const [playEnemyDamagedSound, playEnemyDamagedSoundControls] = useSound('/lock.wav', {
-    // const [playEnemyDamagedSound, playEnemyDamagedSoundControls] = useSound('/operatorTap.mp3', {
-    // const [playEnemyDamagedSound, playEnemyDamagedSoundControls] = useSound('/successSfx.mp3', {
-        volume: 0,
-        loop: false,
-        mute: soundMuted,
-        playbackRate: currentRound
-    })
-    const [playEnemyKilledSound, playEnemyKilledSoundControls] = useSound('/ace.mp3', {
-        volume: 0,
-        loop: false,
-        mute: soundMuted
-    })
-
-    const [playTransitionSound, playTransitionSoundControls] = useSound('/woosh.mp3', {
-        volume: .5,
-        loop: false,
-        mute: soundMuted
-    })
-
-    useEffect(() => {
         playTransitionSound()
     }, [environmentIndex])
 
-    // toggleEnvironmentSoundMute()
-    
-
-    const environment = () => {
+    const environment:Function = () => {
         if (environmentIndex < 3) {
             return <EnvironmentCombat 
-                        // you should put a lot of this into one object and pass that in, i think. as 'settings' or something
-                        input={props.input} 
-                        keyMap={props.keyMap}
-                        keyTrigger={props.keyTrigger} 
                         gameStates={gameStates}
-                        gameState={gameState}
                         setGameState={setGameState}
-                        gamePaused={gamePaused}
                         setIsInCombat={setIsInCombat}
-                        environmentIndex={environmentIndex}
                         playCombatEnvironmentSound={playCombatEnvironmentSound}
-                        
                         playCombatEnvironmentSoundControls={playCombatEnvironmentSoundControls}
-                        
-                        resetEverything={resetEverything}
-                        nameOfAttackingEnemy={enemy.nameOfAttackingEnemy}
                         enemyAttack={enemyAttack}
                         triggerDamageToEnemy={triggerDamageToEnemy}
                         triggerDamageToPlayer={triggerDamageToPlayer}
                         damagePlayer={damagePlayer}
                         playerStats={playerStats}
                         calculateScore={calculateScore}
-                        
                         calculateCurrentPlayerHealth={calculateCurrentPlayerHealth}
-                        forestPhotoUrl={forestPhotoUrl}
-                        towerPhotoUrl={towerPhotoUrl}
-                        dreamStatePhotoUrl={dreamStatePhotoUrl}
-                        soundMuted={soundMuted}
-                        playEnemyKilledSound={playEnemyKilledSound}
                         setGameComplete={setGameComplete}
                         playEndingMusic={playEndingMusic}
                         playEnvironmentSafeZoneSoundControls={playEnvironmentSafeZoneSoundControls}
-                        playerDied={playerDied}
                     />
         } else {
             return <EnvironmentSafeZone 
@@ -254,21 +183,20 @@ export default function Gamestate(props:any) {
 
     }
 
-    const resetEverything = () => {
+    const resetEverything:Function = () => {
         
-        setEnemy(current => {
+        setEnemy((current:any) => {
             return {
                 ...current,
                 nameOfAttackingEnemy: " "
             }
         })
-        setPlayerStats(current => {
+        setPlayerStats((current:any) => {
             return {
                 ...current,
                 health: defaultPlayerHealth,
             }
         })
-        setCurrentRound(1)
         
         if (gameComplete) {
             setScore(0)
@@ -276,16 +204,10 @@ export default function Gamestate(props:any) {
             setTimerInitial(0)
             setTimerFinal(0)
             playEndingMusicControls.stop()
-            
             setGameComplete(false)
-            
-           
-
-
         }
 
         setIsInCombat(false)
-        // goToSafeZone()
         setEnvironmentIndex(3)
         setGameState(gameStates[0])
         setPlayerDied(false)
@@ -300,40 +222,35 @@ export default function Gamestate(props:any) {
         playCombatEnvironmentSoundControls.stop()
     }, [gameComplete])
 
-    const calculateCurrentPlayerHealth = (enemyAttackDamage:number) => {
+    const calculateCurrentPlayerHealth:Function = (enemyAttackDamage:number) => {
         return playerStats.health - enemyAttackDamage
     }
 
-    const damagePlayer = (enemyAttackDamage:number) => {
+    const damagePlayer:Function = (enemyAttackDamage:number) => {
         playPlayerDamagedSound()
         calculateCurrentPlayerHealth(enemyAttackDamage)
-        setPlayerStats(current => {
+        setPlayerStats((current:any) => {
             return {
                 ...current,
                 health: calculateCurrentPlayerHealth(enemyAttackDamage),
             }
         })
+
         if (calculateCurrentPlayerHealth(enemyAttackDamage) <= 0) {
-            
               setScore(0)
               setGameComplete(true)
               setPlayerDied(true)
-              
-            //   resetEverything()
-              
         }
 
     }
 
-    const calculateScore = () => {
+    const calculateScore:Function = () => {
         setScore((timerTotal / playerStats.health))
     }
 
     function increaseScuffedGameStartCounter() {
-        setScuffedGameStartCounter(current => {
-            return current + 1
-                
-            
+        setScuffedGameStartCounter((current:any) => {
+            return current + 1     
         })
 
         if (scuffedGameStartCounter >= 2) {
@@ -341,129 +258,108 @@ export default function Gamestate(props:any) {
         }
     }
 
+    // this useEffect filters out the players input according to the current state of the game
     useEffect(() => {
         if (props.input && scuffedGameStartCounter > 1 ) {
-            increaseScuffedGameStartCounter()
-            
+            increaseScuffedGameStartCounter() // makes sure that input won't count as gameplay input unless the game has started
             
             // PAUSED
             if (props.input == 'menu' && scuffedGameStartCounter >= 2 && !gameComplete) {
                 setGamePaused(!gamePaused)
-                
-                // if the game is not paused, set the game state to paused
-                if (!gamePaused) {
+                if (!gamePaused) { // if the game is not paused, set the game state to paused
                     setGameState(gameStates[2])
-                // if the game is paused and we are in combat, set the game state back to combat
-                } else if (gamePaused && isInCombat) {
+                } else if (gamePaused && isInCombat) { // if the game is paused and we are in combat, set the game state back to combat
                     setGameState(gameStates[1])
-                // if the game is paused and we are not in combat, set the game state back to safezone
-                } else if (gamePaused && !isInCombat) {
+                } else if (gamePaused && !isInCombat) { // if the game is paused and we are not in combat, set the game state back to safezone
                     setGameState(gameStates[0])
                 }
             } 
 
-
-            // COMBAT !!
+            // COMBAT
             else if (!gamePaused && (gameState == 'combat') && scuffedGameStartCounter >= 2) { // i think gamepaused might be redundant now but ill remove it later
-                
                 stopAttackSound()
                 
-
                 let x = new Date().getTime()
                 setTimerFinal(x)
                 let y = x - timerInitial
                 setTimerTotal(timerTotal + y)
 
-                const playerAction = async () => {
+                const playerAction:Function = async () => {
                     if (props.input == enemy.nameOfAttackingEnemy) {
-                        playEnemyDamagedSound()
-                        setCurrentRound(currentRound + .1)
-
-
                         playPlayerAttackSound()
-
-
-                        // toggles a change in state data which is passed as a prop in environment, triggering a useEffect which then applies damage to that environment's enemy object
+                        // toggles a change in state data which is passed as a prop to the combatEnvironment component, triggering a useEffect which then applies damage to the enemy
                         setTriggerDamageToEnemy(!triggerDamageToEnemy)
                     } else {
+                        // toggles a change in state data which is passed as a prop to the combatEnvironment component, 
+                        // triggering a useEffect which then loops back into this component by calling a prop function 
+                        // which takes the enemys attack damage as an argument
                         setTriggerDamageToPlayer(!triggerDamageToPlayer)
                     }
-                    setEnemy(current => {
+                    setEnemy((current:any) => {
                         return {
                             ...current,
                             nameOfAttackingEnemy: ""
                         }
                     })
-                    
                 }
                 playerAction()
             }   
 
             // SAFEZONE
             else if (!gamePaused && (gameState == 'safezone') && scuffedGameStartCounter >= 2){
-                // if enemy 1 alive, 's' enters forest
                 if (!gameComplete) {
                     setEnvironmentIndex(0)
                     props.setInput("") // clears the input state to make sure the environment's controls aren't highlighted
                 } else if (gameComplete) {
-                    props.setInput("") // clears the input state to make sure the environment's controls aren't highlighted
+                    props.setInput("")
                     resetEverything()
                 }
-
             }
-
-
-
-
-
-
         }
     }, [props.keyTrigger])
 
-    const enemyAttack = async () => {
-        let x = new Date().getTime()
-        setTimerInitial(x)
+    useEffect(() => {
+        playEnemyAttackSound()
+    },[enemy.nameOfAttackingEnemy])
 
+    const enemyAttack:Function = async () => {
+
+        let x:number = new Date().getTime()
+        setTimerInitial(x)
         await delay(enemyAttackDelayTime)
-        playEnemyDamagedSoundControls.stop()
+        
         playPlayerAttackOneSoundControls.stop()
         playPlayerAttackTwoSoundControls.stop()
         playPlayerAttackThreeSoundControls.stop()
 
-        const enemyMoveNumber = getRandomInt(3)
-        const enemyAttacksLeft = () => {
-            setEnemy(current => {
+        const enemyMoveNumber:number = getRandomInt(3)
+
+        const enemyAttacksLeft:Function = () => {
+            setEnemy((current:any) => {
                 return {
                     ...current,
                     nameOfAttackingEnemy: 'left'
                 }
             })
-            
-            
         }
-        const enemyAttacksCenter = () => {
-            setEnemy(current => {
+        const enemyAttacksCenter:Function = () => {
+            setEnemy((current:any) => {
                 return {
                     ...current,
                     nameOfAttackingEnemy: 'center'
                 }
             })
-            
-            
         }
-        const enemyAttacksRight = () => {
-            setEnemy(current => {
+        const enemyAttacksRight:Function = () => {
+            setEnemy((current:any) => {
                 return {
                     ...current,
                     nameOfAttackingEnemy: 'right'
                 }
             })
-            
         }
-        
 
-        if (enemyMoveNumber == 0) {
-            
+        if (enemyMoveNumber == 0) {   
             enemyAttacksLeft()
         } else if (enemyMoveNumber == 1) {
             enemyAttacksCenter()
@@ -472,45 +368,37 @@ export default function Gamestate(props:any) {
         }
     }
 
-    // let leftKeyMap = props.keyMap
-
-
-
-    
     return (
-        // aria-hidden="true"
         <main 
-        className={styles.mainContainer}
+            className={styles.mainContainer}
         >
-            <section className={styles.keyMapGridContainer}>
+            <section className={styles.keyMapGridContainer} aria-hidden="true">
                 <div
-                className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'left' && playerDied == false) && `${styles.keyMapSelected}`}`}
-                
-                style={{
-                    backgroundImage: `url('${cultistPhotoUrl}')`,
-                    backgroundPosition: 'top'}}
+                    className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'left' && playerDied == false) && `${styles.keyMapSelected}`}`}
+                    style={{
+                        backgroundImage: `url('${cultistPhotoUrl}')`,
+                        backgroundPosition: 'top'}}
                     >
-                        <p className={`${styles.keyMap} `}>
-                        {props.keyMap ? props.keyMap.left : ""}
-                        {/* {leftKeyMap.left} */}
-                        </p>
-
-                </div>
-                <div
-                className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'center' && playerDied == false) && `${styles.keyMapSelected}`}`}
-                style={{
-                    backgroundImage: `url('${brutePhotoUrl}')`,
-                    backgroundPosition: 'top'}}>
-                    
                     <p className={`${styles.keyMap} `}>
-                    {props.keyMap ? props.keyMap.center : ""}
+                        {props.keyMap ? props.keyMap.left : ""}
                     </p>
                 </div>
                 <div
-                className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'right' && playerDied == false) && `${styles.keyMapSelected}`}`}
-                style={{
-                    backgroundImage: `url('${elderPhotoUrl}')`,}}>
-                        <p className={`${styles.keyMap} `}>
+                    className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'center' && playerDied == false) && `${styles.keyMapSelected}`}`}
+                    style={{
+                        backgroundImage: `url('${brutePhotoUrl}')`,
+                        backgroundPosition: 'top'}}
+                    >
+                    <p className={`${styles.keyMap} `}>
+                        {props.keyMap ? props.keyMap.center : ""}
+                    </p>
+                </div>
+                <div
+                    className={`${styles.enemyIcon} ${styles.gridBorder} ${(enemy.nameOfAttackingEnemy == 'right' && playerDied == false) && `${styles.keyMapSelected}`}`}
+                    style={{
+                        backgroundImage: `url('${elderPhotoUrl}')`,}}
+                    >
+                    <p className={`${styles.keyMap} `}>
                         {props.keyMap ? props.keyMap.right : ""}
                     </p>
                 </div>
@@ -518,25 +406,18 @@ export default function Gamestate(props:any) {
 
             {environment()}
 
-        {/* {!isInCombat
-         &&  
-            <section className={styles.keyMapGridContainer}>
-                <p className={`${styles.keyMap} ${styles.gridBorder}`}>
-                
-                </p>
-                <p className={`${styles.keyMap} ${styles.gridBorder}`}>
-                 {props.keyMap.center}
-                </p>
-                <p className={`${styles.keyMap} ${styles.gridBorder}`}>
-                
-                </p>
-            </section>
-         } */}
-        { gamePaused ? <PauseMenu /> : ""}
+            { 
+            gamePaused 
+            ? 
+            <PauseMenu /> 
+            : 
+            ""
+            }
         
             { 
             gameComplete 
-            ? <EndScreen 
+            ? 
+            <EndScreen 
                 score={score}
                 keyMap={props.keyMap}
                 playerDied={playerDied}
@@ -544,12 +425,18 @@ export default function Gamestate(props:any) {
             : 
             ""
             }
-        { scuffedGameStartCounter < 1 ? <IntroScreen 
-        increaseScuffedGameStartCounter={increaseScuffedGameStartCounter}
-        playEnvironmentSafeZoneSound={playEnvironmentSafeZoneSound}
-        
-        
-        /> : ""}
+            
+            { 
+            scuffedGameStartCounter < 1 
+            ? 
+            <IntroScreen 
+            increaseScuffedGameStartCounter={increaseScuffedGameStartCounter}
+            playEnvironmentSafeZoneSound={playEnvironmentSafeZoneSound}
+            /> 
+            : 
+            ""
+            }
+
         </main>
   )
 }

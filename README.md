@@ -229,3 +229,11 @@ used midjourney to get visuals for the UI
 
 
 # I'm having a hard time actually testing this for accessibility because I'm not good at using the screenreader. It's something I'll have to work on. For now, this project is done.
+
+# react as a game engine
+
+instead of using the traditional frames/ticks to progress 'time' in the game, I used react's re-rendering of the game components.
+
+the disadvantage to this approach is that it required a lot of if statements and conditionals to *stop* things from happening on re-render, as opposed to *causing* things to happen when I needed them to. it required me to essentially block everything that I didn't want to happen, instead of triggering what I did, which is poor design and made refactoring and adding changes unnecessarily difficult. I made two major re-writes to this program and if I was to keeo working on it, I'd start it from scratch and use a different approach.
+
+Trying to make the game only use 3 controls intesified this problem, because it meant that the same control had to also have different functionality according to whatever was going on in the game. 

@@ -12,7 +12,7 @@ export default function EnvironmentSafeZone(props:any) {
     },[])
 
   return (
-    <div>
+    <div aria-hidden="true">
       <section className={styles.environmentContainerContainer}>
         <div className={`${styles.environmentContainer} ${styles.gridBorder}`}>
             <Image 
