@@ -70,7 +70,7 @@ export default function EnvironmentCombat(props:any) {
           <div className={`${styles.environmentContainer} ${styles.gridBorder}`}>
               <Image 
                   // src={'https://mj-gallery.com/b3b95f15-84e4-4019-9bd4-6f585c1e9363/grid_0.png'}
-                  src="/images/warzone.png"
+                  src="/Images/warzone.png"
                   alt='abstract photo of a futuristic warzone'
                   layout="fill"
                   objectFit='cover'

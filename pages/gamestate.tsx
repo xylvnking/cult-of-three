@@ -22,13 +22,13 @@ const gameStates = ['safezone', 'combat', 'paused']
 const defaultPlayerHealth:number = 30
 
 // const brutePhotoUrl = 'https://mj-gallery.com/5c17343d-0603-4010-ae3e-22781ba989ec/grid_0.png'
-const brutePhotoUrl = "/images/brute.png"
+const brutePhotoUrl = "/Images/brute.png"
 
 // const cultistPhotoUrl = 'https://mj-gallery.com/9c40ea5a-078f-4faf-9d11-18e710bd8116/grid_0.png'
-const cultistPhotoUrl = "/images/cultist.png"
+const cultistPhotoUrl = "/Images/cultist.png"
 
 // const elderPhotoUrl = 'https://mj-gallery.com/a8e5978d-d5ac-4cf6-a6ca-90d5c1ff0dac/grid_0.png'
-const elderPhotoUrl = "/images/elder.png"
+const elderPhotoUrl = "/Images/elder.png"
 
 export default function Gamestate(props:any) {
 
