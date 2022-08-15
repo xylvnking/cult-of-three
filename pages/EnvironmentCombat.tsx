@@ -44,7 +44,7 @@ export default function EnvironmentCombat(props:any) {
       
       // if forest :
       if (props.environmentIndex == 0) {
-        props.setEnvironmentProgress(current => {
+        props.setEnvironmentProgress((current: any) => {
           return {
               ...current,
               environmentOneComplete: true
@@ -103,7 +103,9 @@ export default function EnvironmentCombat(props:any) {
           <div className={`${styles.environmentContainer} ${styles.gridBorder}`}>
 
               <Image 
-                  src={props.forestPhotoUrl}
+                  // src={props.forestPhotoUrl}
+                  src={'https://mj-gallery.com/b3b95f15-84e4-4019-9bd4-6f585c1e9363/grid_0.png'}
+                  // src={'https://mj-gallery.com/5e13d69d-70b5-4e81-878e-6a6e5e9954c0/grid_0.png'}
                   alt=''
                   layout="fill"
                   objectFit='cover'
@@ -113,23 +115,23 @@ export default function EnvironmentCombat(props:any) {
           </div>
         </section>
       
-      <section className={styles.keyMapGridContainer}>
+      {/* <section className={styles.keyMapGridContainer}>
         
         <p className={`${styles.keyMap} ${styles.gridBorder}`}>
-        {/* 🗡️ */}
+        
         {props.keyMap.left}
         </p>
         
         <p className={`${styles.keyMap} ${styles.gridBorder} `}>
-        {/* 🔫 */}
+        
         {props.keyMap.center}
         </p>
         
         <p className={`${styles.keyMap} ${styles.gridBorder} `}>
-        {/* ✨ */}
+        
         {props.keyMap.right}
         </p>
-      </section>
+      </section> */}
 
       
     </div>

@@ -22,7 +22,7 @@ type GameStateProps = {
     children?: React.ReactNode
 }
 
-const delay = ms => new Promise(
+const delay = (ms: any) => new Promise(
     resolve => setTimeout(resolve, ms)
   );
 
@@ -61,7 +61,7 @@ export default function Gamestate(props:any) {
 
     
 
-    const [enemyAttackDelayTime, setEnemyAttackDelayTime] = React.useState(1000)
+    const [enemyAttackDelayTime, setEnemyAttackDelayTime] = React.useState(2000)
    
     const [timerTotal, setTimerTotal] = React.useState(0)
     const [timerInitial, setTimerInitial] = React.useState(0)
@@ -507,6 +507,10 @@ export default function Gamestate(props:any) {
         }
     }
 
+    // let leftKeyMap = props.keyMap
+
+
+
     
     return (
         // aria-hidden="true"
@@ -522,7 +526,8 @@ export default function Gamestate(props:any) {
                     backgroundPosition: 'top'}}
                     >
                         <p className={`${styles.keyMap} `}>
-                        {props.keyMap.left}
+                        {props.keyMap ? props.keyMap.left : ""}
+                        {/* {leftKeyMap.left} */}
                         </p>
 
                 </div>
@@ -533,7 +538,7 @@ export default function Gamestate(props:any) {
                     backgroundPosition: 'top'}}>
                     
                     <p className={`${styles.keyMap} `}>
-                        {props.keyMap.center}
+                    {props.keyMap ? props.keyMap.center : ""}
                     </p>
                 </div>
                 <div
@@ -541,7 +546,7 @@ export default function Gamestate(props:any) {
                 style={{
                     backgroundImage: `url('${elderPhotoUrl}')`,}}>
                         <p className={`${styles.keyMap} `}>
-                        {props.keyMap.right}
+                        {props.keyMap ? props.keyMap.right : ""}
                     </p>
                 </div>
             </section>

@@ -5,7 +5,7 @@ import GameState from './gamestate'
 
 type Props = {}
 
-const delay = ms => new Promise(
+const delay = (ms: any) => new Promise(
     resolve => setTimeout(resolve, ms)
   );
 
@@ -36,7 +36,6 @@ const GameInput: React.FC<Props> = (props:any) => {
     }
 
     const keyMap = {
-        // make sure this works if caps lock gets hit on
         left: 'a',
         center: 's',
         right: 'd',
@@ -101,7 +100,7 @@ const GameInput: React.FC<Props> = (props:any) => {
     
     useEffect(() => {
         // document.addEventListener('keydown', (e: KeyboardEvent) => setCurrentKeyPressed(e.key))
-        document.addEventListener('keydown', (e: KeyboardEvent) => handleKeyDown(e.key))
+        document.addEventListener('keydown', (e) => handleKeyDown(e.key))
         
         
     }, [])
