@@ -73,11 +73,7 @@ export default function Gamestate(props:any) {
         attackDamage: 1
     })
     const [currentRound, setCurrentRound] = React.useState(1)
-    const [environmentProgress, setEnvironmentProgress] = React.useState({
-        environmentOneComplete: false,
-        environmentTwoComplete: false,
-        environmentThreeComplete: false,
-    })
+    
 
     const [playerDied, setPlayerDied] = React.useState(false)
     const [scuffedGameStartCounter, setScuffedGameStartCounter] = React.useState(0)
@@ -236,8 +232,7 @@ export default function Gamestate(props:any) {
                         damagePlayer={damagePlayer}
                         playerStats={playerStats}
                         calculateScore={calculateScore}
-                        environmentProgress={environmentProgress}
-                        setEnvironmentProgress={setEnvironmentProgress}
+                        
                         calculateCurrentPlayerHealth={calculateCurrentPlayerHealth}
                         forestPhotoUrl={forestPhotoUrl}
                         towerPhotoUrl={towerPhotoUrl}
@@ -283,12 +278,7 @@ export default function Gamestate(props:any) {
             playEndingMusicControls.stop()
             
             setGameComplete(false)
-            setEnvironmentProgress(current => {
-              return {
-                  ...current,
-                  environmentOneComplete: false
-              }
-            })
+            
            
 
 
@@ -324,14 +314,7 @@ export default function Gamestate(props:any) {
             }
         })
         if (calculateCurrentPlayerHealth(enemyAttackDamage) <= 0) {
-            if (environmentIndex == 0) {
-                setEnvironmentProgress(current => {
-                  return {
-                      ...current,
-                      environmentOneComplete: true
-                  }
-                })
-              } 
+            
               setScore(0)
               setGameComplete(true)
               setPlayerDied(true)

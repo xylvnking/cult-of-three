@@ -43,14 +43,7 @@ export default function EnvironmentCombat(props:any) {
       props.playEndingMusic()
       
       // if forest :
-      if (props.environmentIndex == 0) {
-        props.setEnvironmentProgress((current: any) => {
-          return {
-              ...current,
-              environmentOneComplete: true
-          }
-        })
-      } 
+      
       props.setGameComplete(true)
       
       // props.resetEverything()
