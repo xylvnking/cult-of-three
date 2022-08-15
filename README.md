@@ -1,137 +1,82 @@
+# CULT OF THREE
+
 <img src="public/Images/co3banner.png" width="100%"/>
 
 
-# relvant links
+
+# About 
+
+- Can be played entirely without looking at the screen
+- 4 controls (a,s,d keys + spacebar) which change functionality depending on context
+- Short and easy to play, with a score system that rewards skill
+- 1 of 3 enemies appear, the player presses the corresponding key to attack them
+- A proof-of-concept for a much larger 'fully accessible' dungeon crawler RPG I plan to make
+
+# How to play
+
+[Open the game](https://cult-of-three.vercel.app/) and follow the onscreen instructions which explain the controls and the contexts in which they appear. It's pretty simple.
+
+# Technologies used
+
+- React
+- TypeScript (about 90% typesafe, still learning)
+- Howler.js (via the [useSound hook by Joshua Comeau](https://github.com/joshwcomeau/use-sound))
+- Next.js (hosted with Vercel)
+
+# How it works
+
+Game engines generally use ticks or frames to measure the passage of time - but this project relies on React's re-rendering of components to do the same.
+
+There's a lot of pieces of state going on at once to make even a simple game function without bugs. Based on the complex combination of state, the user's input has different effects. For example if they're in the safezone, hitting any control puts them into combat, if they're in combat (and an enemy had just attacked) and they hit any key other than the one corresponding to that enemy, they take damage.
+
+With this project I wanted to further my understanding of React and how it re-renders components, and how to handle a lot of complex state. I'm definitely going to look into redux for my next project.
+
+# What I would do differently
+
+- My regret is not making it more modular - everything is dependent on everything else to a large degree due to poor design. I refactored it a lot to improve on this, but ultimately at its core there's some things I'm unsatisfied with. I didn't really know how to make a game when I started this - but I learned a lot and I'm really excited to apply what I learned to a new project.
+
+- I underestimated how hard it was to create a high quality 'blind UX' while both keeping the game small and short - I cut back a lot of narrative content and other things because it felt goofy to have all of that for such a short and simple game. From my limited experience with game development I understand the concept of scope creep and how important it is to keep your projects small, so I opted to consider this a learning experience instead of something I'd feel comfortable releasing or promoting. 
+
+- Ultimately I'm happy with it and it's very typesafe and I'm proud of the programming I did, but the game itself is bad - if it can be considered a game at all.
+
+- For a proper release I'd definitely use firebase or some other easy backend so that players could keep their progression.
+
+- The ui for an audio game is somewhat uncharted territory, but I wanted to include *something* on screen so that low-vision folks who feel more comfortable getting that sensory info could have it, and so that it wasn't as confusing for sighted players.
+
+- I'd create the 'audio scenes' in unreal or unity. Using a daw to create '3D audio environments' is not ideal, even with 10 years of experience using them. There's plugins to emulate positioning things in 3D space, but really the quality of object occlusion and real time movement and everything that 3D engines can offer is unparalled. It would also make it easier to create the sighted experience as well. It was beyond the scope of this, but my experience with both unity and unreal make me know it can be done better and more efficiently.
+
+# What's next?
+
+I'm really interested in making audio games. Audio brings games to life and makes them feel 'real'. Try playing some big fantasy game on mute - the world doesn't feel like it's there but as soon as you have sound (especially with nice headphones) it really allows us to immerse ourselves.
+
+I'm a mix engineer and hobbyist producer, not a sound designer or composer - so my skills translate in a limited technical sense when it comes to game audio. What does translate though is understanding a persons *experience* of the audio. Mixing music is really just curating the UX of a song. The same fundamentals apply to game audio - how loud should the background be? how fast or slow should the gunshots ring out? will having full lush forest environment sounds cause ear fatigue during long play sessions and should we opt for a more minimal design?
+
+These questions are things audio people handle and non-audio people don't think about until one of them is answered wrong. For example in the game The Division 2, you're constantly unleashing thousands of bullets almost every moment. If the sound design for the guns was huge and in your face it would be exhausting - even if it was exciting for the first play session. You can notice this in the transformers movies too - the sound in those giant action scenes is oddly sparse, but very specific so that you really hear all the detail in the mechanical transformations, instead of just a wall of metal clashing.
+
+TLDR; Audio games are on my radar. I've been doing a lot of research and it's something I'd love to create.
+
+# Artwork
+
+All artwork created using Midjourney AI
+
+# relevant links
 
 [useSound hook repo](https://github.com/joshwcomeau/use-sound)
+
 [howler docs](https://github.com/goldfire/howler.js#documentation)
 
 [true bling gaming beats the zelda water temple](https://www.youtube.com/watch?v=YiAxxZ2HOpM&ab_channel=TrueBlindGaming)
+
 [Sven The Blind Warrior](https://youtu.be/X6IjmmFcoWw)
+
 [True Blind Gaming q&a](https://youtu.be/Q811409RCNQ)
+
 [I'm Blind - But I'll Destroy Anyone On Mortal Kombat | TOTALLY GAME](https://youtu.be/cKsyk55pLCc)
+
 [vice: This Is How To Play Video Games If You're Totally Blind (HBO)](https://youtu.be/aX0oPwQPo9A)
+
 [using a '2 person controller' where the sighted person controls movement and blind person controls everything else](https://youtu.be/cKsyk55pLCc?t=223)
 
 https://killscreen.com/themeta/visually-impaired-players-staying-game/
 
 
-handling user input based on context without relying on visual UI elements
-
-depending on whether the player is in battle, safezone, or pause menu, the same keys perform different actions
-
-
-
-
-
-# notes
-
-on making games for the listeners
-
-- they dont want to (only be left with the option of) playing games based on fear
-
-- i think a lot of audio games in the past have still focused on being sighted experiences, just with audio cues instead of visual. navigating a 3d space without vision sucks. at least for me. maybe some like it the way players like me still want to die in dark souls. but generally they've all tried to do too much. 
-
-two ambitious '3d' audio games:
-- three monkeys : too ambitious, too corporate, asked for way too much money
-- Pitch black : kickstarted, watching closely.
-
-- cult of three is more of a blind esport. there is a narrative, but it's not required to play. i don't personally play many long story driven narrative games, even though i appreciate them existing, so i wanted to provide listeners with that option as well. me personally i would get annoyed being forced to walk through this giant immersive world cutscene. when does it end? where am i? where are we going? does this matter? can i skip it? can i come back to it?
-
-
-
-
-
-
-I just don't think 3D binaural audio is needed to create a fun audio-game. Regular 2D audio hasn't even begun to be explored yet, so needing to go above and beyond is excessive at this point imo. find me a fun 2d audio game. i'll wait. why go further? what limitations do you need to surpass? free yourself from the shackles of the third dimension.
-
-# gameplay
-
-when you break down most competetive games - what is the actual skill? reflexes? accuracy? gamesense? do these *require* 3 dimensions?
-
-- this game doesn't have traditional frames per second - and every possible scenario could be accounted for, if not a bit complex. Every action triggers the next action, nothing happens without player input.
-
-
-
-# next for this project
-
-I'm going to remake it from scratch now that I have a better idea of how to go about it. My mistake was that I didn't consider the 'step by step' nature of the game, and could keep track of that better. I should also use more objects and put functions as properties of those, such like when the player takes damage, that should be a function on the player object, not a standalone declaration. This would also allow me to create less rigid and hard-coded code, getting me closer to my idea of making an engine instead of just a game.
-
-using constructors would allow me to create more enemies easier, because if i wanted more enemies i could just 'new ConstructorFunction' them and they'd already posess all the functionality they need through prototypal inheritance too. For example this could allow me to create smaller easier but more numerous enemies, more akin to a dungeon crawler.
-
-I also think more depth in terms of equipment/player stats ould be cool, but outside of the scope of this proof of concept project. 
-
-also using destructuring. can i destructure  a variable from an object held in state and set it directly? probably not but i could probably call a function from itself that does that? or that calls a function declared in its scope? thinking it would be helpful when say passing the player object as a prop to the combat environment, being able to call a 'props.Player.changePlayerHealth(enemyDamage)' function which would call a function on the original object being passed as a prop and set its own state change. sorry i wrote this quick hopefully the idea translates later when I refactor this note
-
-
-also i've been using function expressions needlessly when i could be using declarations for most of my needs. should check if there is a performance impact. I assume hoisting expressions requires more
-
-also obviously using a backend or *at least* local storage so people can keep their progress
-
-
-
-
-
-
-# next updated later on
-
-I really think this has the potential to be a procedural dungeon crawler audio-game later on. It's beyond the scope for this project, but I've been making changes to this one to make the code more reusable for that. I've learned a lot while making this.
-
-I want to make a game that would also be fun for sighted players to play with their blind friends, and give blind players something with a lo skill floor, high skill ceiling, and lots of potential grind if they want it. 
-
-Really there's actually *less* limitations on an audio game. I don't have to worry about meshes or materials or physics or any of the other performance-heavy aspects video games have. In the future I intend to create video games which are also fully accessible, but for now I'm going to have some fun with this.
-
-
-
-
-
-
-# designing the ui for an audio game
-
-it's been weird. i don't like the trend most audio games have of having nothing on the screen, because not everybody playing it is 100% totally blind. also as a sighted player I personally don't think I could bring myself to play and audio-only game if the screen was just blank. I understand why, but IMO a nice (and obviously accesible) ui can make a world of difference. For this project I'm going to keep it very minimal, but in the future I'd like to expand upon it a lot.
-
-
-
-
-
-# up next
-
-I think what I'd like to do ultimately is make scenes in unity/unreal to be able to 'set the stage' with the audio - it's difficult and basically impossible to create a believable 3d space without using 3D software. in howler or three.js it's *possible* but the amount of work wouldn't be worth the result. 
-
-My big gripe with lots of other audio games was that they forced you to use the 3D sound to navigate and whatnot, but i think using it just as a way to provide immersion is really the value it can provide. 
-
-it's beyond the scope of this demo tho.
-
-
-# refactoring
-
-taking the environment progression away. instead of 3 enemies with 3 moves each in 3 stages, we're having 3 enemies, with one 'move' (which is just a sound saying they've appeared) each, and whent hey are defeated, the game is done.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# midjourney
-
-used midjourney to get visuals for the UI
-
-
-# I'm having a hard time actually testing this for accessibility because I'm not good at using the screenreader. It's something I'll have to work on. For now, this project is done.
-
-# react as a game engine
-
-instead of using the traditional frames/ticks to progress 'time' in the game, I used react's re-rendering of the game components.
-
-the disadvantage to this approach is that it required a lot of if statements and conditionals to *stop* things from happening on re-render, as opposed to *causing* things to happen when I needed them to. it required me to essentially block everything that I didn't want to happen, instead of triggering what I did, which is poor design and made refactoring and adding changes unnecessarily difficult. I made two major re-writes to this program and if I was to keeo working on it, I'd start it from scratch and use a different approach.
-
-Trying to make the game only use 3 controls intesified this problem, because it meant that the same control had to also have different functionality according to whatever was going on in the game. 

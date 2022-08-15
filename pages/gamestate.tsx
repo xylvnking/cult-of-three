@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styles from '../styles/Main.module.css'
-
 import EnvironmentCombat from './EnvironmentCombat'
 import EnvironmentSafeZone from './EnvironmentSafeZone'
 import PauseMenu from './PauseMenu'
-
 import EndScreen from './EndScreen'
 import useSound from 'use-sound';
 import IntroScreen from './IntroScreen'
