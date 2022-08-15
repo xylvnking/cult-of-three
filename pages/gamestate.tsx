@@ -51,30 +51,15 @@ const cultistPhotoUrl = 'https://mj-gallery.com/9c40ea5a-078f-4faf-9d11-18e710bd
 const elderPhotoUrl = 'https://mj-gallery.com/a8e5978d-d5ac-4cf6-a6ca-90d5c1ff0dac/grid_0.png'
 
 export default function Gamestate(props:any) {
-    
-
-    /*
-        i have to have the data for the current move available here, so that I can compare the players input against it
-        
-        i could encapsulate that check inside of a function and pass it as props to the environment and pass the enemy.nameOfAttackingEnemy as an argument
-    */
-
-    
 
     const [enemyAttackDelayTime, setEnemyAttackDelayTime] = React.useState(2000)
-   
     const [timerTotal, setTimerTotal] = React.useState(0)
     const [timerInitial, setTimerInitial] = React.useState(0)
     const [timerFinal, setTimerFinal] = React.useState(0)
     const [score, setScore] = React.useState(0)
     const [environmentIndex, setEnvironmentIndex] = React.useState<number>(3)
-    const [enemyState, setEnemyState] = React.useState()
-    const [playerHealth, setPlayerHealth] = React.useState(100)
     const [enemy, setEnemy] = React.useState({
         hp: 20,
-        attackDamage: 10,
-        abilityPower: 10,
-        moveSet: ['attack', 'charge', 'buff'],
         nameOfAttackingEnemy: ""
     })
     const [gamePaused, setGamePaused] = React.useState(false) // i think gamePaused might be redundant now but ill remove it later 
@@ -95,9 +80,7 @@ export default function Gamestate(props:any) {
     })
 
     const [playerDied, setPlayerDied] = React.useState(false)
-    
     const [scuffedGameStartCounter, setScuffedGameStartCounter] = React.useState(0)
-    
 
     const soundMuted = false
 
@@ -106,7 +89,6 @@ export default function Gamestate(props:any) {
         loop: true,
         mute: soundMuted
     })
-    // const [playCombatEnvironmentSound, playCombatEnvironmentSoundControls] = useSound('/rain.mp3', {
     const [playCombatEnvironmentSound, playCombatEnvironmentSoundControls] = useSound('/CombatBackground.mp3', {
         volume: .6,
         loop: true,
@@ -154,21 +136,21 @@ export default function Gamestate(props:any) {
         }
     // const [playPlayerAttackOneSound, playPlayerAttackOneSoundControls] = useSound('/CultistHeavy.mp3', {
     const [playPlayerAttackOneSound, playPlayerAttackOneSoundControls] = useSound('/opLeft25.mp3', {
-        volume: 1.5,
+        volume: 1.2,
         loop: false,
         mute: soundMuted,
         
     })
     // const [playPlayerAttackTwoSound, playPlayerAttackTwoSoundControls] = useSound('/BruteHeavy.mp3', {
         const [playPlayerAttackTwoSound, playPlayerAttackTwoSoundControls] = useSound('/opCenter.mp3', {
-        volume: 1,
+        volume: .8,
         loop: false,
         mute: soundMuted
     })
     // const [playPlayerAttackThreeSound, playPlayerAttackThreeSoundControls] = useSound('/ElderHeavy.mp3', {
     const [playPlayerAttackThreeSound, playPlayerAttackThreeSoundControls] = useSound('/opRight25.mp3', {
         
-        volume: 1.5,
+        volume: 1.2,
         loop: false,
         mute: soundMuted
     })
@@ -271,7 +253,7 @@ export default function Gamestate(props:any) {
             return <EnvironmentSafeZone 
                         playEnvironmentSafeZoneSoundControls={playEnvironmentSafeZoneSoundControls}
                         playEnvironmentSafeZoneSound={playEnvironmentSafeZoneSound}
-                        playEnemyDamagedSoundControls={playEnemyDamagedSoundControls}
+                        
                     />
         }
 
