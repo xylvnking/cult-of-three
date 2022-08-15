@@ -3,6 +3,12 @@ import Head from 'next/head'
 import React from 'react'
 import GameInput from './GameInput'
 
+const elderPhotoUrl = "/Images/elder.png"
+const brutePhotoUrl = "/Images/brute.png"
+const cultistPhotoUrl = "/Images/cultist.png"
+const safeZonePhotoUrl = "/Images/safezone.png"
+const warzonePhotoUrl = "/Images/warzone.png"
+
 const Home: NextPage = () => {
   return (
     <div>
