@@ -1,38 +1,20 @@
-
-
-
 .mainContainer {
-    /* padding:25px; */
-    
     display: block;
     margin: auto;
     background-repeat:no-repeat;
     background-position: center center;
-
-    /* filter: blur(33px); */
-
     display: grid;
     grid-template-columns: 1fr;
-    /* grid-template-rows: 33.3vh 33.3vh 33.3vh; */
     grid-template-rows: 50vh 50vh;
-    
     max-width: 950px;
-    /* background-color: black; */
-    
-
 }
 
 .gridBorder {
     border-style:solid;
     border-color: rgb(0, 0, 0);
-    /* border-radius: 4px;
-    border-width: 25px; */
     border-radius: 10px;
     border-width: 2.5px;
-    
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-    
-    
 }
 
 .pauseMenu {
@@ -54,16 +36,13 @@
     font-size: 5rem;
 }
 
-
 .endScreenContainer {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    
     height: 100%;
-    
     background-color: rgba(0, 0, 0, 0.809);
     z-index: 999;
     backdrop-filter: blur(5px);
@@ -75,7 +54,6 @@
 
 .endScreenText {
     text-align: center;
-
     font-size: 3rem;
     font-weight: 300;
 }
@@ -92,96 +70,42 @@
 
 .environmentContainerContainer {
     height: 100%;
-    /* width: 100vw; */
-    /* background-color: #ffffff; */
     background-color: #000000;
     padding: 5px;
-    
-    
-    
 }
 
 .environmentContainer {
     background-color: black;
-    /* margin: .25rem; */
-    /* width: 100%; */
     height: 100%;
-
-
-
-
-    /* max-height: 33.3vh; */
-
-
-
-
     max-height: 50vh;
-
-
-
-
     position: relative;
-    /* margin: 5rem; */
-    
-    /* border-style: solid;
-    border-color: rgb(0, 0, 0);
-    border-radius: 4px;
-    border-width: 25px; */
-    
-    
 }
 
 .environmentPhoto {
-    /* border-radius: 25px; */
-    /* filter: brightness(33%); */
-    /* margin: 100px; */
     border-radius:7px;
-
-
 }
-
 
 .keyMapGridContainer {
     height: 100%;
-    
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    /* background-color: rgb(255, 255, 255); */
     background-color: rgb(0, 0, 0);
-    /* background-color: rgb(0, 0, 0); */
-
 }
 
 .keyMap {
-    /* background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/memphis-mini-dark.png'); */
-    /* background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/dark-honeycomb.png'); */
-    /* background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/cartographer.png'); */
-    /* background-image: url('https://i.pinimg.com/originals/80/1f/0b/801f0b350f7217acbed65a915e1991eb.jpg'); */
-    /* background-image: url('https://media.istockphoto.com/vectors/modern-camouflage-pattern-vector-background-vector-id1164844755?b=1&k=20&m=1164844755&s=612x612&w=0&h=3rS_onOPt15C_Sfj_cBcxVLevxBffLE1xzJxMdfCPzQ='); */
     padding: 1rem;
     margin: .25rem;
-    
-    /* font-size: 2rem; */
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-color: black; */
     font-size: 600%;
     text-transform: capitalize
-    /* border-style: solid;
-    border-color: rgb(0, 0, 0);
-    border-radius: 4px;
-    border-width: 25px; */
 }
-
-
 
 .healthBarContainer {
     width: 100%;
-    /* background-color: aqua; */
     display: grid;
     grid-template-columns: 25vw 1fr;
-
 }
 
 .healthBar {
@@ -198,40 +122,20 @@
 }
 
 .enemyIcon {
-    /* background-repeat: no-repeat; */
-    /* background-attachment: fixed; */
-    /* background-position: center; */
     background-color: black;
     background-repeat:no-repeat;
     background-position:  center;
-    /* background-size: contain; */
     background-size:cover;
-    /* height: 100%;
-    width: 100%; */
     padding: 1rem;
     margin: .25rem;
-
-    
-    
     display: flex;
     justify-content: center;
     align-items: center;
-
-
-
-
-
     max-height: 50vh;
-
-
-
-
     filter: brightness(10%);
 }
 
 .keyMapSelected {
-    /* border-color: rgb(255, 255, 255);
-    border-width: 25px;  */
     filter: brightness(100%);
 }
 
@@ -239,38 +143,28 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
     font-size: 3rem;
 }
-
 
 .introScreenText {
     max-width: 90vw;
     text-align: center;
     font-weight: 300;
-    /* font-size: 150%; */
     font-size: 24px;
-    /* max-width: 750px; */
 }
 
 .introScreenBigText {
     text-align: center;
-
     font-size: 3rem;
     font-weight: 300;
 }
 
 @media (max-width: 600px) {
-    
     .introScreenText {
-        
         font-size: 20px;
-        
     }
     .introScreenBigText {
         max-width: 90vw;
         font-size: 30px;
     }
-
 }
-
